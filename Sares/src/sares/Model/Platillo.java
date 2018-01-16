@@ -6,38 +6,25 @@ import java.util.*;
 /**
  * 
  */
-public class Platillo {
+public class Platillo extends Item{
 
-	/**
-	 * Default constructor
-	 */
-	public Platillo() {
-	}
-
-	/**
-	 * 
-	 */
-	private Float valor;
+    public Platillo(Time tiempoEstimado, float precio, String nombre, String descripcion, boolean promocion, float porcentaje) {
+        super(precio, nombre, descripcion, promocion, porcentaje);
+        this.tiempoEstimado = tiempoEstimado;
+    }
 
 	/**
 	 * 
 	 */
-	private String nombre;
+	private Time tiempoEstimado;
 
-	/**
-	 * 
-	 */
-	private boolean promo;
+    public Time getTiempoEstimado() {
+        return tiempoEstimado;
+    }
 
-	/**
-	 * 
-	 */
-	private int porcentaje;
-
-	/**
-	 * 
-	 */
-	public Time tiempoEstiimado;
+    public void setTiempoEstimado(Time tiempoEstimado) {
+        this.tiempoEstimado = tiempoEstimado;
+    }
 
 
 }

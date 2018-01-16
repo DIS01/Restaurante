@@ -5,28 +5,38 @@ import java.util.*;
 /**
  * 
  */
-public class Bebida {
+public class Bebida extends Item{
 
-	/**
-	 * Default constructor
-	 */
-	public Bebida() {
-	}
-
-	/**
-	 * 
-	 */
-	public String marca;
+    public Bebida(String marca, float contenido, float precio, String nombre, String descripcion, boolean promocion, float porcentaje) {
+        super(precio, nombre, descripcion, promocion, porcentaje);
+        this.marca = marca;
+        this.contenido = contenido;
+    }
 
 	/**
 	 * 
 	 */
-	public float precio;
-
-	/**
+	private String marca;
+        /**
 	 * 
 	 */
-	public String nombre;
+	private float contenido;
 
+    public String getMarca() {
+        return marca;
+    }
 
+    public void setMarca(String marca) {
+        this.marca = marca;
+    }
+
+    public float getContenido() {
+        return contenido;
+    }
+
+    public void setContenido(float contenido) {
+        this.contenido = contenido;
+    }
+
+    
 }
