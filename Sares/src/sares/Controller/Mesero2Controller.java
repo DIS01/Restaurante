@@ -29,9 +29,9 @@ public class Mesero2Controller implements Initializable {
 private Empleado empleado;
 private Calendar time;
 
-    public Mesero2Controller(Empleado empleado) {
-        this.empleado = empleado;
-    }
+//    public Mesero2Controller(Empleado empleado) {
+//        this.empleado = empleado;
+//    }
     @FXML
     private VBox root;
     @FXML
@@ -61,8 +61,8 @@ private Calendar time;
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
-        this.nombre.setText(this.empleado.getNombres() + " "+ this.empleado.getApellidos());
-        this.tiempo.setText(time.getTime().toString());
+        //this.nombre.setText(this.empleado.getNombres() + " "+ this.empleado.getApellidos());
+        //this.tiempo.setText(time.getTime().toString());
         
     }    
 

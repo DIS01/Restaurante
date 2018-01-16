@@ -17,14 +17,14 @@ import javafx.fxml.FXMLLoader;
  * @author mdleiton
  */
 public class Sares extends Application {
-    
+    public static Stage stage1;
     @Override
     public void start(Stage primaryStage) throws IOException {
        Parent root = FXMLLoader.load(getClass().getResource("View/Mesero.fxml"));
         Scene scene = new Scene(root, 500, 500);
-        
-        primaryStage.setScene(scene);
-        primaryStage.show();
+        stage1=primaryStage;
+        stage1.setScene(scene);
+        stage1.show();
     }
 
     /**
