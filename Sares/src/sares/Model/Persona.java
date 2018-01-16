@@ -1,11 +1,23 @@
 package sares.Model;
 
-import java.util.*;
-
 /**
  * 
  */
 public class Persona {
+
+    /**
+     * @return the nombres
+     */
+    public String getNombres() {
+        return nombres;
+    }
+
+    /**
+     * @return the apellidos
+     */
+    public String getApellidos() {
+        return apellidos;
+    }
 
 	/**
 	 * Default constructor
@@ -26,12 +38,12 @@ public class Persona {
 	/**
 	 * 
 	 */
-	protected String nombres;
+	private String nombres;
 
 	/**
 	 * 
 	 */
-	protected String apellidos;
+	private String apellidos;
 
 	protected String domicilio;
 
