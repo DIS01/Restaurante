@@ -16,18 +16,14 @@ import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
-import javafx.scene.control.ProgressBar;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
+import sares.Sares;
 
 /**
  * FXML Controller class
@@ -35,7 +31,8 @@ import javafx.stage.Stage;
  * @author steevenrodriguez
  */
 public class MeseroController implements Initializable {
-    private int cont =0;
+
+    private int cont = 0;
     private Calendar calendar;
     @FXML
     private HBox hbox;
@@ -64,7 +61,7 @@ public class MeseroController implements Initializable {
         this.escogerMenu.setItems(items);
 
         this.hbox.setSpacing(100);
-        new Thread(new Runnable() {
+        Thread thread =new Thread(new Runnable() {
             @Override
 
             public void run() {
@@ -80,45 +77,41 @@ public class MeseroController implements Initializable {
                             MeseroController.this.calendar = Calendar.getInstance();
                             SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
                             MeseroController.this.tiempo.setText(sdf.format(MeseroController.this.calendar.getTime()));
-                            cont ++;
+                            cont++;
                         }
                     });
                 }
             }
-        }).start();
+        });
+        thread.setDaemon(true);
+        thread.start();
 
     }
 
     @FXML
 
-    private void handleSignOutAction(MouseEvent event) {
+    private void handleSignOutAction(MouseEvent event) throws IOException {
         System.out.println("SignOut");
+        Sares.setContent("sares/fxml/login.fxml", root);
 
     }
 
     @FXML
-    private void seleccionMenu(MouseEvent event)  {
-        try{
+    private void seleccionMenu(MouseEvent event) {
+        try {
             System.out.println(this.escogerMenu.getSelectionModel().getSelectedItem());
-            //Parent root=null;
-//        if (this.escogerMenu.getSelectionModel().getSelectedItem() == "Crear Pedido"){
-//        root = FXMLLoader.load(getClass().getResource("/View/Mesero2.fxml"));
-//        Saresz = (Stage) this.btnSignOut.getScene().getWindow();
-//        Scene scene = new Scene(root);
-//        stage.setScene(scene);
+
+            if ("Crear Pedido".equals(this.escogerMenu.getSelectionModel().getSelectedItem())) {
+                Sares.setContent("sares/fxml/Mesero2.fxml", root);
 //        
-        }
-        catch (Exception e){
+            }
+        } catch (IOException e) {
             System.out.println(e.getMessage());
         }
 
 //Stage stage;
-        
 //        stage = new Stage();
 //      stage.setScene(scene);
 //      stage.show();
-
     }
 }
-
-

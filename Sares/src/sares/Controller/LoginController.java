@@ -8,14 +8,13 @@ package sares.Controller;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
 import sares.Sares;
 
 /**
@@ -23,33 +22,34 @@ import sares.Sares;
  *
  * @author steevenrodriguez
  */
-public class Mesero3Controller implements Initializable {
+public class LoginController implements Initializable {
 
     @FXML
-    private VBox root;
+    private Label userName;
     @FXML
-    private HBox hbox;
+    private TextField textField_user;
     @FXML
-    private Label titulo_food;
+    private Label Password;
     @FXML
-    private GridPane containerComida;
+    private PasswordField passField;
     @FXML
-    private Button buttonGoBack;
+    private Label titulo;
+    @FXML
+    private Label notLog;
+    @FXML
+    private Button logButton;
 
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        hbox.setSpacing(150);
-        
-        
         // TODO
     }    
 
     @FXML
-    private void handleGoBack(MouseEvent event) throws IOException {
-        Sares.setContent("sares/fxml/login.fxml", root);
+    private void onLogAction(ActionEvent event) throws IOException {
+        Sares.setContent("sares/fxml/Mesero.fxml", notLog);
     }
     
 }
