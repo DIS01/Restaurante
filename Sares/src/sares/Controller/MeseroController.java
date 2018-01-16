@@ -18,6 +18,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.ProgressBar;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 
@@ -27,6 +28,7 @@ import javafx.scene.layout.HBox;
  * @author steevenrodriguez
  */
 public class MeseroController implements Initializable {
+
     private Calendar calendar;
     @FXML
     private HBox hbox;
@@ -45,46 +47,47 @@ public class MeseroController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODOh
-        
-        ObservableList<String> items =FXCollections.observableArrayList (
-    "Crear Pedido", "Modificar Pedido", "Eliminar Pedido");
-    this.escogerMenu.setItems(items);
-    
+
+        ObservableList<String> items = FXCollections.observableArrayList(
+                "Crear Pedido", "Modificar Pedido", "Eliminar Pedido");
+        this.escogerMenu.setItems(items);
+
         this.hbox.setSpacing(170);
-        while(true){
-             
-        try {
-            Platform.runLater(new Runnable() {
-                            @Override
-                            public void run() {
-                                MeseroController.this.calendar = Calendar.getInstance();
-                                SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
-                                MeseroController.this.tiempo.setText(sdf.format(MeseroController.this.calendar.getTime()));
-                                
-                            }
-                            
-        
-                        });
-            Thread.sleep(1000);
-        } catch (InterruptedException ex) {
-            Logger.getLogger(MeseroController.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        new Thread(new Runnable() {
+            @Override
+
+            public void run() {
+                while (true) {
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(MeseroController.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    Platform.runLater(new Runnable() {
+
+                        public void run() {
+                            MeseroController.this.calendar = Calendar.getInstance();
+                            SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+                            MeseroController.this.tiempo.setText(sdf.format(MeseroController.this.calendar.getTime()));
+
+                        }
+                    });
+                }
+            }
+        }).start();
+
     }
 
-        
-       
-        
-    }    
-
     @FXML
+
     private void handleSignOutAction(MouseEvent event) {
         System.out.println("koko");
-        
+
     }
 
     @FXML
     private void seleccionMenu(MouseEvent event) {
         System.out.println(this.escogerMenu.getSelectionModel().getSelectedItem());
     }
-    
+
 }
