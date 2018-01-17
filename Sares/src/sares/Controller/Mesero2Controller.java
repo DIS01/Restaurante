@@ -5,6 +5,7 @@
  */
 package sares.Controller;
 
+import java.io.IOException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -25,6 +26,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import sares.Model.Empleado;
+import sares.Sares;
 
 /**
  * FXML Controller class
@@ -107,8 +109,9 @@ int cont;
     }    
 
     @FXML
-    private void handleSignOutActionhandleSignOutAction(MouseEvent event) {
-        
+    private void handleSignOutActionhandleSignOutAction(MouseEvent event) throws IOException {
+        System.out.println("SignOut");
+        Sares.setContent("sares/fxml/login.fxml", root);
     }
 
     @FXML
