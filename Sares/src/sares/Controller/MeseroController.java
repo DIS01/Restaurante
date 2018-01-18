@@ -61,26 +61,20 @@ public class MeseroController implements Initializable {
         this.escogerMenu.setItems(items);
 
         this.hbox.setSpacing(100);
-        Thread thread =new Thread(new Runnable() {
-            @Override
-
-            public void run() {
-                while (cont != 100) {
-                    try {
-                        Thread.sleep(1000);
-                    } catch (InterruptedException ex) {
-                        Logger.getLogger(MeseroController.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                    Platform.runLater(new Runnable() {
-
-                        public void run() {
-                            MeseroController.this.calendar = Calendar.getInstance();
-                            SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
-                            MeseroController.this.tiempo.setText(sdf.format(MeseroController.this.calendar.getTime()));
-                            cont++;
-                        }
-                    });
+        Thread thread;
+        thread = new Thread(() -> {
+            while (cont != 100) {
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(MeseroController.class.getName()).log(Level.SEVERE, null, ex);
                 }
+                Platform.runLater(() -> {
+                    MeseroController.this.calendar = Calendar.getInstance();
+                    SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+                    MeseroController.this.tiempo.setText(sdf.format(MeseroController.this.calendar.getTime()));
+                    cont++;
+                });
             }
         });
         thread.setDaemon(true);
