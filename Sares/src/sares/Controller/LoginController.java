@@ -7,6 +7,8 @@ package sares.Controller;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -15,6 +17,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import sares.Model.Conexion;
 import sares.Sares;
 
 /**
@@ -48,8 +51,31 @@ public class LoginController implements Initializable {
     }    
 
     @FXML
-    private void onLogAction(ActionEvent event) throws IOException {
-        Sares.setContent("sares/fxml/Mesero.fxml", notLog);
+    private void onLogAction(ActionEvent event) throws IOException, SQLException {
+        Conexion co=new Conexion();
+        ResultSet usuario=co.consultar("Select * From CuentaUsuario where username=\""+textField_user.getText()+"\" and contrasena=\""+passField.getText()+"\"");
+        if(usuario.next()){
+            switch(usuario.getInt("rol")){
+                case 1:
+                    System.out.println("administrador");
+                    break;
+                case 2:
+                    System.out.println("mesero");
+                    Sares.setContent("sares/fxml/Mesero.fxml", notLog);
+                    break;
+                case 3:
+                    System.out.println("cajero");
+                    break;
+                case 4:
+                    System.out.println("cocinero");
+                    break;
+                default:
+                    System.out.println("Usuario no tiene acceso al sistema");
+            }
+        }else{
+            System.out.println("Usuario no registrado");
+        }
     }
     
+       
 }

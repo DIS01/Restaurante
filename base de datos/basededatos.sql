@@ -1,32 +1,77 @@
-
 CREATE TABLE Categoria(
 	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-	nombre VARCHAR(100)
+	nombre VARCHAR(20),
+	descripcion VARCHAR(100)
+);
+
+CREATE TABLE Item(
+	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	valor float,
+	nombre VARCHAR(100),
+	descripcion VARCHAR(100),
+	promo INT,
+	porcentaje float
+);
+
+CREATE TABLE CategoriaItem(
+	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	categoria int,
+	item int,
+	FOREIGN KEY (item) REFERENCES Item(id),
+    FOREIGN KEY (categoria) REFERENCES Categoria(id)
 );
 
 CREATE TABLE Platillo(
 	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-	valor float,
-	nombre VARCHAR(100),
-	promo INT,
-	porcentaje INT,
-	tiempoEstimado TIME
+	tiempoEstimado TIME,
+	item int,
+	FOREIGN KEY (item) REFERENCES Item(id)
 );
 
-CREATE TABLE CategoriaPlatillo(
+CREATE TABLE Bebida(
 	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    platillo INT,
-    categoria INT,
-    FOREIGN KEY (platillo) REFERENCES Platillo(id),
-    FOREIGN KEY (categoria) REFERENCES Categoria(id)
+	marca VARCHAR(100),
+	contenidolt float,
+	item int,
+	FOREIGN KEY (item) REFERENCES Item(id)
 );
-     
+
+CREATE TABLE Combo(
+	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	tiempoPreparacion Time,
+	item int,
+	FOREIGN KEY (item) REFERENCES Item(id)
+);
+
+CREATE TABLE ComboItem(
+	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	combo int,
+	item int,
+	cantidad int,
+	FOREIGN KEY (item) REFERENCES Item(id),
+	FOREIGN KEY (combo) REFERENCES Combo(id)	
+);
+
 CREATE TABLE Persona (
     dni INT PRIMARY KEY,
     nombres VARCHAR(100),
     apellidos VARCHAR(100),
-    psswrd VARCHAR(100),
     domicilio VARCHAR(100) 
+);
+CREATE TABLE Rol(
+	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	tipo VARCHAR(100),
+	descripcion VARCHAR(100)
+);	
+
+CREATE TABLE CuentaUsuario (
+    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(100) UNIQUE,
+    persona int,
+ 	contrasena VARCHAR(1000),
+ 	rol int,
+ 	FOREIGN KEY (rol) REFERENCES Rol(id),
+ 	FOREIGN KEY (persona) REFERENCES Persona(dni)
 );
 
 CREATE TABLE Empleado(
@@ -101,13 +146,6 @@ CREATE TABLE Ingrediente(
 	precio float
 );
 
-CREATE TABLE Bebida(
-	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-	nombre VARCHAR(100),
-	marca VARCHAR(100),
-	precio float
-);
-
 Create TABLE Mesero(
 	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	tipomedioTransporte VARCHAR(100),
@@ -124,12 +162,6 @@ CREATE TABLE Mesa(
 	asignada int
 );
 
-CREATE TABLE Postre(
-	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-	nombre VARCHAR(100),
-	precio float
-);
-
 CREATE TABLE Restaurante(
 	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	nombre VARCHAR(100),
@@ -143,8 +175,6 @@ CREATE TABLE RestauranteEmpleado(
 	FOREIGN KEY (empleado) REFERENCES Empleado(id),	
 	FOREIGN KEY (restaurante) REFERENCES Restaurante(id)	
 );
-
-
 
 CREATE TABLE PagoElectronico(
 	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -201,34 +231,20 @@ CREATE TABLE MenuPlatillos(
 	platillo int,
 	FOREIGN KEY (platillo) REFERENCES Platillo(id)	
 );
-CREATE TABLE Combo(
-	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-	nombre VARCHAR(100),
-	costo float,
-	promo int,
-	porcentaje float,
-	tiempoPreparacion Time
-);
 
-CREATE TABLE ComboPlatillo(
+CREATE TABLE Inventario(
 	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-	combo int,
+	stock float,
 	platillo int,
-	FOREIGN KEY (platillo) REFERENCES Platillo(id),
-	FOREIGN KEY (combo) REFERENCES Combo(id)	
+	FOREIGN KEY (platillo) REFERENCES Platillo(id)
 );
 
-
-CREATE TABLE ComboBebida(
+CREATE TABLE HorarioEmpleado(
 	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-	combo int,
-	bebida int,
-	FOREIGN KEY (bebida) REFERENCES Bebida(id),
-	FOREIGN KEY (combo) REFERENCES Combo(id)	
+	dia VARCHAR(15),
+	horainicio time,
+	horafin time,
+	empleado int,
+	FOREIGN KEY (empleado) REFERENCES Empleado(id)
 );
-
-
-
-
-
 

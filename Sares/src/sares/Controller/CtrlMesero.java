@@ -71,29 +71,19 @@ public class CtrlMesero {
 
 	}
 
- public LinkedList<Item> getItems(Categoria c,int code,Connection conexion) throws SQLException{
+public LinkedList<Item> getItems(Categoria c,int code,Conexion co) throws SQLException{ 
         LinkedList<Item> lista = new LinkedList();
-        Item item;
-        Statement consulta = conexion.createStatement();
-        String consultaST;
         if (c.getNombre()=="Bebidas"){
-            consultaST = "SELECT * FROM Item,Bebida where Item.id=Bebida.item";
-            ResultSet itemsRS = consulta.executeQuery(consultaST);
+            ResultSet itemsRS = co.consultar("SELECT * FROM Item,Bebida where Item.id=Bebida.item");
             while (itemsRS.next()){
-                item= new Bebida(itemsRS.getString("marca") ,itemsRS.getFloat("contenido"),itemsRS.getFloat("valor"),itemsRS.getString("nombre"),itemsRS.getString("descripcion"), itemsRS.getBoolean("promo"),itemsRS.getFloat("porcentaje"));
-                System.out.println(item.getNombre());
-                lista.add(item);
-            }
-            itemsRS.close();
+                lista.add(new Bebida(itemsRS.getString("marca") ,itemsRS.getFloat("contenido"),itemsRS.getFloat("valor"),itemsRS.getString("nombre"),itemsRS.getString("descripcion"), itemsRS.getBoolean("promo"),itemsRS.getFloat("porcentaje")));
+            }  
         }else if(c.getNombre()=="Combo"){
                  
         }else{
-            consultaST = "SELECT * FROM Item,Platillo where Item.id=Platillo.item";
-            ResultSet itemsRS = consulta.executeQuery(consultaST);
+            ResultSet itemsRS = co.consultar("SELECT * FROM Item,Platillo where Item.id=Platillo.item");
             while (itemsRS.next()){
-                item= new Platillo(itemsRS.getTime("tiempoEstimado") ,itemsRS.getFloat("valor"),itemsRS.getString("nombre"),itemsRS.getString("descripcion"), itemsRS.getBoolean("promo"),itemsRS.getFloat("porcentaje"));
-                System.out.println(item.getNombre());
-                lista.add(item);
+                lista.add(new Platillo(itemsRS.getTime("tiempoEstimado") ,itemsRS.getFloat("valor"),itemsRS.getString("nombre"),itemsRS.getString("descripcion"), itemsRS.getBoolean("promo"),itemsRS.getFloat("porcentaje")));
             }
             itemsRS.close();
         }
@@ -102,17 +92,13 @@ public class CtrlMesero {
     
     public LinkedList<Categoria> getCategorias() throws SQLException{
         Conexion c=new Conexion();
-        Connection conexion=Conexion.getConexion();
         LinkedList<Categoria> lista = new LinkedList();
         Categoria cate;
-        String consultaST = "SELECT * FROM Categoria";
-        Statement consulta = conexion.createStatement();
-        ResultSet categoriasRS = consulta.executeQuery(consultaST); 
+        ResultSet categoriasRS = c.consultar("SELECT * FROM Categoria"); 
         while (categoriasRS.next()){
             cate= new Categoria();
             cate.setNombre(categoriasRS.getString("nombre"));
-            cate.setListItems(this.getItems(cate,categoriasRS.getInt("id"),conexion));
-            System.out.format("%s\n", cate.getNombre());
+            cate.setListItems(this.getItems(cate,categoriasRS.getInt("id"),c));
             lista.add(cate);
         }
         categoriasRS.close();
