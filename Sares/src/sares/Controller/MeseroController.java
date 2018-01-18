@@ -108,4 +108,9 @@ public class MeseroController implements Initializable {
 //      stage.setScene(scene);
 //      stage.show();
     }
+    public void setText(String name){
+        this.nombre.setText(name);
+        
+    }
+    
 }
