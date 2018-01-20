@@ -11,6 +11,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -46,10 +47,11 @@ import sares.Model.Bebida;
  */
 public class Mesero3Controller implements Initializable {
     private Mesero mesero;
-    private Categoria categoria;
+    private Categoria categoria = new Categoria();
     private Calendar time;
     private LinkedList<Item> items;
-            
+    private ObservableList<HBox> items1; 
+    private HashMap<Item,LinkedList<Object>> pedido = new HashMap<>();
     @FXML
     private VBox root;
     @FXML
@@ -80,7 +82,8 @@ public class Mesero3Controller implements Initializable {
             
             this.items= new LinkedList<>();
             this.items= this.getItems(new Categoria("Platillos de entrada"));
-            ObservableList<HBox> items1 = FXCollections.observableArrayList();
+            items1 = FXCollections.observableArrayList();
+            
         this.items.forEach((temp) -> {
             HBox hbox1 = new HBox();
             VBox temp1 = new VBox();
@@ -104,6 +107,7 @@ public class Mesero3Controller implements Initializable {
                 if (!newValue.matches("\\d*")) {
                     tf1.setText(newValue.replaceAll("[^\\d]", ""));
                 }   });
+            tf1.setText("0");
             hbox1.getChildren().addAll(temp1,tf1);
             hbox1.setSpacing(290);
             
@@ -156,7 +160,22 @@ public class Mesero3Controller implements Initializable {
 
     @FXML
     private void handleGoBack(MouseEvent event) {
-        
+        this.items1.forEach((t) -> {
+            TextField tf = (TextField)t.getChildren().get(1);
+            
+            
+            if (!"0".equals(tf.getText())){
+                VBox vboxTemp;
+                vboxTemp= (VBox)t.getChildren().get(0);
+                Label nombre = (Label) vboxTemp.getChildren().get(0);
+                String nombre1 = nombre.getText();
+                
+               
+            }
+            
+            
+            
+        });
         
     }
     public void assignMesero(Mesero mesero){
@@ -165,7 +184,7 @@ public class Mesero3Controller implements Initializable {
         this.mesero3LblNombre.setText(this.mesero.getNombre());
     }
     public void assignCategoria(Categoria categoria){
-        this.categoria = new Categoria();
+         
         this.categoria= categoria;
     }
     public LinkedList<Item> getItems(Categoria c) throws SQLException{ 
