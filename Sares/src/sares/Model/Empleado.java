@@ -11,7 +11,8 @@ public class Empleado extends Persona {
 	 * Default constructor
 	 */
 	public Empleado() {
-	}
+	
+        }
 
 	/**
 	 * 

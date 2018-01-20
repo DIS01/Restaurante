@@ -7,8 +7,11 @@ package sares.Controller;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.LinkedList;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -17,12 +20,19 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import sares.Model.Bebida;
+import sares.Model.Categoria;
+import sares.Model.Conexion;
+import sares.Model.Item;
+import sares.Model.Mesero;
+import sares.Model.Platillo;
 import sares.Sares;
 
 /**
@@ -31,7 +41,9 @@ import sares.Sares;
  * @author steevenrodriguez
  */
 public class MeseroController implements Initializable {
+    private Mesero mesero;
 
+    
     private int cont = 0;
     private Calendar calendar;
     @FXML
@@ -55,7 +67,9 @@ public class MeseroController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODOh
-        this.nombre.setText("Mesero: Luis Lama");
+        this.calendar = Calendar.getInstance();
+        SimpleDateFormat sdf1 = new SimpleDateFormat("HH:mm:ss");
+        this.tiempo.setText(sdf1.format(this.calendar.getTime()));
         ObservableList<String> items = FXCollections.observableArrayList(
                 "Crear Pedido", "Modificar Pedido", "Eliminar Pedido");
         this.escogerMenu.setItems(items);
@@ -108,9 +122,51 @@ public class MeseroController implements Initializable {
 //      stage.setScene(scene);
 //      stage.show();
     }
-    public void setText(String name){
-        this.nombre.setText(name);
-        
+    
+ public LinkedList<Item> getItems(Categoria c,int code,Conexion co) throws SQLException{ 
+        LinkedList<Item> lista = new LinkedList();
+        if (c.getNombre()=="Bebidas"){
+            ResultSet itemsRS = co.consultar("SELECT * FROM Item,Bebida where Item.id=Bebida.item");
+            while (itemsRS.next()){
+                lista.add(new Bebida(itemsRS.getString("marca") ,itemsRS.getFloat("contenido"),itemsRS.getFloat("valor"),itemsRS.getString("nombre"),itemsRS.getString("descripcion"), itemsRS.getBoolean("promo"),itemsRS.getFloat("porcentaje")));
+            }  
+        }else if(c.getNombre()=="Combo"){
+                 
+        }else{
+            ResultSet itemsRS = co.consultar("SELECT * FROM Item,Platillo where Item.id=Platillo.item");
+            while (itemsRS.next()){
+                lista.add(new Platillo(itemsRS.getTime("tiempoEstimado") ,itemsRS.getFloat("valor"),itemsRS.getString("nombre"),itemsRS.getString("descripcion"), itemsRS.getBoolean("promo"),itemsRS.getFloat("porcentaje")));
+            }
+            itemsRS.close();
+        }
+       return lista;
+     }
+    
+    public LinkedList<Categoria> getCategorias() throws SQLException{
+        Conexion c=new Conexion();
+        LinkedList<Categoria> lista = new LinkedList();
+        Categoria cate;
+        ResultSet categoriasRS = c.consultar("SELECT * FROM Categoria"); 
+        while (categoriasRS.next()){
+            cate= new Categoria();
+            cate.setNombre(categoriasRS.getString("nombre"));
+            cate.setListItems(this.getItems(cate,categoriasRS.getInt("id"),c));
+            lista.add(cate);
+        }
+        categoriasRS.close();
+        return lista;
     }
     
+    public void changeView(Node a) throws IOException{
+         Sares.setContent("sares/fxml/Mesero.fxml",a);
+    }
+    public void meseroControllerCreate(ResultSet meseroInfo) {
+        try {
+            this.mesero = new Mesero(meseroInfo.getString("nombres"));
+            this.nombre.setText(mesero.getNombre());
+        } catch (SQLException ex) {
+            Logger.getLogger(MeseroController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }
 }

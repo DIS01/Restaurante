@@ -72,7 +72,10 @@ int cont;
         // TODO
         //this.nombre.setText(this.empleado.getNombres() + " "+ this.empleado.getApellidos());
         //this.tiempo.setText(time.getTime().toString());
-        this.nombre.setText("Mesero: Luis Lama");
+        this.time = Calendar.getInstance();
+        SimpleDateFormat sdf1 = new SimpleDateFormat("HH:mm:ss");
+        this.tiempo.setText(sdf1.format(this.time.getTime()));
+        
         ObservableList<String> items = FXCollections.observableArrayList(
                 "Entrada", "Plato Fuerte", "Bebidas","Combos");
         this.menu_Options.setItems(items);
@@ -95,7 +98,7 @@ int cont;
                             SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
                             Mesero2Controller.this.tiempo.setText(sdf.format(Mesero2Controller.this.time.getTime()));
                             
-                            cont++;
+                            
                             
                         }
                     });

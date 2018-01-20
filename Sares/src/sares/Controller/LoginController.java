@@ -63,9 +63,10 @@ public class LoginController implements Initializable {
                     System.out.println("mesero");
                     ResultSet mesero = co.consultar("Select * From Persona where dni="+usuario.getInt("persona"));
                     mesero.next();
-                    Sares.setContent("sares/fxml/Mesero.fxml", notLog);
-                    System.out.println(mesero.getString("nombres"));
-                    //controller.setText(mesero.getString("nombres"));
+                    
+                    MeseroController control = (MeseroController)Sares.setContent("sares/fxml/Mesero.fxml", notLog);
+                    //System.out.println(mesero.getString("nombres"));
+                    control.meseroControllerCreate(mesero);
                     
                     break;
                 case 3:
