@@ -28,7 +28,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
-import sares.Model.Bebida;
+import sares.zDiagramaModel.Bebida;
 import sares.Model.Categoria;
 import sares.Model.Conexion;
 import sares.Model.Empleado;

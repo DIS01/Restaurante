@@ -1,5 +1,6 @@
 package sares.Model;
 
+import sares.zDiagramaModel.Cliente;
 import java.util.*;
 import java.sql.Time;
 
