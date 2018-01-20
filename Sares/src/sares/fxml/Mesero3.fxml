@@ -12,19 +12,19 @@
          <children>
             <HBox fx:id="hbox1" prefHeight="42.0" prefWidth="640.0">
                <children>
-                  <Label fx:id="nombre" text="Nombre" />
+                  <Label id="mesero3LblNombre" fx:id="mesero3LblNombre" text="Nombre" />
                   <Label fx:id="tiempo" text="Label" />
-                  <Button mnemonicParsing="false" onMouseClicked="#handleSignOutActionhandleSignOutAction" text="Sign Out" />
+                  <Button id="mesero3BtnSignOut" fx:id="BtnSignOut" mnemonicParsing="false" onMouseClicked="#handleSignOutAction" text="Sign Out" />
                </children>
             </HBox>
          </children>
       </HBox>
       <HBox prefHeight="100.0" prefWidth="200.0">
          <children>
-            <ListView prefHeight="100.0" prefWidth="564.0" />
-            <ListView prefHeight="100.0" prefWidth="37.0" />
+            <ListView id="mesero3ListViewItems" fx:id="mesero3ListViewItems" prefHeight="100.0" prefWidth="564.0" />
+            <ListView id="mesero3ListViewCantidad" fx:id="mesero3ListViewCantidad" prefHeight="100.0" prefWidth="37.0" />
          </children>
       </HBox>
-      <Button fx:id="buttonGoBack" mnemonicParsing="false" onMouseClicked="#handleGoBack" text="Guardar" />
+      <Button id="mesero3BtnGuardar" fx:id="BtnGuardar" mnemonicParsing="false" onMouseClicked="#handleGoBack" text="Guardar" />
    </children>
 </VBox>
