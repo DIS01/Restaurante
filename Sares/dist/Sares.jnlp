@@ -8,8 +8,13 @@
   </information>
   <resources>
     <j2se version="1.6+" href="http://java.sun.com/products/autodl/j2se"/>
+<<<<<<< HEAD
     <jar href="Sares.jar" size="47781" download="eager" />
     <jar href="lib/mysql-connector-java-5.1.23-bin.jar" size="834091" download="eager" />
+=======
+    <jar href="Sares.jar" size="48142" download="eager" />
+    <jar href="lib\mysql-connector-java-5.1.23-bin.jar" size="834126" download="eager" />
+>>>>>>> 71420758f9ef7000c5e6866e685fbd0369b3cdfc
   </resources>
   <applet-desc  width="800" height="600" main-class="com.javafx.main.NoJavaFXFallback"  name="Sares" >
     <param name="requiredFXVersion" value="8.0+"/>
