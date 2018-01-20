@@ -7,6 +7,7 @@ package sares.Controller;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.CallableStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
@@ -53,8 +54,12 @@ public class LoginController implements Initializable {
     @FXML
     private void onLogAction(ActionEvent event) throws IOException, SQLException {
         Conexion co=new Conexion();
-        ResultSet usuario=co.consultar("Select * From CuentaUsuario where username=\""+textField_user.getText()+"\" and contrasena=\""+passField.getText()+"\"");
-        if(usuario.next()){
+        CallableStatement statement = co.getConexion().prepareCall("{call iniciarSesion(?,?)}");
+        statement.setString(1,textField_user.getText()); 
+        statement.setString(2,passField.getText()); 
+        statement.execute();
+        ResultSet usuario = statement.getResultSet();
+        if (usuario.next()) {
             switch(usuario.getInt("rol")){
                 case 1:
                     System.out.println("administrador");
@@ -63,11 +68,9 @@ public class LoginController implements Initializable {
                     System.out.println("mesero");
                     ResultSet mesero = co.consultar("Select * From Persona where dni="+usuario.getInt("persona"));
                     mesero.next();
-                    
                     MeseroController control = (MeseroController)Sares.setContent("sares/fxml/Mesero.fxml", notLog);
                     //System.out.println(mesero.getString("nombres"));
                     control.meseroControllerCreate(mesero);
-                    
                     break;
                 case 3:
                     System.out.println("cajero");
@@ -77,11 +80,10 @@ public class LoginController implements Initializable {
                     break;
                 default:
                     System.out.println("Usuario no tiene acceso al sistema");
-            }
-        }else{
-            System.out.println("Usuario no registrado");
+                }
+            }else{
+                System.out.println("Usuario no registrado");
+            }   
         }
-    }
-    
-       
+        
 }
