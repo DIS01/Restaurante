@@ -7,8 +7,11 @@ package sares.Controller;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.LinkedList;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -25,7 +28,13 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import sares.Model.Bebida;
+import sares.Model.Categoria;
+import sares.Model.Conexion;
 import sares.Model.Empleado;
+import sares.Model.Item;
+import sares.Model.Mesero;
+import sares.Model.Platillo;
 import sares.Sares;
 
 /**
@@ -34,7 +43,7 @@ import sares.Sares;
  * @author steevenrodriguez
  */
 public class Mesero2Controller implements Initializable {
-private Empleado empleado;
+private Mesero mesero;
 private Calendar time;
 int cont;
 
@@ -63,23 +72,31 @@ int cont;
     private ListView<String> menu_Options;
     @FXML
     private Button buttonGoBack;
+    private LinkedList<Categoria> categoria;
 
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+    try {
         // TODO
         //this.nombre.setText(this.empleado.getNombres() + " "+ this.empleado.getApellidos());
         //this.tiempo.setText(time.getTime().toString());
         this.time = Calendar.getInstance();
         SimpleDateFormat sdf1 = new SimpleDateFormat("HH:mm:ss");
         this.tiempo.setText(sdf1.format(this.time.getTime()));
-        
-        ObservableList<String> items = FXCollections.observableArrayList(
-                "Entrada", "Plato Fuerte", "Bebidas","Combos");
+        this.categoria= new LinkedList<>();
+        this.categoria= this.getCategorias();
+        ObservableList<String> items = FXCollections.observableArrayList();
+        this.categoria.forEach((temp) -> {
+            items.add(temp.getNombre());
+        });
         this.menu_Options.setItems(items);
-
+        
+        
+        
+        
         this.hbox.setSpacing(100);
         Thread thread = new Thread(new Runnable() {
             @Override
@@ -109,6 +126,9 @@ int cont;
         thread.start();
         
         
+    } catch (SQLException ex) {
+        Logger.getLogger(Mesero2Controller.class.getName()).log(Level.SEVERE, null, ex);
+    }
     }    
 
     @FXML
@@ -123,6 +143,49 @@ int cont;
 
     @FXML
     private void handleGoBack(MouseEvent event) {
+    }
+    public void setList(LinkedList<Categoria> list){
+        this.categoria = new LinkedList<>();
+        this.categoria= list;
+    }
+    public void assignMesero(Mesero mesero){
+        this.mesero = new Mesero();
+        this.mesero=mesero;
+        this.nombre.setText(this.mesero.getNombre());
+    }
+    
+    public LinkedList<Item> getItems(Categoria c,int code,Conexion co) throws SQLException{ 
+        LinkedList<Item> lista = new LinkedList();
+        if (c.getNombre()=="Bebidas"){
+            ResultSet itemsRS = co.consultar("SELECT * FROM Item,Bebida where Item.id=Bebida.item");
+            while (itemsRS.next()){
+                lista.add(new Bebida(itemsRS.getString("marca") ,itemsRS.getFloat("contenido"),itemsRS.getFloat("valor"),itemsRS.getString("nombre"),itemsRS.getString("descripcion"), itemsRS.getBoolean("promo"),itemsRS.getFloat("porcentaje")));
+            }  
+        }else if(c.getNombre()=="Combo"){
+                 
+        }else{
+            ResultSet itemsRS = co.consultar("SELECT * FROM Item,Platillo where Item.id=Platillo.item");
+            while (itemsRS.next()){
+                lista.add(new Platillo(itemsRS.getTime("tiempoEstimado") ,itemsRS.getFloat("valor"),itemsRS.getString("nombre"),itemsRS.getString("descripcion"), itemsRS.getBoolean("promo"),itemsRS.getFloat("porcentaje")));
+            }
+            itemsRS.close();
+        }
+       return lista;
+     }
+    
+    public LinkedList<Categoria> getCategorias() throws SQLException{
+        Conexion c=new Conexion();
+        LinkedList<Categoria> lista = new LinkedList();
+        Categoria cate;
+        ResultSet categoriasRS = c.consultar("SELECT * FROM Categoria"); 
+        while (categoriasRS.next()){
+            cate= new Categoria();
+            cate.setNombre(categoriasRS.getString("nombre"));
+            //cate.setListItems(this.getItems(cate,categoriasRS.getInt("id"),c));
+            lista.add(cate);
+        }
+        categoriasRS.close();
+        return lista;
     }
     
 }

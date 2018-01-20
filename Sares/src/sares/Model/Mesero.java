@@ -14,6 +14,9 @@ public class Mesero extends Empleado {
             this.nombre = nombre;
 	}
 
+    public Mesero() {
+    }
+
 	/**
 	 * 
 	 */
