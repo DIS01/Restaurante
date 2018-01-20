@@ -1,5 +1,6 @@
 package sares.zDiagramaModel;
 
+import sares.Model.Bebida;
 import java.util.*;
 import java.sql.Time;
 import sares.Model.Platillo;

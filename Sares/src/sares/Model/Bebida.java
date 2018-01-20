@@ -1,4 +1,4 @@
-package sares.zDiagramaModel;
+package sares.Model;
 
 import java.util.*;
 import sares.Model.Item;

@@ -28,7 +28,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
-import sares.zDiagramaModel.Bebida;
+import sares.Model.Bebida;
 import sares.Model.Categoria;
 import sares.Model.Conexion;
 import sares.Model.Empleado;
@@ -81,8 +81,7 @@ int cont;
     public void initialize(URL url, ResourceBundle rb) {
     try {
         // TODO
-        //this.nombre.setText(this.empleado.getNombres() + " "+ this.empleado.getApellidos());
-        //this.tiempo.setText(time.getTime().toString());
+        
         this.time = Calendar.getInstance();
         SimpleDateFormat sdf1 = new SimpleDateFormat("HH:mm:ss");
         this.tiempo.setText(sdf1.format(this.time.getTime()));
@@ -131,14 +130,19 @@ int cont;
     }
     }    
 
-    @FXML
-    private void handleSignOutActionhandleSignOutAction(MouseEvent event) throws IOException {
-        System.out.println("SignOut");
-        Sares.setContent("sares/fxml/login.fxml", root);
-    }
+    
 
     @FXML
-    private void seleccionMenu(MouseEvent event) {
+    private void seleccionMenu(MouseEvent event) throws IOException {
+        if ("Platillos de entrada".equals(this.menu_Options.getSelectionModel().getSelectedItem())) {
+                Mesero3Controller control = (Mesero3Controller)Sares.setContent("sares/fxml/Mesero3.fxml",root);
+                control.assignMesero(this.mesero);
+                Categoria cat = new Categoria("Platillos de entrada");
+                control.assignCategoria(cat);
+            }
+        
+        
+        
     }
 
     @FXML
@@ -154,24 +158,7 @@ int cont;
         this.nombre.setText(this.mesero.getNombre());
     }
     
-    public LinkedList<Item> getItems(Categoria c,int code,Conexion co) throws SQLException{ 
-        LinkedList<Item> lista = new LinkedList();
-        if (c.getNombre()=="Bebidas"){
-            ResultSet itemsRS = co.consultar("SELECT * FROM Item,Bebida where Item.id=Bebida.item");
-            while (itemsRS.next()){
-                lista.add(new Bebida(itemsRS.getString("marca") ,itemsRS.getFloat("contenido"),itemsRS.getFloat("valor"),itemsRS.getString("nombre"),itemsRS.getString("descripcion"), itemsRS.getBoolean("promo"),itemsRS.getFloat("porcentaje")));
-            }  
-        }else if(c.getNombre()=="Combo"){
-                 
-        }else{
-            ResultSet itemsRS = co.consultar("SELECT * FROM Item,Platillo where Item.id=Platillo.item");
-            while (itemsRS.next()){
-                lista.add(new Platillo(itemsRS.getTime("tiempoEstimado") ,itemsRS.getFloat("valor"),itemsRS.getString("nombre"),itemsRS.getString("descripcion"), itemsRS.getBoolean("promo"),itemsRS.getFloat("porcentaje")));
-            }
-            itemsRS.close();
-        }
-       return lista;
-     }
+    
     
     public LinkedList<Categoria> getCategorias() throws SQLException{
         Conexion c=new Conexion();
@@ -186,6 +173,16 @@ int cont;
         }
         categoriasRS.close();
         return lista;
+    }
+
+    @FXML
+    private void handleSignOutAction(MouseEvent event) {
+    try {
+        System.out.println("SignOut");
+        Sares.setContent("sares/fxml/login.fxml", root);
+    } catch (IOException ex) {
+        Logger.getLogger(Mesero2Controller.class.getName()).log(Level.SEVERE, null, ex);
+    }
     }
     
 }

@@ -11,7 +11,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.LinkedList;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -20,19 +19,13 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import sares.zDiagramaModel.Bebida;
-import sares.Model.Categoria;
-import sares.Model.Conexion;
-import sares.Model.Item;
 import sares.Model.Mesero;
-import sares.Model.Platillo;
 import sares.Sares;
 
 /**
