@@ -11,6 +11,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -28,13 +29,10 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
-import sares.Model.Bebida;
 import sares.Model.Categoria;
 import sares.Model.Conexion;
-import sares.Model.Empleado;
 import sares.Model.Item;
 import sares.Model.Mesero;
-import sares.Model.Platillo;
 import sares.Sares;
 
 /**
@@ -46,6 +44,7 @@ public class Mesero2Controller implements Initializable {
 private Mesero mesero;
 private Calendar time;
 int cont;
+private HashMap<Item,LinkedList<Object>> pedido = new HashMap<>();
 
 //    public Mesero2Controller(Empleado empleado) {
 //        this.empleado = empleado;
@@ -135,10 +134,11 @@ int cont;
     @FXML
     private void seleccionMenu(MouseEvent event) throws IOException {
         if ("Platillos de entrada".equals(this.menu_Options.getSelectionModel().getSelectedItem())) {
+            Categoria cat = new Categoria("Platillos de entrada");
+                Mesero3Controller m3c = new Mesero3Controller(cat);
                 Mesero3Controller control = (Mesero3Controller)Sares.setContent("sares/fxml/Mesero3.fxml",root);
                 control.assignMesero(this.mesero);
-                Categoria cat = new Categoria("Platillos de entrada");
-                control.assignCategoria(cat);
+                
             }
         
         
@@ -183,6 +183,13 @@ int cont;
     } catch (IOException ex) {
         Logger.getLogger(Mesero2Controller.class.getName()).log(Level.SEVERE, null, ex);
     }
+    }
+
+    /**
+     * @param pedido the pedido to set
+     */
+    public void setPedido(HashMap<Item,LinkedList<Object>> pedido) {
+        this.pedido = pedido;
     }
     
 }
