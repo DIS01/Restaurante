@@ -23,8 +23,9 @@ public class Sares extends Application {
     public static Stage stage1;
     @Override
     public void start(Stage primaryStage) throws IOException {
-       Parent root = FXMLLoader.load(getClass().getResource("fxml/login.fxml"));
-        Scene scene = new Scene(root, 500, 500);
+        Parent root = FXMLLoader.load(getClass().getResource("fxml/Sesion.fxml"));
+        //Parent root = FXMLLoader.load(getClass().getResource("fxml/login.fxml"));
+        Scene scene = new Scene(root, 600, 400);
         stage1=primaryStage;
         stage1.setScene(scene);
         stage1.show();

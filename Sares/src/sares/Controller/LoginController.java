@@ -13,17 +13,11 @@ import java.sql.SQLException;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.stage.Stage;
-import sares.Model.Cajero;
 import sares.Model.Conexion;
 import sares.Sares;
 
@@ -66,31 +60,34 @@ public class LoginController implements Initializable {
         statement.execute();
         ResultSet usuario = statement.getResultSet();
         if (usuario.next()) {
-            switch(usuario.getInt("rol")){
-                case 1:
-                    System.out.println("administrador");
-                    break;
-                case 2:
-                    System.out.println("mesero");
-                    ResultSet mesero = co.consultar("Select * From Persona where dni="+usuario.getInt("persona"));
-                    mesero.next();
-                    MeseroController control = (MeseroController)Sares.setContent("sares/fxml/Mesero.fxml", (Node)event.getSource());
-                    control.meseroControllerCreate(mesero);
-                    break;
-                case 3:
-                    Cajero c= Cajero.getInformacionCajero(usuario.getInt("persona"),co);
-                    CajeroController controlc = (CajeroController)Sares.setContent("sares/fxml/Cajero.fxml", (Node)event.getSource());
-                    controlc.setnombre(c);
-                    break;
-                case 4:
-                    System.out.println("cocinero");
-                    break;
-                default:
-                    System.out.println("Usuario no tiene acceso al sistema");
-                }
-            }else{
-                System.out.println("Usuario no registrado");
-            }   
+            if(passField.getText().equals(usuario.getString("contrasena"))){
+                switch(usuario.getInt("rol")){
+                    case 1:
+                        System.out.println("administrador");
+                        break;
+                    case 2:
+                        System.out.println("mesero");
+                        ResultSet mesero = co.consultar("Select * From Persona where dni="+usuario.getInt("persona"));
+                        mesero.next();
+                        MeseroController control = (MeseroController)Sares.setContent("sares/fxml/Mesero.fxml", notLog);
+                        //System.out.println(mesero.getString("nombres"));
+                        control.meseroControllerCreate(mesero);
+                        break;
+                    case 3:
+                        System.out.println("cajero");
+                        break;
+                    case 4:
+                        System.out.println("cocinero");
+                        break;
+                    default:
+                        System.out.println("Usuario no tiene acceso al sistema");
+                    }
+            }
+            else
+                System.out.println("Usuario exite, Contraseña incorrecta!!");
+        }else{
+            System.out.println("Usuario no registrado!!");
+        }   
         }
         
 }
