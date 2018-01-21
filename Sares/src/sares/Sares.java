@@ -7,11 +7,13 @@ package sares;
 
 import java.io.IOException;
 import javafx.application.Application;
+import javafx.event.ActionEvent;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import sares.Controller.CajeroController;
 
 /**
  *
@@ -35,19 +37,17 @@ public class Sares extends Application {
         launch(args);
     }
     
-    public static <T> T setContent(String fxml, Node n) throws IOException {
-        FXMLLoader fm = new FXMLLoader(Sares.class.getClassLoader().getResource(fxml));
-        Parent root2 = fm.load();
-        Stage stg = (Stage) n.getScene().getWindow();
-        
-        T controller = fm.getController();
-        
-        
-        stg.setScene(new Scene(root2));
-        
-        return controller;
-        
-        
-    }
+    public static <T> T setContent(String fxml,Node n) throws IOException {
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(Sares.class.getClassLoader().getResource(fxml));
+        Parent tableViewParent = loader.load();
+        T controlador = loader.getController();
+        Stage nueva = (Stage)n.getScene().getWindow();
+        nueva.setScene(new Scene(tableViewParent));
+        nueva.show();
+        return controlador;
+}
     
+    
+           
 }

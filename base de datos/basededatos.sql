@@ -113,6 +113,8 @@ CREATE TABLE Cuenta(
 	pagada int,
 	total float,
 	cliente int,
+	pedido int,
+	FOREIGN KEY (pedido) REFERENCES Pedido(id),
 	FOREIGN KEY (cliente) REFERENCES Cliente(id)	
 );
 CREATE TABLE Mesa(
@@ -130,9 +132,7 @@ CREATE TABLE Pedido(
 	horaIngreso Time,
 	tiempoEstimado Time,
 	estado VARCHAR(100),
-	mesa int,
-	cuenta int,
-	FOREIGN KEY (cuenta) REFERENCES Cuenta(id),		
+	mesa int,		
 	FOREIGN KEY (mesa) REFERENCES Mesa(id)	
 );
 

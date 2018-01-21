@@ -2,6 +2,8 @@ package sares.Model;
 
 import java.io.IOException;
 import java.sql.CallableStatement;
+import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
 import sares.Model.Empleado;
@@ -17,7 +19,11 @@ public class Cajero extends Empleado {
 	 */
 	public Cajero() {
 	}
-
+        
+        public Cajero(String nombre){
+            super(nombre);
+            
+        }
 
 
 
@@ -37,17 +43,12 @@ public class Cajero extends Empleado {
 	}
         
         
-         public boolean crearCliente()throws IOException, SQLException{
-        Conexion co=new Conexion();
-        CallableStatement statement = co.getConexion().prepareCall("{call crearCliente(?,?,?,?,?,?)}");
-        statement.setInt(1,933567);
-        statement.setString(2,"mauricio");
-        statement.setString(3,"leiton");
+     
         
-        statement.setString(4,"data");
-        statement.setDate(5,new java.sql.Date(Calendar.getInstance().getTimeInMillis()) );
-        statement.setFloat(6,24.4F);
-        return statement.execute();
-    }
-
+        public static Cajero getInformacionCajero(int dni,Conexion co) throws SQLException{
+            ResultSet cajero = co.consultar("Select * From Persona,Empleado,Cajero where Persona.dni="+dni + " and Persona.dni=Empleado.persona and Empleado.id=Cajero.empleado");
+            cajero.next();
+            return new Cajero(cajero.getString("nombres"));
+            
+        }
 }

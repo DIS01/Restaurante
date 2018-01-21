@@ -1,5 +1,6 @@
 package sares.zDiagramaModel;
 
+import sares.Model.Cliente;
 import java.util.*;
 
 /**

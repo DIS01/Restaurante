@@ -1,8 +1,10 @@
 package sares.Model;
 
-import sares.zDiagramaModel.Cliente;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.*;
 import java.sql.Time;
+import java.text.ParseException;
 
 /**
  * 
@@ -15,10 +17,6 @@ public class Pedido {
 	public Pedido() {
 	}
 
-	/**
-	 * 
-	 */
-	protected Platillo producto;
 
 	/**
 	 * 
@@ -46,8 +44,6 @@ public class Pedido {
 	public String estado;
 
 
-	public Cliente cliente;
-
 
 	/**
 	 * @param platillo
@@ -72,4 +68,5 @@ public class Pedido {
 
 	}
 
+        
 }

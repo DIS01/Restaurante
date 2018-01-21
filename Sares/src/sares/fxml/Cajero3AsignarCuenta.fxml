@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="494.0" prefWidth="620.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sares.Controller.Cajero3Controller">
+   <children>
+      <HBox layoutX="10.0" layoutY="11.0" prefHeight="51.0" prefWidth="610.0">
+         <children>
+            <Label fx:id="cajeroNombre" prefHeight="42.0" prefWidth="236.0" text="Cajero: " />
+            <Label fx:id="tiempo" prefHeight="42.0" prefWidth="172.0" text="Tiempo" />
+            <Button mnemonicParsing="false" onMouseClicked="#cerrarSesion" prefHeight="45.0" prefWidth="213.0" text="Cerrar Sesión" />
+         </children>
+      </HBox>
+      <Button fx:id="cancelar" layoutX="356.0" layoutY="425.0" mnemonicParsing="false" onMouseClicked="#cancelarRegistro" prefHeight="45.0" prefWidth="145.0" text="Regresar" />
+      <Button layoutX="107.0" layoutY="425.0" mnemonicParsing="false" onMouseClicked="#registrarCuenta" prefHeight="45.0" prefWidth="145.0" text="Registrar" />
+      <GridPane alignment="TOP_CENTER" layoutX="49.0" layoutY="91.0" prefHeight="156.0" prefWidth="525.0">
+         <children>
+            <Label alignment="CENTER" prefHeight="46.0" prefWidth="269.0" text="Pedido" />
+            <Label alignment="CENTER" prefHeight="54.0" prefWidth="265.0" text="Cliente" GridPane.rowIndex="1" />
+            <Label alignment="CENTER" prefHeight="49.0" prefWidth="262.0" text="total" GridPane.rowIndex="2" />
+            <Label alignment="CENTER" prefHeight="40.0" prefWidth="263.0" text="pagado" GridPane.rowIndex="3" />
+            <ComboBox prefHeight="38.0" prefWidth="262.0" GridPane.columnIndex="1" />
+            <ComboBox fx:id="opcionesClientes" prefHeight="34.0" prefWidth="266.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <Label prefHeight="31.0" prefWidth="262.0" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <CheckBox mnemonicParsing="false" prefHeight="22.0" prefWidth="264.0" text="CheckBox" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+         </children>
+         <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+         </columnConstraints>
+         <rowConstraints>
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+         </rowConstraints>
+      </GridPane>
+      <ListView layoutX="7.0" layoutY="256.0" prefHeight="156.0" prefWidth="610.0" />
+   </children>
+</AnchorPane>

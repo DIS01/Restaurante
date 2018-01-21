@@ -17,8 +17,11 @@ import java.util.logging.Logger;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
@@ -93,26 +96,19 @@ public class MeseroController implements Initializable {
 
     private void handleSignOutAction(MouseEvent event) throws IOException {
         System.out.println("SignOut");
-        Sares.setContent("sares/fxml/login.fxml", root);
+        Sares.setContent("sares/fxml/login.fxml", (Node)event.getSource());
 
     }
 
     @FXML
     private void seleccionMenu(MouseEvent event) throws IOException, SQLException {
         
-            System.out.println(this.escogerMenu.getSelectionModel().getSelectedItem());
+        System.out.println(this.escogerMenu.getSelectionModel().getSelectedItem());
 
-            if ("Crear Pedido".equals(this.escogerMenu.getSelectionModel().getSelectedItem())) {
-                Mesero2Controller control = (Mesero2Controller)Sares.setContent("sares/fxml/Mesero2.fxml", root);
-                control.assignMesero(this.mesero);
-                
-            }
-        
-
-//Stage stage;
-//        stage = new Stage();
-//      stage.setScene(scene);
-//      stage.show();
+        if ("Crear Pedido".equals(this.escogerMenu.getSelectionModel().getSelectedItem())) {
+            Mesero2Controller control = (Mesero2Controller)Sares.setContent("sares/fxml/Mesero2.fxml", (Node)event.getSource());
+            control.assignMesero(this.mesero);  
+        }
     }
     
  

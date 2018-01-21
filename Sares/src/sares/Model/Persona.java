@@ -24,6 +24,10 @@ public class Persona {
 	 */
 	public Persona() {
 	}
+        
+        public Persona(String nombre) {
+            this.nombres=nombre;
+        }
 
 	/**
 	 * 

@@ -48,6 +48,9 @@ public class Mesero3Controller implements Initializable {
     private Mesero mesero;
     private Categoria categoria;
 
+    public Mesero3Controller() {
+    }
+
     public Mesero3Controller(Categoria categoria) {
         this.categoria = new Categoria();
         this.categoria = categoria;
@@ -76,47 +79,13 @@ public class Mesero3Controller implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        try {
 
             this.time = Calendar.getInstance();
             SimpleDateFormat sdf1 = new SimpleDateFormat("HH:mm:ss");
             this.tiempo.setText(sdf1.format(this.time.getTime()));
             this.hbox.setSpacing(100);
 
-            this.items = new LinkedList<>();
-            this.items = this.getItems(this.categoria);
-            items1 = FXCollections.observableArrayList();
-
-            this.items.forEach((temp) -> {
-                HBox hbox1 = new HBox();
-                VBox temp1 = new VBox();
-                Label platillo = new Label(temp.getNombre());
-                platillo.setOnMouseClicked((event) -> {
-                    if (temp1.getChildren().get(1).isVisible()) {
-                        temp1.getChildren().get(1).setVisible(false);
-                    } else {
-                        temp1.getChildren().get(1).setVisible(true);
-                    }
-
-                });
-                TextArea ta = new TextArea();
-                ta.setVisible(false);
-                ta.setMaxSize(200, 10);
-                temp1.getChildren().addAll(platillo, ta);
-                TextField tf1 = new TextField();
-                tf1.setMaxSize(40, 40);
-                tf1.textProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue) -> {
-                    if (!newValue.matches("\\d*")) {
-                        tf1.setText(newValue.replaceAll("[^\\d]", ""));
-                    }
-                });
-                tf1.setText("0");
-                hbox1.getChildren().addAll(temp1, tf1);
-                hbox1.setSpacing(290);
-
-                items1.add(hbox1);
-            });
-            this.mesero3ListViewItems.setItems(items1);
+            
 
             Thread thread = new Thread(new Runnable() {
                 @Override
@@ -142,9 +111,7 @@ public class Mesero3Controller implements Initializable {
             });
             thread.setDaemon(true);
             thread.start();
-        } catch (SQLException ex) {
-            Logger.getLogger(Mesero3Controller.class.getName()).log(Level.SEVERE, null, ex);
-        }
+
 
     }
 
@@ -203,7 +170,6 @@ public class Mesero3Controller implements Initializable {
     }
 
     public void assignCategoria(Categoria categoria) {
-
         this.categoria = categoria;
     }
 
@@ -240,4 +206,40 @@ public class Mesero3Controller implements Initializable {
         return lista;
     }
 
+    public void setVentana() throws SQLException{
+        this.items = new LinkedList<>();
+            this.items = this.getItems(this.categoria);
+            items1 = FXCollections.observableArrayList();
+
+            this.items.forEach((temp) -> {
+                HBox hbox1 = new HBox();
+                VBox temp1 = new VBox();
+                Label platillo = new Label(temp.getNombre());
+                platillo.setOnMouseClicked((event) -> {
+                    if (temp1.getChildren().get(1).isVisible()) {
+                        temp1.getChildren().get(1).setVisible(false);
+                    } else {
+                        temp1.getChildren().get(1).setVisible(true);
+                    }
+
+                });
+                TextArea ta = new TextArea();
+                ta.setVisible(false);
+                ta.setMaxSize(200, 10);
+                temp1.getChildren().addAll(platillo, ta);
+                TextField tf1 = new TextField();
+                tf1.setMaxSize(40, 40);
+                tf1.textProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue) -> {
+                    if (!newValue.matches("\\d*")) {
+                        tf1.setText(newValue.replaceAll("[^\\d]", ""));
+                    }
+                });
+                tf1.setText("0");
+                hbox1.getChildren().addAll(temp1, tf1);
+                hbox1.setSpacing(290);
+
+                items1.add(hbox1);
+            });
+            this.mesero3ListViewItems.setItems(items1);
+    }
 }

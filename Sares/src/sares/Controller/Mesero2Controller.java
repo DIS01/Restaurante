@@ -19,8 +19,11 @@ import java.util.logging.Logger;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
@@ -92,9 +95,6 @@ private HashMap<Item,LinkedList<Object>> pedido = new HashMap<>();
         });
         this.menu_Options.setItems(items);
         
-        
-        
-        
         this.hbox.setSpacing(100);
         Thread thread = new Thread(new Runnable() {
             @Override
@@ -112,9 +112,7 @@ private HashMap<Item,LinkedList<Object>> pedido = new HashMap<>();
                             Mesero2Controller.this.time = Calendar.getInstance();
                             SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
                             Mesero2Controller.this.tiempo.setText(sdf.format(Mesero2Controller.this.time.getTime()));
-                            
-                            
-                            
+       
                         }
                     });
                 }
@@ -132,17 +130,16 @@ private HashMap<Item,LinkedList<Object>> pedido = new HashMap<>();
     
 
     @FXML
-    private void seleccionMenu(MouseEvent event) throws IOException {
+    private void seleccionMenu(MouseEvent event) throws IOException, SQLException {
         if ("Platillos de entrada".equals(this.menu_Options.getSelectionModel().getSelectedItem())) {
             Categoria cat = new Categoria("Platillos de entrada");
-                Mesero3Controller m3c = new Mesero3Controller(cat);
-                Mesero3Controller control = (Mesero3Controller)Sares.setContent("sares/fxml/Mesero3.fxml",root);
-                control.assignMesero(this.mesero);
-                
+            Mesero3Controller control = (Mesero3Controller)Sares.setContent("sares/fxml/Mesero3.fxml", (Node)event.getSource());
+            control.assignCategoria(cat);
+            control.assignMesero(this.mesero);
+            control.setVentana();
+
             }
-        
-        
-        
+
     }
 
     @FXML
@@ -157,9 +154,7 @@ private HashMap<Item,LinkedList<Object>> pedido = new HashMap<>();
         this.mesero=mesero;
         this.nombre.setText(this.mesero.getNombre());
     }
-    
-    
-    
+
     public LinkedList<Categoria> getCategorias() throws SQLException{
         Conexion c=new Conexion();
         LinkedList<Categoria> lista = new LinkedList();
