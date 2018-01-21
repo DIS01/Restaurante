@@ -115,18 +115,37 @@ CREATE TABLE Cuenta(
 	cliente int,
 	FOREIGN KEY (cliente) REFERENCES Cliente(id)	
 );
+CREATE TABLE Mesa(
+	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	seccion VARCHAR(100),
+	numero int,
+	tipo VARCHAR(100),
+	asignada int
+); 
 
 CREATE TABLE Pedido(
 	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-	producto int,
 	notificado int,
 	servido int,
 	horaIngreso Time,
 	tiempoEstimado Time,
 	estado VARCHAR(100),
-	cliente int,
-	FOREIGN KEY (cliente) REFERENCES Cliente(id),		
-	FOREIGN KEY (producto) REFERENCES Platillo(id)	
+	mesa int,
+	cuenta int,
+	FOREIGN KEY (cuenta) REFERENCES Cuenta(id),		
+	FOREIGN KEY (mesa) REFERENCES Mesa(id)	
+);
+
+CREATE TABLE PedidoDetalle(
+	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	pedido int,
+	item int,
+	precio float,
+	cantidad int,
+	detalle VARCHAR(100),
+	tiempo Time,
+	FOREIGN KEY (pedido) REFERENCES Pedido(id),		
+	FOREIGN KEY (item) REFERENCES Item(id)
 );
 
 CREATE TABLE CuentaCompartida(
@@ -154,13 +173,7 @@ Create TABLE Mesero(
 	FOREIGN KEY (empleado) REFERENCES Empleado(id)	
 );
 
-CREATE TABLE Mesa(
-	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-	seccion VARCHAR(100),
-	numero int,
-	tipo VARCHAR(100),
-	asignada int
-);
+
 
 CREATE TABLE Restaurante(
 	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
