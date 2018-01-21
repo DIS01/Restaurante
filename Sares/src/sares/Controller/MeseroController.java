@@ -96,7 +96,7 @@ public class MeseroController implements Initializable {
 
     private void handleSignOutAction(MouseEvent event) throws IOException {
         System.out.println("SignOut");
-        Sares.setContent("sares/fxml/login.fxml", (Node)event.getSource());
+        Sares.setContent("sares/fxml/Sesion.fxml", (Node)event.getSource());
 
     }
 

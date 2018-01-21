@@ -174,7 +174,7 @@ private HashMap<Item,LinkedList<Object>> pedido = new HashMap<>();
     private void handleSignOutAction(MouseEvent event) {
     try {
         System.out.println("SignOut");
-        Sares.setContent("sares/fxml/login.fxml", root);
+        Sares.setContent("sares/fxml/Sesion.fxml", root);
     } catch (IOException ex) {
         Logger.getLogger(Mesero2Controller.class.getName()).log(Level.SEVERE, null, ex);
     }

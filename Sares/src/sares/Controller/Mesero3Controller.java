@@ -119,7 +119,7 @@ public class Mesero3Controller implements Initializable {
     private void handleSignOutAction(MouseEvent event) {
         try {
             System.out.println("SignOut");
-            Sares.setContent("sares/fxml/login.fxml", root);
+            Sares.setContent("sares/fxml/Sesion.fxml", root);
         } catch (IOException ex) {
             Logger.getLogger(Mesero2Controller.class.getName()).log(Level.SEVERE, null, ex);
         }
