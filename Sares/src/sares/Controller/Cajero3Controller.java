@@ -18,10 +18,11 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import sares.Model.Cliente;
 import sares.Sares;
-
+import org.controlsfx.control.textfield.TextFields;
 /**
  * FXML Controller class
  *
@@ -29,8 +30,12 @@ import sares.Sares;
  */
 public class Cajero3Controller extends CajeroController {
 
+
     @FXML
-    ComboBox opcionesClientes ;
+    TextField pedidos;
+    
+    @FXML
+    TextField clientes;
     /**
      * Initializes the controller class.
      */
@@ -38,8 +43,8 @@ public class Cajero3Controller extends CajeroController {
     public void initialize(URL url, ResourceBundle rb) {
         reloj();
         try {
-            
-            opcionesClientes.getItems().addAll(Cliente.getClientes());
+            TextFields.bindAutoCompletion(pedidos, Cliente.getClientes());
+            TextFields.bindAutoCompletion(clientes, Cliente.getClientes());
         } catch (SQLException ex) {
             Logger.getLogger(Cajero3Controller.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ParseException ex) {

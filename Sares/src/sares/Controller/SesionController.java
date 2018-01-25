@@ -10,9 +10,7 @@ import java.net.URL;
 import java.sql.CallableStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.HashSet;
 import java.util.ResourceBundle;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -20,8 +18,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.InputMethodEvent;
 import javafx.scene.input.MouseEvent;
+import sares.Model.Cajero;
 import sares.Model.Conexion;
 import sares.Sares;
 
@@ -43,8 +41,8 @@ public class SesionController implements Initializable {
     
     final int ADMINISTRADOR = 1;
     final int MESERO = 2;
-    final int COCINERO = 3;
-    final int CAJERO = 4;
+    final int CAJERO = 3;
+    final int COCINERO = 4;
     
     Conexion conexionConDB;
     ResultSet usuario;
@@ -58,12 +56,9 @@ public class SesionController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
         this.wrongUser.setVisible(false);
         this.wrongPassword.setVisible(false);
-        
     }    
-    
     
     private void pruebaIngresoCredenciales() throws SQLException{
         ResultSet EsUsuario;
@@ -82,19 +77,18 @@ public class SesionController implements Initializable {
                 break;
             case MESERO:
                 System.out.println("mesero");
-            
                 ResultSet mesero = conexionConDB.consultar("Select * From Persona where dni="+usuario.getInt("persona"));
                 mesero.next();
                 MeseroController control = (MeseroController)Sares.setContent("sares/fxml/Mesero.fxml", btnIngresar);
-                //System.out.println(mesero.getString("nombres"));
                 control.meseroControllerCreate(mesero);
-            
+                break;
+            case CAJERO:
+                Cajero c= Cajero.getInformacionCajero(usuario.getInt("persona"),conexionConDB);
+                CajeroController controlc = (CajeroController)Sares.setContent("sares/fxml/Cajero.fxml", btnIngresar);
+                controlc.setnombre(c);
                 break;
             case COCINERO:
                 System.out.println("cocinero");
-                break;
-            case CAJERO:
-                System.out.println("cajero");
                 break;
             default:
                 System.out.println("Usuario no tiene acceso al sistema");

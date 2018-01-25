@@ -7,7 +7,6 @@ package sares.Controller;
 
 import java.io.IOException;
 import java.net.URL;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -24,7 +23,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.input.MouseEvent;
 import sares.Model.Cajero;
-import sares.Model.Mesero;
 import sares.Sares;
 
 /**
@@ -73,7 +71,7 @@ public class CajeroController implements Initializable {
         }
     
     public void cerrarSesion(MouseEvent event) throws IOException{
-        Sares.setContent("sares/fxml/login.fxml", (Node)event.getSource());
+        Sares.setContent("sares/fxml/Sesion.fxml", (Node)event.getSource());
     }
    @FXML
     private void elegirOpcion(MouseEvent event) throws IOException, SQLException {

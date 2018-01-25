@@ -2,7 +2,6 @@
 package sares.Model;
 
 import java.sql.*;
-import java.util.LinkedList;
 /**
  *
  * @author mdleiton
@@ -20,12 +19,11 @@ public class Conexion {
 
     public Conexion() {
         host                = "sql10.freesqldatabase.com";
-        usuario             = "sql10215733";
-        clave               = "IekRvgf4sy";
+        usuario             = "sql10217279";
+        clave               = "6ABPslLVs2";
         puerto                  = 3306;
-        bd                   = "sql10215733";
+        bd                   = "sql10217279";
         this.servidor= "jdbc:mysql://"+this.host+":"+this.puerto+"/"+bd;
-        
         try{
             conexion=DriverManager.getConnection(this.servidor,this.usuario, this.clave);
             consulta = conexion.createStatement();
@@ -58,7 +56,6 @@ public class Conexion {
         return false;
     }
     
-    
     public void CerrarConexion(){
          try{
             conexion.close();
@@ -66,7 +63,6 @@ public class Conexion {
         }catch(SQLException e){
             System.out.println(e.getSQLState());
         }
-        
     }
     
 }

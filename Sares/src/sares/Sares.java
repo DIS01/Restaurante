@@ -29,6 +29,7 @@ public class Sares extends Application {
         stage1=primaryStage;
         stage1.setScene(scene);
         stage1.show();
+        stage1.setTitle("SARES-Guayaquil");
     }
 
     /**
