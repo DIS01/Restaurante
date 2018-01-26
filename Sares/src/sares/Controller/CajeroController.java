@@ -35,7 +35,6 @@ public class CajeroController implements Initializable {
     private static final String opcion2="Asignar cuenta a cliente";
     private static final String opcion3="Registrar pago";
     private Cajero cajero;
-    private int cont = 0;
     private Calendar calendar;
     
     @FXML
@@ -92,7 +91,7 @@ public class CajeroController implements Initializable {
         this.tiempo.setText(sdf1.format(this.calendar.getTime()));
         Thread thread;
         thread = new Thread(() -> {
-            while (cont != 100) {
+            while (true) {
                 try {
                     Thread.sleep(1000);
                 } catch (InterruptedException ex) {
@@ -102,7 +101,6 @@ public class CajeroController implements Initializable {
                     CajeroController.this.calendar = Calendar.getInstance();
                     SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
                     CajeroController.this.tiempo.setText(sdf.format(CajeroController.this.calendar.getTime()));
-                    cont++;
                 });
             }
         });
