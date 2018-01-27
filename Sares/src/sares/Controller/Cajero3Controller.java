@@ -19,13 +19,13 @@ import javafx.scene.input.MouseEvent;
 import sares.Model.Cliente;
 import sares.Sares;
 import org.controlsfx.control.textfield.TextFields;
+import sares.Model.Pedido;
 /**
  * FXML Controller class
  *
  * @author mdleiton
  */
 public class Cajero3Controller extends CajeroController {
-
 
     @FXML
     TextField pedidos;
@@ -39,7 +39,7 @@ public class Cajero3Controller extends CajeroController {
     public void initialize(URL url, ResourceBundle rb) {
         reloj();
         try {
-            TextFields.bindAutoCompletion(pedidos, Cliente.getClientes());
+            TextFields.bindAutoCompletion(pedidos, Pedido.getPedidos());
             TextFields.bindAutoCompletion(clientes, Cliente.getClientes());
         } catch (SQLException ex) {
             Logger.getLogger(Cajero3Controller.class.getName()).log(Level.SEVERE, null, ex);

@@ -140,6 +140,7 @@ CREATE TABLE Pedido(
 	tiempoEstimado TIME,
 	estado VARCHAR(100),
 	mesa INT,		
+	# fecha date,
 	FOREIGN KEY (mesa) REFERENCES Mesa(id)	
 );
 

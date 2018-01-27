@@ -53,9 +53,13 @@ public class Cajero2Controller extends CajeroController {
 
     @FXML
     public void registrarCliente(MouseEvent event) throws SQLException{
-        Cliente.ingresarCliente(dni.getText(),nombres.getText(),apellidos.getText(),domicilio.getText());
-        this.estadoRegistro.setText("Se registró con exito el cliente");
-        this.vaciarEntradas();
+        if(validoRegistroCliente()){
+            Cliente.ingresarCliente(dni.getText(),nombres.getText(),apellidos.getText(),domicilio.getText());
+            this.estadoRegistro.setText("Se registró con exito el cliente");
+            this.vaciarEntradas();
+        }else{
+             this.estadoRegistro.setText("registro incorrecto de cliente");
+        }
     }
     
     @FXML
@@ -69,5 +73,9 @@ public class Cajero2Controller extends CajeroController {
         this.dni.setText(" ");
         this.apellidos.setText(" ");
         this.domicilio.setText(" ");
+    }
+    
+    public boolean validoRegistroCliente(){
+        return this.dni.getText().length()>=2 && this.nombres.getText().length()>=2 && this.apellidos.getText().length()>=2 && this.domicilio.getText().length()>=2;
     }
 }
