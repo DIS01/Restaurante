@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.image.*?>
 <?import java.lang.*?>
 <?import java.util.*?>
 <?import javafx.scene.*?>
@@ -8,16 +9,28 @@
 
 <AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sares.Controller.CajeroController">
    <children>
-      <HBox prefHeight="42.0" prefWidth="600.0">
+      <HBox prefHeight="37.0" prefWidth="600.0" AnchorPane.bottomAnchor="363.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <Label fx:id="cajeroNombre" prefHeight="42.0" prefWidth="230.0" text="Cajero: " />
-            <Label fx:id="tiempo" prefHeight="42.0" prefWidth="172.0" text="Tiempo" />
-            <Button mnemonicParsing="false" onMouseClicked="#cerrarSesion" prefHeight="45.0" prefWidth="213.0" text="Cerrar Sesión" />
+            <Label fx:id="cajeroNombre" prefHeight="37.0" prefWidth="383.0" text="Cajero: " />
+            <Label fx:id="tiempo" prefHeight="37.0" prefWidth="278.0" text="Tiempo" />
+            <MenuButton fx:id="opcionesUsuario" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="37.0" prefWidth="29.0" textAlignment="CENTER" wrapText="true">
+              <items>
+                <MenuItem fx:id="info" mnemonicParsing="false" onAction="#informacionUsuario" text="Información " />
+                <MenuItem fx:id="sesioncierre" mnemonicParsing="false" onAction="#cerrarSesion" text="Cerrar sesión" />
+                  <MenuItem fx:id="cerrar" mnemonicParsing="false" onAction="#cerrar" text="Cerrar" />
+              </items>
+               <graphic>
+                  <ImageView fx:id="iconuser" fitHeight="26.0" fitWidth="90.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@images/userimage.png" />
+                     </image></ImageView>
+               </graphic>
+            </MenuButton>
          </children>
       </HBox>
-      <VBox layoutY="42.0" prefHeight="354.0" prefWidth="600.0">
+      <VBox layoutY="36.0" prefHeight="360.0" prefWidth="600.0">
          <children>
-            <ListView fx:id="opciones" onMouseClicked="#elegirOpcion" prefHeight="207.0" prefWidth="600.0" />
+            <ListView fx:id="opciones" onMouseClicked="#elegirOpcion" prefHeight="213.0" prefWidth="600.0" />
          </children>
       </VBox>
    </children>

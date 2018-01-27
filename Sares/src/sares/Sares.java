@@ -48,8 +48,6 @@ public class Sares extends Application {
         nueva.setScene(new Scene(tableViewParent));
         nueva.show();
         return controlador;
-}
-    
-    
-           
+    }
+            
 }

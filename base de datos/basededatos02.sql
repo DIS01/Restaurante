@@ -10,7 +10,7 @@ CREATE TABLE Item(
 	valor FLOAT,
 	nombre VARCHAR(100),
 	categoria INT,
-	activo INT
+	activo INT,
 	FOREIGN KEY (categoria) REFERENCES Categoria(id)
 );
 
@@ -26,7 +26,7 @@ CREATE TABLE Bebida(
 	marca VARCHAR(100),
 	item INT,
 	FOREIGN KEY (item) REFERENCES Item(id)
-s2);
+);
 
 CREATE TABLE Combo(
 	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -50,7 +50,6 @@ CREATE TABLE Inventario(
 	platillo INT,
 	FOREIGN KEY (platillo) REFERENCES Platillo(id)
 );
-
 
 ########################## A c t o r e s ###########################
 CREATE TABLE Persona (
@@ -83,30 +82,6 @@ CREATE TABLE Empleado(
 	FOREIGN KEY (persona) REFERENCES Persona(dni)	
 );
 
-CREATE TABLE Administrador(
-	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-	empleado INT,
-	FOREIGN KEY (empleado) REFERENCES Empleado(id)	
-);
-
-Create TABLE Mesero(
-	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-	empleado INT,
-	FOREIGN KEY (empleado) REFERENCES Empleado(id)
-);
-
-CREATE TABLE Cocinero(
-	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-	empleado INT,
-	FOREIGN KEY (empleado) REFERENCES Empleado(id)	
-);
-
-CREATE TABLE Cajero(
-	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-	empleado INT,
-	FOREIGN KEY (empleado) REFERENCES Empleado(id)	
-);
-
 CREATE TABLE Cliente(
 	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	persona INT,
@@ -115,6 +90,21 @@ CREATE TABLE Cliente(
 );
 
 ############################## C e n a ################################
+CREATE TABLE Ambiente(
+	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	nombre VARCHAR(50),
+	numMesas INT,
+	activo INT
+);
+CREATE TABLE Mesa(
+	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	ambiente INT,
+	numero INT,
+	tipo VARCHAR(100),
+	asignada INT,
+	FOREIGN KEY (ambiente) REFERENCES Ambiente(id)
+);
+
 CREATE TABLE Reservacion(
 	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	fecha DATE,
@@ -123,7 +113,7 @@ CREATE TABLE Reservacion(
 	numSillas INT,
 	numMesas INT,
 	cliente INT,
-	FOREIGN KEY (cliente) REFERENCES Cliente(id)
+	FOREIGN KEY (cliente) REFERENCES Cliente(id),
 	FOREIGN KEY (ambiente) REFERENCES Ambiente(id)
 );
 
@@ -140,33 +130,16 @@ CREATE TABLE Cuenta(
 	pagada INT,
 	total FLOAT,
 	cliente INT,
-	FOREIGN KEY (cliente) REFERENCES Cliente(id)	
-);
-
-CREATE TABLE Ambiente(
-	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-	nombre VARCHAR(50),
-	numMesas INT,
-	activo INT
-);
-
-CREATE TABLE Mesa(
-	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-	ambiente INT,
-	numero INT,
-	tipo VARCHAR(100),
-	asignada INT
-	FOREIGN KEY (ambiente) REFERENCES Ambiente(id)
+	FOREIGN KEY (cliente) REFERENCES Cliente(id)
 );
 
 CREATE TABLE Pedido(
 	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-	cuenta INT,
 	horaIngreso TIME,
 	tiempoEstimado TIME,
 	estado VARCHAR(100),
 	mesa INT,		
-	FOREIGN KEY (cuenta) REFERENCES Cuenta(id)	
+	FOREIGN KEY (mesa) REFERENCES Mesa(id)	
 );
 
 CREATE TABLE PedidoDetalle(
@@ -176,8 +149,10 @@ CREATE TABLE PedidoDetalle(
 	precio FLOAT,
 	cantidad INT,
 	detalle VARCHAR(100),
+	cuenta INT,
 	FOREIGN KEY (pedido) REFERENCES Pedido(id),		
-	FOREIGN KEY (item) REFERENCES Item(id)
+	FOREIGN KEY (item) REFERENCES Item(id),
+	FOREIGN KEY (cuenta) REFERENCES Cuenta(id)
 );
 
 CREATE TABLE ServicioDomicilio(
@@ -188,14 +163,40 @@ CREATE TABLE ServicioDomicilio(
 );
 
 ############################# P a g o #############################
-CREATE TABLE PagoElectronico(
+CREATE TABLE TipoPago(
 	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-	identificador VARCHAR(100)
+	tipo VARCHAR(100)
 );
 
-CREATE TABLE PagoTarjeta(
+CREATE TABLE DineroElectronico(
 	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-	numTarjeta VARCHAR(100)
+	identificador VARCHAR(100),
+	cliente INT,
+	FOREIGN KEY (cliente) REFERENCES Cliente(id)
+);
+
+CREATE TABLE Tarjeta(
+	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	numTarjeta VARCHAR(100),
+	cliente int,
+	FOREIGN KEY (cliente) REFERENCES Cliente(id)
+);
+
+CREATE TABLE PagoPedido(
+	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	formaPago INT,
+	pedido INT,
+	valor float,
+	FOREIGN KEY (formaPago) REFERENCES TipoPago(id),
+	FOREIGN KEY (pedido) REFERENCES Pedido(id)
+);
+
+CREATE TABLE TarjetaPago(
+	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	pagoPedido INT,
+	tarjeta int,
+	FOREIGN KEY (pagoPedido) REFERENCES PagoPedido(id),
+	FOREIGN KEY (tarjeta) REFERENCES Tarjeta(id)	
 );
 
 CREATE TABLE Reporte(
@@ -205,5 +206,5 @@ CREATE TABLE Reporte(
 	fechaFin DATE,
 	solicitador INT,
 	tipo VARCHAR(100),
-	FOREIGN KEY (solicitador) REFERENCES Administrador(id)	
+	FOREIGN KEY (solicitador) REFERENCES Empleado(id)	
 );
