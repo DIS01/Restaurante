@@ -69,11 +69,11 @@ INSERT INTO Platillo(tiempoEstimado,item) values ('00:20:00',9);
 INSERT INTO Platillo(tiempoEstimado,item) values ('00:25:00',10);
 
 # bebidas
-INSERT INTO Item(valor,nombre,categoria,activo) values (3.00,"Tequila blanco","",3,1);
-INSERT INTO Item(valor,nombre,categoria,activo) values (4.00,"Whisky dorado","",3,1);
-INSERT INTO Item(valor,nombre,categoria,activo) values (5.00,"Tequila reposado","",3,1);
-INSERT INTO Item(valor,nombre,categoria,activo) values (3.00,"Tequila anejo","",3,1);
-INSERT INTO Item(valor,nombre,categoria,activo) values (4.00,"Whisky Azul","",3,1);
+INSERT INTO Item(valor,nombre,categoria,activo) values (3.00,"Tequila blanco",3,1);
+INSERT INTO Item(valor,nombre,categoria,activo) values (4.00,"Whisky dorado",3,1);
+INSERT INTO Item(valor,nombre,categoria,activo) values (5.00,"Tequila reposado",3,1);
+INSERT INTO Item(valor,nombre,categoria,activo) values (3.00,"Tequila anejo",3,1);
+INSERT INTO Item(valor,nombre,categoria,activo) values (4.00,"Whisky Azul",3,1);
 
 INSERT INTO Bebida(marca,item) values("R. Gonzalez.",11);
 INSERT INTO Bebida(marca,item) values("J. W.",12);
@@ -103,9 +103,23 @@ INSERT INTO ComboItem(combo,item,cantidadItem) values(1,3,1);
 INSERT INTO ComboItem(combo,item,cantidadItem) values(1,6,2);
 INSERT INTO ComboItem(combo,item,cantidadItem) values(1,7,1);
 
-#cuenta
+INSERT INTO Ambiente(nombre,numMesas,activo) values("primera ",4,1);
 
+INSERT INTO Mesa(ambiente,numero,tipo,asignada) values(1,2,"ww",1);
+INSERT INTO Mesa(ambiente,numero,tipo,asignada) values(1,3,"ww3",0);
+
+#cuenta
+INSERT INTO Cuenta(pagada , total ,cliente) values (0,21.0,1);
+INSERT INTO Cuenta(pagada , total ,cliente) values (0,22.0,1);
+INSERT INTO Cuenta(pagada , total ,cliente) values (0,28.0,1);
+INSERT INTO Cuenta(pagada , total ,cliente) values (1,29.0,1);
+INSERT INTO Cuenta(pagada , total ,cliente) values (1,39.0,2);
 
 #pedido
+INSERT INTO Pedido(horaIngreso,tiempoEstimado,estado,mesa ) Values("11:03:33","11:03:33","Preparando",1);
 
+INSERT INTO PedidoDetalle(pedido,item,precio,cantidad,detalle,cuenta) Values (1,1,23.2,2,"222",1);
+INSERT INTO PedidoDetalle(pedido,item,precio,cantidad,detalle,cuenta) Values (1,2,22.2,1,"223",1);
+INSERT INTO PedidoDetalle(pedido,item,precio,cantidad,detalle,cuenta) Values (1,3,20.2,1,"333",2);
+INSERT INTO PedidoDetalle(pedido,item,precio,cantidad,detalle,cuenta) Values (1,4,23.2,1,"2222",3);
 

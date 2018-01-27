@@ -35,10 +35,7 @@ public class Cajero2Controller extends CajeroController {
     
     @FXML
     private TextField domicilio;
-    
-    @FXML
-    private TextField descuento;
-    
+      
     @FXML
     private Label estadoRegistro;
     
@@ -56,7 +53,7 @@ public class Cajero2Controller extends CajeroController {
 
     @FXML
     public void registrarCliente(MouseEvent event) throws SQLException{
-        Cliente.ingresarCliente(dni.getText(),nombres.getText(),apellidos.getText(),domicilio.getText(),descuento.getText());
+        Cliente.ingresarCliente(dni.getText(),nombres.getText(),apellidos.getText(),domicilio.getText());
         this.estadoRegistro.setText("Se registró con exito el cliente");
         this.vaciarEntradas();
     }
@@ -71,7 +68,6 @@ public class Cajero2Controller extends CajeroController {
         this.nombres.setText(" ");
         this.dni.setText(" ");
         this.apellidos.setText(" ");
-        this.descuento.setText(" ");
         this.domicilio.setText(" ");
     }
 }

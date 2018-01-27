@@ -16,8 +16,8 @@ public class Cajero extends Empleado {
     public Cajero() {
     }
 
-    public Cajero(String dni,String nombres, String apellidos, String domicilio,float sueldo, List<String> horario ) {
-        super(sueldo, horario, dni, nombres, apellidos, domicilio);
+    public Cajero(String dni,String nombres, String apellidos, String domicilio ) {
+        super(dni, nombres, apellidos, domicilio);
     }
 
     /**
@@ -36,10 +36,9 @@ public class Cajero extends Empleado {
     }
         
     public static Cajero getInformacionCajero(int dni,Conexion co) throws SQLException{
-        ResultSet cajero = co.consultar("Select * From Persona,Empleado,Cajero where Persona.dni="+dni + " and Persona.dni=Empleado.persona and Empleado.id=Cajero.empleado");
+        ResultSet cajero = co.consultar("Select * From Persona,Empleado where Persona.dni="+dni + " and Persona.dni=Empleado.persona ");
         cajero.next();
-        LinkedList<String> horario=new LinkedList(Arrays.asList(cajero.getString("horario").split(","))); 
-        return new Cajero(cajero.getString("dni"),cajero.getString("nombres"),cajero.getString("apellidos"),cajero.getString("domicilio"),cajero.getFloat("sueldo"),horario);
+        return new Cajero(cajero.getString("dni"),cajero.getString("nombres"),cajero.getString("apellidos"),cajero.getString("domicilio"));
 
     }
 }

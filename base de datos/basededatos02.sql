@@ -96,6 +96,7 @@ CREATE TABLE Ambiente(
 	numMesas INT,
 	activo INT
 );
+
 CREATE TABLE Mesa(
 	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	ambiente INT,

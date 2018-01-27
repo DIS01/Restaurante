@@ -118,7 +118,7 @@ public class CajeroController implements Initializable {
     
     @FXML
     public void informacionUsuario(ActionEvent e){
-        System.out.println("Option 1 selected via Lambda");
+        System.out.println("Ventana info usuario");
     }
     
     @FXML
