@@ -11,6 +11,8 @@ import java.sql.SQLException;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -35,10 +37,7 @@ public class Cajero2Controller extends CajeroController {
     
     @FXML
     private TextField domicilio;
-      
-    @FXML
-    private Label estadoRegistro;
-    
+        
     @FXML
     private Button cancelar;
     
@@ -55,10 +54,10 @@ public class Cajero2Controller extends CajeroController {
     public void registrarCliente(MouseEvent event) throws SQLException{
         if(validoRegistroCliente()){
             Cliente.ingresarCliente(dni.getText(),nombres.getText(),apellidos.getText(),domicilio.getText());
-            this.estadoRegistro.setText("Se registró con exito el cliente");
-            this.vaciarEntradas();
+            this.vaciarEntradas();    
+            this.ventanaEmegente(AlertType.INFORMATION,"Registro cliente","Se registró con exito el cliente");
         }else{
-             this.estadoRegistro.setText("registro incorrecto de cliente");
+            this.ventanaEmegente(AlertType.ERROR,"Registro cliente", "registro incorrecto de cliente");
         }
     }
     
@@ -77,5 +76,13 @@ public class Cajero2Controller extends CajeroController {
     
     public boolean validoRegistroCliente(){
         return this.dni.getText().length()>=2 && this.nombres.getText().length()>=2 && this.apellidos.getText().length()>=2 && this.domicilio.getText().length()>=2;
+    }
+    
+    public void ventanaEmegente(Alert.AlertType tipo,String titulo, String mensaje){
+        Alert alert = new Alert(tipo);
+        alert.setTitle(titulo);
+        alert.setHeaderText(null);
+        alert.setContentText(mensaje);
+        alert.showAndWait();
     }
 }

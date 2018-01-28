@@ -1,5 +1,6 @@
 package sares.zDiagramaModel;
 
+import sares.Model.Cuenta;
 import java.util.*;
 
 /**

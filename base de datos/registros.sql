@@ -103,23 +103,34 @@ INSERT INTO ComboItem(combo,item,cantidadItem) values(1,3,1);
 INSERT INTO ComboItem(combo,item,cantidadItem) values(1,6,2);
 INSERT INTO ComboItem(combo,item,cantidadItem) values(1,7,1);
 
-INSERT INTO Ambiente(nombre,numMesas,activo) values("primera ",4,1);
+# info mesas restaurante
+INSERT INTO Ambiente(nombre,activo) values("primera categoria",1);
+INSERT INTO Ambiente(nombre,activo) values("segunda categoria",1);
 
-INSERT INTO Mesa(ambiente,numero,tipo,asignada) values(1,2,"ww",1);
-INSERT INTO Mesa(ambiente,numero,tipo,asignada) values(1,3,"ww3",0);
+INSERT INTO TipoMesa(stock,tipo,asignada,numSillas) VALUES (4,"familiares",0,4);
+INSERT INTO TipoMesa(stock,tipo,asignada,numSillas) VALUES (3,"pareja",0,2);
+
+INSERT INTO AmbienteMesa(ambiente,tipoMesa,asignadas) values (1,1,0);
+INSERT INTO AmbienteMesa(ambiente,tipoMesa,asignadas) values (2,1,0);
+
+INSERT INTO Mesa(id2,ambienteMesa) values(1,1);
+INSERT INTO Mesa(id2,ambienteMesa) values(1,2);
 
 #cuenta
-INSERT INTO Cuenta(pagada , total ,cliente) values (0,21.0,1);
-INSERT INTO Cuenta(pagada , total ,cliente) values (0,22.0,1);
-INSERT INTO Cuenta(pagada , total ,cliente) values (0,28.0,1);
-INSERT INTO Cuenta(pagada , total ,cliente) values (1,29.0,1);
-INSERT INTO Cuenta(pagada , total ,cliente) values (1,39.0,2);
+INSERT INTO Cuenta(pagada , total,mesa) values (0,21.0,1);
 
-#pedido
-INSERT INTO Pedido(horaIngreso,tiempoEstimado,estado,mesa ) Values("11:03:33","11:03:33","Preparando",1);
+#pedido1
+INSERT INTO Pedido(horaIngreso,tiempoEstimado,estado,cuenta,fecha ) Values("11:03:33","00:03:33","Preparando",1,"2018-01-28");
 
-INSERT INTO PedidoDetalle(pedido,item,precio,cantidad,detalle,cuenta) Values (1,1,23.2,2,"222",1);
-INSERT INTO PedidoDetalle(pedido,item,precio,cantidad,detalle,cuenta) Values (1,2,22.2,1,"223",1);
-INSERT INTO PedidoDetalle(pedido,item,precio,cantidad,detalle,cuenta) Values (1,3,20.2,1,"333",2);
-INSERT INTO PedidoDetalle(pedido,item,precio,cantidad,detalle,cuenta) Values (1,4,23.2,1,"2222",3);
+INSERT INTO PedidoDetalle(pedido,item,precio,cantidad,detalle) Values (1,1,23.2,2,"sin azucar");
+INSERT INTO PedidoDetalle(pedido,item,precio,cantidad,detalle) Values (1,2,22.2,1,"sin 1");
+INSERT INTO PedidoDetalle(pedido,item,precio,cantidad,detalle) Values (1,3,20.2,1,"sin 2");
+INSERT INTO PedidoDetalle(pedido,item,precio,cantidad,detalle) Values (1,4,23.2,1,"sin 3");
 
+#pedido2
+INSERT INTO Pedido(horaIngreso,tiempoEstimado,estado,cuenta,fecha ) Values("12:03:33","00:05:33","Preparando",1,"2018-01-28");
+
+INSERT INTO PedidoDetalle(pedido,item,precio,cantidad,detalle) Values (2,1,23.2,2,"sin 1");
+INSERT INTO PedidoDetalle(pedido,item,precio,cantidad,detalle) Values (2,2,22.2,1,"sin 2");
+INSERT INTO PedidoDetalle(pedido,item,precio,cantidad,detalle) Values (2,3,20.2,1,"sin 3");
+INSERT INTO PedidoDetalle(pedido,item,precio,cantidad,detalle) Values (2,4,23.2,1,"sin 4");

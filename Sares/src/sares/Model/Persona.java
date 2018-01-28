@@ -61,4 +61,28 @@ public class Persona {
         return apellidos;
     }
 
+    public String getDni() {
+        return dni;
+    }
+
+    public void setDni(String dni) {
+        this.dni = dni;
+    }
+
+    public String getPsswrd() {
+        return psswrd;
+    }
+
+    public void setPsswrd(String psswrd) {
+        this.psswrd = psswrd;
+    }
+
+    public String getDomicilio() {
+        return domicilio;
+    }
+
+    public void setDomicilio(String domicilio) {
+        this.domicilio = domicilio;
+    }
+
 }

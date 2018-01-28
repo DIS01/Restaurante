@@ -34,7 +34,6 @@
             <Button fx:id="cancelar" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onMouseClicked="#cancelarRegistro" prefHeight="45.0" prefWidth="175.0" text="Regresar" textAlignment="JUSTIFY" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER" />
          </children>
       </GridPane>
-      <Label fx:id="estadoRegistro" layoutX="64.0" layoutY="52.0" prefHeight="23.0" prefWidth="467.0" />
       <HBox layoutX="10.0" layoutY="10.0" prefHeight="37.0" prefWidth="600.0" AnchorPane.bottomAnchor="353.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="10.0">
          <children>
             <Label fx:id="cajeroNombre" prefHeight="37.0" prefWidth="383.0" text="Cajero: " />

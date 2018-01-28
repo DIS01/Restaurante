@@ -5,7 +5,6 @@ BEGIN
 END $$;
 
 DELIMITER $$
-
 CREATE PROCEDURE crearCliente(dni int,nombres VARCHAR(100),apellidos VARCHAR(100),domicilio VARCHAR(100), fechaIncorporacion DATE)   
 BEGIN  
     INSERT INTO Persona(dni,nombres,apellidos,domicilio) values (dni,nombres,apellidos,domicilio);
@@ -20,7 +19,6 @@ BEGIN
 END $$;
 
 DELIMITER $$
-
 CREATE PROCEDURE insertarPedidoDetalle(pedido int, item int, precio float, cantidad int, detalle VARCHAR(100), cuenta int)   
 BEGIN  
     INSERT INTO PedidoDetalle(pedido, item,precio,cantidad,detalle,cuenta) 
