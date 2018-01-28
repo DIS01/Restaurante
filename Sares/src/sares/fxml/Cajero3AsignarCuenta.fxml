@@ -33,24 +33,37 @@
          <children>
             <Label alignment="CENTER" prefHeight="46.0" prefWidth="269.0" text="Cuenta" />
             <Label alignment="CENTER" prefHeight="54.0" prefWidth="265.0" text="Cliente" GridPane.rowIndex="1" />
-            <Label alignment="CENTER" prefHeight="49.0" prefWidth="262.0" text="total" GridPane.rowIndex="2" />
+            <Label alignment="CENTER" prefHeight="35.0" prefWidth="242.0" text="total pedidos" GridPane.rowIndex="2" />
             <Label alignment="CENTER" prefHeight="51.0" prefWidth="262.0" text="Forma de pago" GridPane.columnSpan="2" GridPane.rowIndex="5" />
             <TextField fx:id="cuentas" prefHeight="31.0" prefWidth="253.0" GridPane.columnIndex="1" />
             <TextField fx:id="clientes" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-            <Label fx:id="total" alignment="CENTER_RIGHT" prefHeight="31.0" prefWidth="262.0" text="\$ 0.0" textAlignment="RIGHT" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-            <TextField fx:id="propina" alignment="CENTER" prefHeight="12.0" prefWidth="264.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-            <Label alignment="CENTER" prefHeight="33.0" prefWidth="266.0" text="Propina" textAlignment="CENTER" wrapText="true" GridPane.rowIndex="3" />
-            <Label alignment="TOP_CENTER" contentDisplay="CENTER" prefHeight="23.0" prefWidth="264.0" text="Descuento" textAlignment="CENTER" GridPane.rowIndex="4" />
-            <TextField fx:id="descuento" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-            <ListView fx:id="formaPagos" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-            <CheckBox alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="36.0" prefWidth="17.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
-            <CheckBox mnemonicParsing="false" prefHeight="33.0" prefWidth="22.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
-            <CheckBox mnemonicParsing="false" prefHeight="35.0" prefWidth="28.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER" />
+            <Label fx:id="totalpedidos" alignment="CENTER_RIGHT" prefHeight="30.0" prefWidth="176.0" text=" 0.0" textAlignment="RIGHT" wrapText="true" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
+            <Label alignment="CENTER" prefHeight="33.0" prefWidth="266.0" text="Propina" textAlignment="CENTER" wrapText="true" GridPane.rowIndex="4" />
+            <Label alignment="TOP_CENTER" contentDisplay="CENTER" prefHeight="23.0" prefWidth="264.0" text="Descuento" textAlignment="CENTER" GridPane.rowIndex="3" />
+            <ListView fx:id="formaPagos" prefHeight="35.0" prefWidth="120.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+            <CheckBox fx:id="listoCuenta" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onMouseClicked="#generarlistaCuenta" prefHeight="36.0" prefWidth="17.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+            <CheckBox fx:id="listoCliente" mnemonicParsing="false" prefHeight="33.0" prefWidth="22.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+            <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+            <Label fx:id="descuentoValor" alignment="CENTER_RIGHT" contentDisplay="RIGHT" prefHeight="33.0" prefWidth="152.0" text="0.0" textAlignment="RIGHT" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="3" />
+            <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="3">
+               <children>
+                  <CheckBox fx:id="descuentoCheck" mnemonicParsing="false" onMouseClicked="#descuentocheckporcentaje" prefHeight="37.0" prefWidth="28.0" />
+                  <TextField fx:id="descuentoPorcentaje" prefHeight="35.0" prefWidth="39.0" text="0 " />
+                  <Label prefHeight="39.0" prefWidth="17.0" text="\%" />
+               </children>
+            </HBox>
+            <Label prefHeight="35.0" prefWidth="29.0" text="  $" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <Label prefHeight="35.0" prefWidth="29.0" text="  $" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <Label prefHeight="35.0" prefWidth="29.0" text="  $" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+            <Label fx:id="propina" alignment="CENTER_RIGHT" prefHeight="30.0" prefWidth="176.0" text=" 0.0" textAlignment="RIGHT" wrapText="true" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="4" />
+            <Label alignment="CENTER" prefHeight="31.0" prefWidth="243.0" text="Total" GridPane.rowIndex="6" />
+            <Label fx:id="total" alignment="CENTER_RIGHT" contentDisplay="TOP" prefHeight="30.0" prefWidth="168.0" text="0.0" textAlignment="RIGHT" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="6" />
+            <Label prefHeight="35.0" prefWidth="29.0" text="  $" GridPane.columnIndex="1" GridPane.rowIndex="6" />
          </children>
          <columnConstraints>
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="278.0" minWidth="10.0" prefWidth="252.0" />
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="286.0" minWidth="10.0" prefWidth="286.0" />
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="263.0" minWidth="10.0" prefWidth="49.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="278.0" minWidth="10.0" prefWidth="235.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="334.0" minWidth="10.0" prefWidth="232.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="263.0" minWidth="10.0" prefWidth="83.0" />
          </columnConstraints>
          <rowConstraints>
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -59,9 +72,10 @@
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
          </rowConstraints>
       </GridPane>
-      <ListView layoutX="14.0" layoutY="290.0" prefHeight="119.0" prefWidth="283.0" AnchorPane.bottomAnchor="85.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="323.0" AnchorPane.topAnchor="290.0" />
+      <ListView fx:id="listaPedidos" layoutX="14.0" layoutY="290.0" prefHeight="119.0" prefWidth="283.0" AnchorPane.bottomAnchor="85.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="323.0" AnchorPane.topAnchor="290.0" />
       <Button fx:id="cancelar" layoutX="145.0" layoutY="435.0" mnemonicParsing="false" onMouseClicked="#cancelarRegistro" prefHeight="45.0" prefWidth="145.0" text="Regresar" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="145.0" AnchorPane.rightAnchor="330.0" AnchorPane.topAnchor="435.0" />
       <Button layoutX="320.0" layoutY="435.0" mnemonicParsing="false" onMouseClicked="#registrarCuenta" prefHeight="45.0" prefWidth="145.0" text="Siguiente" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="320.0" AnchorPane.rightAnchor="155.0" AnchorPane.topAnchor="435.0" />
       <ListView layoutX="320.0" layoutY="290.0" prefHeight="119.0" prefWidth="283.0" />

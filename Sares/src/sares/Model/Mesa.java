@@ -48,4 +48,12 @@ public class Mesa {
         }
         return null;
     }    
+
+    @Override
+    public String toString() {
+        return "mesa : "+this.id2;
+    }
+    
+    
+    
 }

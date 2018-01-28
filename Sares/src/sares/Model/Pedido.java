@@ -12,20 +12,6 @@ import java.text.ParseException;
 public class Pedido {
 
     /**
-     * Default constructor
-     */
-    public Pedido() {
-    }
-
-    public Pedido(int id,Time horaingreso, Time tiempoestimado, String estado, Mesa mesa) {
-        this.horaingreso = horaingreso;
-        this.tiempoestimado = tiempoestimado;
-        this.estado = estado;
-        this.mesa = mesa;
-        this.id=id;
-    }
-    
-    /**
      * 
      */
     public int id;
@@ -48,8 +34,28 @@ public class Pedido {
     /**
      * 
      */
-    public Mesa mesa;
+    public Cuenta cuenta;
     
+    /**
+     * 
+     */
+    public Date fecha;
+    
+     /**
+     * Default constructor
+     */
+    public Pedido() {
+    }
+
+    public Pedido(int id, Time horaingreso, Time tiempoestimado, String estado, Cuenta cuenta, Date fecha) {
+        this.id = id;
+        this.horaingreso = horaingreso;
+        this.tiempoestimado = tiempoestimado;
+        this.estado = estado;
+        this.cuenta = cuenta;
+        this.fecha = fecha;
+    }
+
     /**
      * @param platillo
      */
@@ -79,15 +85,36 @@ public class Pedido {
         Pedido pedido;
         ResultSet pedidoRS = c.consultar("SELECT * FROM Pedido"); 
         while (pedidoRS.next()){
-            pedido= new Pedido(pedidoRS.getInt("id"),pedidoRS.getTime("horaingreso"),pedidoRS.getTime("tiempoestimado"),pedidoRS.getString("estado"),null);
+            pedido= new Pedido(pedidoRS.getInt("id"),pedidoRS.getTime("horaingreso"),pedidoRS.getTime("tiempoestimado"),pedidoRS.getString("estado"),null,pedidoRS.getDate("fecha"));
            lista.add(pedido);
         }
         pedidoRS.close();
         return lista;
     }
-
+    
+    public static LinkedList<Pedido> getPedidos(int idCuenta) throws SQLException, ParseException{
+        LinkedList<Pedido> lista= new LinkedList();
+        Conexion c=new Conexion();
+        Pedido pedido;
+        ResultSet pedidoRS = c.consultar("SELECT * FROM Pedido where cuenta="+idCuenta); 
+        while (pedidoRS.next()){
+            pedido= new Pedido(pedidoRS.getInt("id"),pedidoRS.getTime("horaingreso"),pedidoRS.getTime("tiempoestimado"),pedidoRS.getString("estado"),null,pedidoRS.getDate("fecha"));
+           lista.add(pedido);
+        }
+        pedidoRS.close();
+        return lista;
+    }
+    
     @Override
     public String toString() {
         return this.id +", " + this.estado;
     }   
+    
+    public static float getTotal(LinkedList<Pedido> pedidos) throws SQLException{
+        float total=0.0f;
+        for (Pedido pedido:pedidos){
+            total+=PedidoDetalle.getTotal(pedido);
+        }
+        return total;
+    }
 }

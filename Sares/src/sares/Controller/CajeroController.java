@@ -36,7 +36,7 @@ import sares.Sares;
  */
 public class CajeroController implements Initializable {
     private static final String opcion1="Registrar Cliente";
-    private static final String opcion2="Cancelar pedido";
+    private static final String opcion2="Registrar pago cuenta";
     private static final String opcion3="Registrar pago";
     private Cajero cajero;
     private int cont = 0;

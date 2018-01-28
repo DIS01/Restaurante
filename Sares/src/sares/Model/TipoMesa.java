@@ -26,7 +26,7 @@ public class TipoMesa {
     /**
      * 
      */
-    private int asignadas;
+    private int asignada;
     
     /**
      * 
@@ -39,7 +39,7 @@ public class TipoMesa {
     public TipoMesa(int stock, String tipo, int asignadas, int numSillas) {
         this.stock = stock;
         this.tipo = tipo;
-        this.asignadas = asignadas;
+        this.asignada = asignadas;
         this.numSillas = numSillas;
     }
     
@@ -47,7 +47,7 @@ public class TipoMesa {
         Conexion c=new Conexion();
         try (ResultSet tipoMesaRS = c.consultar("SELECT * FROM TipoMesa where id="+id)) {
             if(tipoMesaRS.next()){
-                return new TipoMesa(tipoMesaRS.getInt("stock"),tipoMesaRS.getString("tipo"),tipoMesaRS.getInt("asignadas"),tipoMesaRS.getInt("numSillas"));
+                return new TipoMesa(tipoMesaRS.getInt("stock"),tipoMesaRS.getString("tipo"),tipoMesaRS.getInt("asignada"),tipoMesaRS.getInt("numSillas"));
             }
         }
         return null;

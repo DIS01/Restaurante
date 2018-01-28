@@ -62,12 +62,12 @@ public class Cuenta {
         LinkedList<Cuenta> lista= new LinkedList();
         Conexion c=new Conexion();
         Cuenta cuenta;
-        ResultSet cuentaRS = c.consultar("SELECT * FROM Cuenta"); 
-        while (cuentaRS.next()){
-            cuenta= new Cuenta(cuentaRS.getInt("id"),cuentaRS.getBoolean("pagada"),cuentaRS.getFloat("total"),Mesa.getMesa(cuentaRS.getInt("mesa")));
-           lista.add(cuenta);
+        try (ResultSet cuentaRS = c.consultar("SELECT * FROM Cuenta")) {
+            while (cuentaRS.next()){
+                cuenta= new Cuenta(cuentaRS.getInt("id"),cuentaRS.getBoolean("pagada"),cuentaRS.getFloat("total"),Mesa.getMesa(cuentaRS.getInt("mesa")));
+                lista.add(cuenta);
+            }
         }
-        cuentaRS.close();
         return lista;
     }
     
