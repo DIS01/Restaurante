@@ -48,7 +48,7 @@
             <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="3">
                <children>
                   <CheckBox fx:id="descuentoCheck" mnemonicParsing="false" onMouseClicked="#descuentocheckporcentaje" prefHeight="37.0" prefWidth="28.0" />
-                  <TextField fx:id="descuentoPorcentaje" prefHeight="35.0" prefWidth="39.0" text="0 " />
+                  <TextField fx:id="descuentoPorcentaje" onInputMethodTextChanged="#actualizar" prefHeight="35.0" prefWidth="39.0" text="0 " />
                   <Label prefHeight="39.0" prefWidth="17.0" text="\%" />
                </children>
             </HBox>

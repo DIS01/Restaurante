@@ -21,11 +21,14 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import sares.Model.Cliente;
 import sares.Sares;
 import org.controlsfx.control.textfield.TextFields;
 import sares.Model.Cuenta;
+import sares.Model.MetodoPago;
+import sares.Model.PagoContexto;
 import sares.Model.Pedido;
 /**
  * FXML Controller class
@@ -70,6 +73,11 @@ public class Cajero3Controller extends CajeroController {
     
     @FXML 
     Label totalpedidos;
+    
+    @FXML
+    private ListView<String> formaPagos;
+    
+    
     /**
      * Initializes the controller class.
      */
@@ -82,10 +90,13 @@ public class Cajero3Controller extends CajeroController {
         try {
             TextFields.bindAutoCompletion(cuentas, Cuenta.getCuentas());
             TextFields.bindAutoCompletion(clientes, Cliente.getClientes());
+            ObservableList<String> opcionesO = FXCollections.observableArrayList(PagoContexto.getMetodoCuentas());
+            this.formaPagos.setItems(opcionesO);
         } catch (SQLException | ParseException ex) {
             Logger.getLogger(Cajero3Controller.class.getName()).log(Level.SEVERE, null, ex);
         }
     }    
+    
    @FXML
     public void cancelarRegistro(MouseEvent event) throws IOException{
         CajeroController controlc = (CajeroController)Sares.setContent("sares/fxml/Cajero.fxml", (Node)event.getSource());
@@ -112,6 +123,7 @@ public class Cajero3Controller extends CajeroController {
             this.getTotal();
         }
     }
+    
     @FXML 
     private void descuentocheckporcentaje(MouseEvent e){
         if (descuentoCheck.isSelected()){
@@ -153,5 +165,15 @@ public class Cajero3Controller extends CajeroController {
     public void registrarCuenta(MouseEvent event) throws SQLException{
         
     }
+    
+    @FXML
+    public void actualizar(KeyEvent event){
+        this.descuentoValor.setText(Float.toString(subtotal*Float.parseFloat(descuentoPorcentaje.getText())/100f));
+        this.totalvalor=this.subtotal-Float.parseFloat(this.descuentoValor.getText())+Float.parseFloat(this.propina.getText());
+        this.total.setText(Float.toString(this.totalvalor));
+    
+    }
+    
+    
     
 }

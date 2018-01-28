@@ -64,7 +64,8 @@ public class Cuenta {
         Cuenta cuenta;
         try (ResultSet cuentaRS = c.consultar("SELECT * FROM Cuenta")) {
             while (cuentaRS.next()){
-                cuenta= new Cuenta(cuentaRS.getInt("id"),cuentaRS.getBoolean("pagada"),cuentaRS.getFloat("total"),Mesa.getMesa(cuentaRS.getInt("mesa")));
+                //cuenta= new Cuenta(cuentaRS.getInt("id"),cuentaRS.getBoolean("pagada"),cuentaRS.getFloat("total"),Mesa.getMesa(cuentaRS.getInt("mesa")));
+                cuenta= new Cuenta(cuentaRS.getInt("id"),cuentaRS.getBoolean("pagada"),cuentaRS.getFloat("total"),null); 
                 lista.add(cuenta);
             }
         }

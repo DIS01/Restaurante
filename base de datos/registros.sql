@@ -134,3 +134,7 @@ INSERT INTO PedidoDetalle(pedido,item,precio,cantidad,detalle) Values (2,1,23.2,
 INSERT INTO PedidoDetalle(pedido,item,precio,cantidad,detalle) Values (2,2,22.2,1,"sin 2");
 INSERT INTO PedidoDetalle(pedido,item,precio,cantidad,detalle) Values (2,3,20.2,1,"sin 3");
 INSERT INTO PedidoDetalle(pedido,item,precio,cantidad,detalle) Values (2,4,23.2,1,"sin 4");
+
+INSERT INTO TipoPago(tipo) values ("Dinero electrónico");
+INSERT INTO TipoPago(tipo) values ("Efectivo");
+INSERT INTO TipoPago(tipo) values ("Tarjeta de crédito");
