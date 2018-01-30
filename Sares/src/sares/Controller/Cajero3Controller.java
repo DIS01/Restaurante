@@ -9,20 +9,32 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.text.ParseException;
+import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.Observable;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
+import javafx.scene.control.ButtonBar.ButtonData;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.GridPane;
+import javafx.util.Pair;
+import org.controlsfx.control.PropertySheet.Item;
 import sares.Model.Cliente;
 import sares.Sares;
 import org.controlsfx.control.textfield.TextFields;
@@ -38,8 +50,8 @@ import sares.Model.Pedido;
 public class Cajero3Controller extends CajeroController {
     
     private LinkedList<Pedido> pedidos;
-    private float subtotal;
-    private float totalvalor;
+    private float subtotal=0.0f;
+    private float totalvalor=0.0f;
     
     @FXML
     TextField cuentas;
@@ -77,7 +89,11 @@ public class Cajero3Controller extends CajeroController {
     @FXML
     private ListView<String> formaPagos;
     
+     @FXML
+    private ListView<String>listapagos;
     
+    @FXML
+    private Button registrar;
     /**
      * Initializes the controller class.
      */
@@ -87,6 +103,8 @@ public class Cajero3Controller extends CajeroController {
         listaCuenta=new CheckBox();
         listaCliente=new CheckBox();
         descuentoCheck=new CheckBox();
+        this.descuentoPorcentaje.setEditable(false);
+        this.registrar.setDisable(true);
         try {
             TextFields.bindAutoCompletion(cuentas, Cuenta.getCuentas());
             TextFields.bindAutoCompletion(clientes, Cliente.getClientes());
@@ -130,6 +148,8 @@ public class Cajero3Controller extends CajeroController {
             descuentoCheck.setSelected(false);
             this.descuentoPorcentaje.setText("0.0");
             this.descuentoPorcentaje.setEditable(false);
+            this.descuentoValor.setText("0.0");
+            this.getTotal();
         }else{
             descuentoCheck.setSelected(true);
       
@@ -168,12 +188,94 @@ public class Cajero3Controller extends CajeroController {
     
     @FXML
     public void actualizar(KeyEvent event){
-        this.descuentoValor.setText(Float.toString(subtotal*Float.parseFloat(descuentoPorcentaje.getText())/100f));
+        this.descuentoPorcentaje.setStyle(" -fx-background-color: silver; -fx-border-width: 2px ;");
+        try {
+            if (this.descuentoPorcentaje.getText() != null || !" ".equals(this.descuentoPorcentaje.getText()) ||  this.descuentoPorcentaje.getText().isEmpty() 
+                    || !"  ".equals(this.descuentoPorcentaje.getText()) ){
+                this.descuentoValor.setText(Float.toString(subtotal*Float.parseFloat(descuentoPorcentaje.getText())/100f));
+            }else{
+                this.descuentoValor.setText("0.0");     
+            }
+        }catch(Exception e){
+            this.descuentoPorcentaje.setStyle("-fx-border-color: red ; -fx-border-width: 2px ;");
+            this.descuentoValor.setText("0.0");
+        }
         this.totalvalor=this.subtotal-Float.parseFloat(this.descuentoValor.getText())+Float.parseFloat(this.propina.getText());
         this.total.setText(Float.toString(this.totalvalor));
-    
     }
     
+    @FXML
+    private void elegirOpcion(MouseEvent event) throws IOException, SQLException {
+        if ("Tarjeta de crédito".equals(this.formaPagos.getSelectionModel().getSelectedItem())) {
+            Dialog<Pair<String, String>> dialog = new Dialog<>();
+            dialog.setTitle("Forma de pago: tarjeta de pago");
+            dialog.setHeaderText(null);
+            ButtonType loginButtonType = new ButtonType("Agregar Pago", ButtonData.OK_DONE);
+            dialog.getDialogPane().getButtonTypes().addAll(loginButtonType, ButtonType.CANCEL);
+
+            GridPane grid = new GridPane();
+            grid.setHgap(10);
+            grid.setVgap(10);
+            grid.setPadding(new Insets(20, 150, 10, 10));
+
+            TextField numCuenta = new TextField();
+            numCuenta.setPromptText("número de cuenta");
+           TextField monto = new TextField();
+            monto.setText(this.total.getText());
+
+            grid.add(new Label("ingrese número de cuenta:"), 0, 0);
+            grid.add(numCuenta, 1, 0);
+            grid.add(new Label("monto:"), 0, 1);
+            grid.add(monto, 1, 1);
+
+            Node loginButton = dialog.getDialogPane().lookupButton(loginButtonType);
+            loginButton.setDisable(true);
+
+            numCuenta.textProperty().addListener((observable, oldValue, newValue) -> {
+                loginButton.setDisable(newValue.trim().isEmpty());
+            });
+            monto.textProperty().addListener((observable, oldValue, newValue) -> {
+                loginButton.setDisable(newValue.trim().isEmpty());
+            });
+
+            dialog.getDialogPane().setContent(grid);
+
+             dialog.setResultConverter(dialogButton -> {
+                if (dialogButton == loginButtonType) {
+                    return new Pair<>(numCuenta.getText(),monto.getText());
+                }
+                return null;
+            });
+            Optional<Pair<String, String>> result = dialog.showAndWait();
+            result.ifPresent(pago -> {
+                this.listapagos.getItems().add(listapagos.getItems().size(), pago.getValue()); 
+            });
+        }else if ("Dinero electrónico".equals(this.formaPagos.getSelectionModel().getSelectedItem())) {
+         
+        }else if ("Efectivo".equals(this.formaPagos.getSelectionModel().getSelectedItem())) {
+            TextInputDialog dialog = new TextInputDialog(this.total.getText());
+            dialog.setTitle("Forma de Pago: efectivo");
+            dialog.setHeaderText(null);
+            dialog.setContentText("Ingrese la cantidad a pagar:");
+            Optional<String> result = dialog.showAndWait();
+            result.ifPresent(name -> this.listapagos.getItems().add(listapagos.getItems().size(), name));
+        }
+        enableRegistro();
+    } 
     
-    
+    /**
+     *
+     */
+    public void enableRegistro(){
+        this.registrar.setDisable(! pagado() );       
+    }
+        
+    public boolean pagado(){
+        float pagos=0.0f;
+        for (String pago : listapagos.getItems()) {
+            pagos+=Float.parseFloat(pago);
+        }
+        System.out.println(pagos);
+        return pagos>=Float.parseFloat(this.total.getText());
+    }
 }
