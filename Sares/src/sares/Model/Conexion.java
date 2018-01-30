@@ -19,10 +19,10 @@ public class Conexion {
 
     public Conexion() {
         host                = "sql10.freesqldatabase.com";
-        usuario             = "sql10217279";
-        clave               = "6ABPslLVs2";
+        usuario             = "sql10218656";
+        clave               = "Qpnc2WQMkA";
         puerto                  = 3306;
-        bd                   = "sql10217279";
+        bd                   = "sql10218656";
         this.servidor= "jdbc:mysql://"+this.host+":"+this.puerto+"/"+bd;
         try{
             conexion=DriverManager.getConnection(this.servidor,this.usuario, this.clave);
