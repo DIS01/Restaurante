@@ -82,9 +82,8 @@ public class Pedido {
     
     public static LinkedList<Pedido> getPedidos() throws SQLException, ParseException{
         LinkedList<Pedido> lista= new LinkedList();
-        Conexion c=new Conexion();
         Pedido pedido;
-        ResultSet pedidoRS = c.consultar("SELECT * FROM Pedido"); 
+        ResultSet pedidoRS = Conexion.consultar("SELECT * FROM Pedido"); 
         while (pedidoRS.next()){
             pedido= new Pedido(pedidoRS.getInt("id"),pedidoRS.getTime("horaingreso"),pedidoRS.getTime("tiempoestimado"),pedidoRS.getString("estado"),null,pedidoRS.getDate("fecha"));
            lista.add(pedido);
@@ -95,9 +94,8 @@ public class Pedido {
     
     public static LinkedList<Pedido> getPedidos(int idCuenta) throws SQLException, ParseException{
         LinkedList<Pedido> lista= new LinkedList();
-        Conexion c=new Conexion();
         Pedido pedido;
-        ResultSet pedidoRS = c.consultar("SELECT * FROM Pedido where cuenta="+idCuenta); 
+        ResultSet pedidoRS = Conexion.consultar("SELECT * FROM Pedido where cuenta="+idCuenta); 
         while (pedidoRS.next()){
             pedido= new Pedido(pedidoRS.getInt("id"),pedidoRS.getTime("horaingreso"),pedidoRS.getTime("tiempoestimado"),pedidoRS.getString("estado"),null,pedidoRS.getDate("fecha"));
            lista.add(pedido);
@@ -120,13 +118,21 @@ public class Pedido {
     }
     
     public static int insertarPedido( String estado , int cuenta ) throws SQLException{
-        Conexion conexionConDB = new Conexion();
-        CallableStatement statement = conexionConDB.getConexion().prepareCall("{call insertarCuentaMesero(?,?)}");
+        CallableStatement statement = Conexion.getConexion().prepareCall("{call insertarPedidoMesero(?,?)}");
         statement.setString(1,estado); 
         statement.setInt(2,cuenta); 
         statement.execute();
         ResultSet r = statement.getResultSet();
         r.next();
         return r.getInt(1);
+    }
+    
+    public static void actualizarPedidoCuenta(int cuentaID ,int pedidoID,Time tiempoEstimado1,float total1) throws SQLException{
+        CallableStatement statement = Conexion.getConexion().prepareCall("{call actualizarPedidoCuenta(?,?,?,?)}");
+        statement.setInt(1,cuentaID); 
+        statement.setInt(2,pedidoID);
+        statement.setTime(3,tiempoEstimado1);
+        statement.setFloat(4,total1);
+        statement.execute();
     }
 }

@@ -61,9 +61,8 @@ public class Cuenta {
     }
     public static LinkedList<Cuenta> getCuentas() throws SQLException, ParseException{
         LinkedList<Cuenta> lista= new LinkedList();
-        Conexion c=new Conexion();
         Cuenta cuenta;
-        try (ResultSet cuentaRS = c.consultar("SELECT * FROM Cuenta")) {
+        try (ResultSet cuentaRS = Conexion.consultar("SELECT * FROM Cuenta")) {
             while (cuentaRS.next()){
                 //cuenta= new Cuenta(cuentaRS.getInt("id"),cuentaRS.getBoolean("pagada"),cuentaRS.getFloat("total"),Mesa.getMesa(cuentaRS.getInt("mesa")));
                 cuenta= new Cuenta(cuentaRS.getInt("id"),cuentaRS.getBoolean("pagada"),cuentaRS.getFloat("total"),null); 
@@ -79,8 +78,7 @@ public class Cuenta {
     }   
     
     public static int insertarCuenta(int mesa ) throws SQLException{
-        Conexion conexionConDB = new Conexion();
-        CallableStatement statement = conexionConDB.getConexion().prepareCall("{call insertarCuentaMesero(?)}");
+        CallableStatement statement = Conexion.getConexion().prepareCall("{call insertarCuentaMesero(?)}");
         statement.setInt(1,mesa); 
         statement.execute();
         ResultSet r = statement.getResultSet();

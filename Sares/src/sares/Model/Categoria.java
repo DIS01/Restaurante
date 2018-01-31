@@ -45,13 +45,12 @@ public class Categoria {
     }
     
     public static Categoria getCategoria(int idCategoria) throws SQLException, ParseException{
-        Conexion c=new Conexion();
         Categoria categoria=null;
-            try (ResultSet categoriaRS = c.consultar("SELECT * FROM Categoria where id="+idCategoria)) {
-                if(categoriaRS.next()){
-                    categoria= new Categoria(categoriaRS.getString("nombre"));
-                }   }
-        c.CerrarConexion();
+        ResultSet categoriaRS = Conexion.consultar("SELECT * FROM Categoria where id="+idCategoria);
+        if(categoriaRS.next()){
+            categoria= new Categoria(categoriaRS.getString("nombre"));
+        }   
+        categoriaRS.close();
         return categoria;
     }
     

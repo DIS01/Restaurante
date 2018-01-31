@@ -113,17 +113,15 @@ public class Mesero2Controller extends MeseroController {
     
     public LinkedList<Categoria> getCategorias() throws SQLException{
         int id=1;
-        Conexion c=new Conexion();
         LinkedList<Categoria> lista = new LinkedList();
         Categoria cate;
-        ResultSet categoriasRS = c.consultar("SELECT * FROM Categoria order by id"); 
+        ResultSet categoriasRS = Conexion.consultar("SELECT * FROM Categoria order by id"); 
         while (categoriasRS.next()){
             cate= new Categoria();
             cate.setNombre(id+".-"+categoriasRS.getString("nombre"));
             lista.add(cate);
             id++;
         }
-        categoriasRS.close();
         return lista;
     }
 
@@ -135,17 +133,40 @@ public class Mesero2Controller extends MeseroController {
     }
     
     @FXML
-    private void handleGoBack(MouseEvent event) throws SQLException {
+    private void handleGoBack(MouseEvent event) throws SQLException, IOException {
         int cuentaID=Cuenta.insertarCuenta(Integer.parseInt(mesaText.getText()));
         int pedidoID=Pedido.insertarPedido("en cola", cuentaID);
         float total=0.0f;
-        Time tiempo;
+        int contador=0;
+        Time temp;
+        Time tiempo=new Time(0,0,0);
         for (HashMap.Entry<Item,LinkedList<Object>> entry : pedido.entrySet()) {
             total+=entry.getKey().getValor()*(Integer) entry.getValue().get(0);
-            tiempo
-            PedidoDetalle.insertarPedidoDetalleMesero( pedidoID,entry.getKey().getId() ,total,(Integer) entry.getValue().get(0),(String)entry.getValue().get(1) );
+            contador++;
+            temp=tiempoPlatillo(entry.getKey());
+            if(tiempo.compareTo(temp)<0){
+                tiempo=temp;
+            } 
+            PedidoDetalle.insertarPedidoDetalleMesero(pedidoID,entry.getKey().getId() ,total,(Integer) entry.getValue().get(0),(String)entry.getValue().get(1).toString() );
         }
+        Pedido.actualizarPedidoCuenta(cuentaID, pedidoID,getTime(tiempo,3*(contador-1)), total);
+        MeseroController control = (MeseroController)Sares.setContent("sares/fxml/Mesero.fxml", buttonGoBack);
+        control.meseroControllerCreate(this.getMesero());
     }
     
+    public Time getTime(Time t1, int adicionalmin){
+        Time t2 =Time.valueOf("00:"+adicionalmin+":00");
+        return new Time(t1.getTime()+t2.getTime());
+        
+    }
+    public static Time tiempoPlatillo(Item item) throws SQLException{
+        if(item.getCategoria().getNombre().equals("Platillos de entrada") || item.getCategoria().getNombre().equals("Postres") || item.getCategoria().getNombre().equals("Platos Fuerte") ){
+            ResultSet r=Conexion.consultar("Select * from Item,Platillo where Item.id=Platillo.item and Item.id="+item.getId());
+            if (r.next()){
+                return r.getTime("tiempoEstimado");
+            }
+        }
+        return null;
+    }
     
 }

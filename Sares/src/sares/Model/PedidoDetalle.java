@@ -55,9 +55,8 @@ public class PedidoDetalle {
     }
 
     public static float getTotal(Pedido pedido) throws SQLException{
-        Conexion c=new Conexion();
         float subtotal=0.0f;
-        ResultSet pedidoRS = c.consultar("SELECT * FROM PedidoDetalle where pedido="+pedido.id); 
+        ResultSet pedidoRS = Conexion.consultar("SELECT * FROM PedidoDetalle where pedido="+pedido.id); 
         while (pedidoRS.next()){
             subtotal+=pedidoRS.getFloat("precio");
         }
@@ -66,8 +65,7 @@ public class PedidoDetalle {
     }
     
     public static void insertarPedidoDetalleMesero( int pedido,int item ,float precio ,int cantidad , String detalle  ) throws SQLException{
-        Conexion conexionConDB = new Conexion();
-        CallableStatement statement = conexionConDB.getConexion().prepareCall("{call insertarPedidoDetalleMesero(?,?,?,?,?)}");
+        CallableStatement statement = Conexion.getConexion().prepareCall("{call insertarPedidoDetalleMesero(?,?,?,?,?)}");
         statement.setInt(1,pedido);
         statement.setInt(2,item);
         statement.setFloat(3,precio); 

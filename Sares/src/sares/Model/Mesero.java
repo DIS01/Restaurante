@@ -29,8 +29,8 @@ public class Mesero extends Empleado {
             return null;
     }
 
-    public static Mesero getMesero(int dni,Conexion co) throws SQLException{
-        ResultSet mesero = co.consultar("Select * From Persona,Empleado where Persona.dni="+dni + " and Persona.dni=Empleado.persona ");
+    public static Mesero getMesero(int dni) throws SQLException{
+        ResultSet mesero = Conexion.consultar("Select * From Persona,Empleado where Persona.dni="+dni + " and Persona.dni=Empleado.persona ");
         mesero.next();
         return new Mesero(mesero.getString("dni"),mesero.getString("nombres"),mesero.getString("apellidos"),mesero.getString("domicilio"));
     }

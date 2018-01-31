@@ -58,3 +58,10 @@ BEGIN
     INSERT INTO PedidoDetalle(pedido, item,precio,cantidad,detalle) 
     values (pedido, item,precio,cantidad,detalle);
 END $$;
+
+DELIMITER $$
+CREATE PROCEDURE actualizarPedidoCuenta(cuentaID INT,pedidoID INT ,tiempoEstimado1 TIME , total1 float)   
+BEGIN  
+    UPDATE Pedido SET tiempoEstimado=tiempoEstimado1 WHERE id=pedidoID;
+    UPDATE Cuenta SET total=total1 where id=cuentaID;
+END $$;

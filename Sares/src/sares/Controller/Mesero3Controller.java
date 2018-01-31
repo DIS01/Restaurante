@@ -10,14 +10,11 @@ import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javafx.application.Platform;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -33,7 +30,6 @@ import javafx.scene.layout.VBox;
 import sares.Model.Categoria;
 import sares.Model.Conexion;
 import sares.Model.Item;
-import sares.Model.Mesero;
 import sares.Model.Platillo;
 import sares.Sares;
 import sares.Model.Bebida;
@@ -114,30 +110,28 @@ public class Mesero3Controller extends MeseroController {
 
     public LinkedList<Item> getItems(Categoria c) throws SQLException, ParseException {
         LinkedList<Item> lista = new LinkedList();
-        Conexion co = new Conexion();
         if ("Bebidas".equals(c.getNombre())) {
-            ResultSet itemsRS = co.consultar("SELECT * FROM Item,Bebida where Item.id=Bebida.item");
+            ResultSet itemsRS = Conexion.consultar("SELECT * FROM Item,Bebida where Item.id=Bebida.item");
             while (itemsRS.next()) {
                 lista.add(new Bebida(itemsRS.getString("marca"),itemsRS.getInt("id"), itemsRS.getFloat("valor"), itemsRS.getString("nombre"), itemsRS.getBoolean("activo"), Categoria.getCategoria(itemsRS.getInt("categoria"))));
             }
         } else if ("Combo".equals(c.getNombre())) {
 
         } else if ("Platillos de entrada".equals(c.getNombre())) {
-            ResultSet itemsRS = co.consultar("SELECT * FROM Item,Categoria,Platillo where Item.id=Platillo.item and Item.categoria=Categoria.id and Categoria.nombre=\""+c.getNombre()+"\"");
+            ResultSet itemsRS = Conexion.consultar("SELECT * FROM Item,Categoria,Platillo where Item.id=Platillo.item and Item.categoria=Categoria.id and Categoria.nombre=\""+c.getNombre()+"\"");
             while (itemsRS.next()) {
                 lista.add(new Platillo(itemsRS.getTime("tiempoEstimado"),itemsRS.getInt("id"), itemsRS.getFloat("valor"), itemsRS.getString("nombre"), itemsRS.getBoolean("activo"), Categoria.getCategoria(itemsRS.getInt("categoria"))));
             }
         } else if ("Platos Fuerte".equals(c.getNombre())) {
-            ResultSet itemsRS = co.consultar("SELECT * FROM Item,Categoria,Platillo where Item.id=Platillo.item and Item.categoria=Categoria.id and Categoria.nombre=\""+c.getNombre()+"\"");
+            ResultSet itemsRS = Conexion.consultar("SELECT * FROM Item,Categoria,Platillo where Item.id=Platillo.item and Item.categoria=Categoria.id and Categoria.nombre=\""+c.getNombre()+"\"");
             while (itemsRS.next()) {
                 lista.add(new Platillo(itemsRS.getTime("tiempoEstimado"),itemsRS.getInt("id"), itemsRS.getFloat("valor"), itemsRS.getString("nombre"), itemsRS.getBoolean("activo"), Categoria.getCategoria(itemsRS.getInt("categoria"))));
             }
         } else if ("Postres".equals(c.getNombre())) {
-            ResultSet itemsRS = co.consultar("SELECT * FROM Item,Categoria,Platillo where Item.id=Platillo.item and Item.categoria=Categoria.id and Categoria.nombre=\""+c.getNombre()+"\"");
+            ResultSet itemsRS = Conexion.consultar("SELECT * FROM Item,Categoria,Platillo where Item.id=Platillo.item and Item.categoria=Categoria.id and Categoria.nombre=\""+c.getNombre()+"\"");
             while (itemsRS.next()) {
                 lista.add(new Platillo(itemsRS.getTime("tiempoEstimado"),itemsRS.getInt("id"), itemsRS.getFloat("valor"), itemsRS.getString("nombre"), itemsRS.getBoolean("activo"), Categoria.getCategoria(itemsRS.getInt("categoria"))));
             }
-            itemsRS.close();
         }
         return lista;
     }
