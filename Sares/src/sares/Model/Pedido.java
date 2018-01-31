@@ -1,5 +1,6 @@
 package sares.Model;
 
+import java.sql.CallableStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
@@ -116,5 +117,16 @@ public class Pedido {
             total+=PedidoDetalle.getTotal(pedido);
         }
         return total;
+    }
+    
+    public static int insertarPedido( String estado , int cuenta ) throws SQLException{
+        Conexion conexionConDB = new Conexion();
+        CallableStatement statement = conexionConDB.getConexion().prepareCall("{call insertarCuentaMesero(?,?)}");
+        statement.setString(1,estado); 
+        statement.setInt(2,cuenta); 
+        statement.execute();
+        ResultSet r = statement.getResultSet();
+        r.next();
+        return r.getInt(1);
     }
 }

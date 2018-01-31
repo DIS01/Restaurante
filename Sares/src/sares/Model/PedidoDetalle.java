@@ -5,6 +5,7 @@
  */
 package sares.Model;
 
+import java.sql.CallableStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.LinkedList;
@@ -62,6 +63,16 @@ public class PedidoDetalle {
         }
         pedidoRS.close();
         return subtotal;
-        
+    }
+    
+    public static void insertarPedidoDetalleMesero( int pedido,int item ,float precio ,int cantidad , String detalle  ) throws SQLException{
+        Conexion conexionConDB = new Conexion();
+        CallableStatement statement = conexionConDB.getConexion().prepareCall("{call insertarPedidoDetalleMesero(?,?,?,?,?)}");
+        statement.setInt(1,pedido);
+        statement.setInt(2,item);
+        statement.setFloat(3,precio); 
+        statement.setInt(4,cantidad); 
+        statement.setString(5,detalle);
+        statement.execute();
     }
 }

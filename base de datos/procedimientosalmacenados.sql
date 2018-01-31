@@ -35,18 +35,26 @@ BEGIN
 	INSERT INTO PagoTarjeta(numTarjeta,pagoCuenta) values (numTarjetaID,pagoCuentaID);
 END $$;
 
+
+
 DELIMITER $$
-CREATE PROCEDURE insertarPedido(horaIngreso Time, tiempoEstimado Time, estado VARCHAR(100),  mesa int)   
+CREATE PROCEDURE insertarCuentaMesero(mesa INT)   
 BEGIN  
-    INSERT INTO Pedido(estado,mesa,horaIngreso,tiempoEstimado) 
-    values (estado, mesa,horaIngreso,tiempoEstimado);
+    INSERT INTO Cuenta(pagada,total,mesa) values (0,0.0,mesa);
+    select max(c.id) from Cuenta c;
 END $$;
 
 DELIMITER $$
-CREATE PROCEDURE insertarPedidoDetalle(pedido int, item int, precio float, cantidad int, detalle VARCHAR(100), cuenta int)   
+CREATE PROCEDURE insertarPedidoMesero( estado VARCHAR(100), cuenta int)   
 BEGIN  
-    INSERT INTO PedidoDetalle(pedido, item,precio,cantidad,detalle,cuenta) 
-    values (pedido, item,precio,cantidad,detalle,cuenta);
+    INSERT INTO Pedido(horaIngreso,tiempoEstimado,estado,cuenta,fecha) 
+    values ( CURRENT_TIME(),"00:00:00",estado,cuenta, CURDATE() );
+    Select max(p.id) from Pedido p;
 END $$;
 
-
+DELIMITER $$
+CREATE PROCEDURE insertarPedidoDetalleMesero(pedido int, item int, precio float, cantidad int, detalle VARCHAR(100))   
+BEGIN  
+    INSERT INTO PedidoDetalle(pedido, item,precio,cantidad,detalle) 
+    values (pedido, item,precio,cantidad,detalle);
+END $$;

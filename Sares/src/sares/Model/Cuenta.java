@@ -1,5 +1,6 @@
 package sares.Model;
 
+import java.sql.CallableStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.ParseException;
@@ -76,5 +77,15 @@ public class Cuenta {
     public String toString() {
         return this.id +", " + this.mesa;
     }   
+    
+    public static int insertarCuenta(int mesa ) throws SQLException{
+        Conexion conexionConDB = new Conexion();
+        CallableStatement statement = conexionConDB.getConexion().prepareCall("{call insertarCuentaMesero(?)}");
+        statement.setInt(1,mesa); 
+        statement.execute();
+        ResultSet r = statement.getResultSet();
+        r.next();
+        return r.getInt(1);
+    }
 
 }

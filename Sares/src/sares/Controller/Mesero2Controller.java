@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Time;
 import java.text.ParseException;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -28,7 +29,10 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import sares.Model.Categoria;
 import sares.Model.Conexion;
+import sares.Model.Cuenta;
 import sares.Model.Item;
+import sares.Model.Pedido;
+import sares.Model.PedidoDetalle;
 import sares.Sares;
 
 /**
@@ -131,9 +135,17 @@ public class Mesero2Controller extends MeseroController {
     }
     
     @FXML
-    private void handleGoBack(MouseEvent event) {
+    private void handleGoBack(MouseEvent event) throws SQLException {
+        int cuentaID=Cuenta.insertarCuenta(Integer.parseInt(mesaText.getText()));
+        int pedidoID=Pedido.insertarPedido("en cola", cuentaID);
+        float total=0.0f;
+        Time tiempo;
         for (HashMap.Entry<Item,LinkedList<Object>> entry : pedido.entrySet()) {
-            System.out.println("Item : " + entry.getKey() + " Count : " + entry.getValue());
+            total+=entry.getKey().getValor()*(Integer) entry.getValue().get(0);
+            tiempo
+            PedidoDetalle.insertarPedidoDetalleMesero( pedidoID,entry.getKey().getId() ,total,(Integer) entry.getValue().get(0),(String)entry.getValue().get(1) );
         }
     }
+    
+    
 }
