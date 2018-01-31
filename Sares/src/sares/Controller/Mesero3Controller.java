@@ -176,8 +176,9 @@ public class Mesero3Controller extends MeseroController {
         });
         this.mesero3ListViewItems.setItems(items1);
     }
-    public void setCuentaMesa(String mesa,String cuenta){
+    public void setCuentaMesa(String mesa,String cuenta,HashMap<Item, LinkedList<Object>> pedido ){
         this.mesa.setText("Mesa #:"+ mesa);
         this.cuenta.setText("Cuenta #:"+cuenta);   
+        this.pedido=pedido;
     }
 }

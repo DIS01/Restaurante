@@ -38,7 +38,7 @@ import sares.Sares;
  */
 public class Mesero2Controller extends MeseroController {
     
-    private HashMap<Item,LinkedList<Object>> pedido = new HashMap<>();
+    private HashMap<Item,LinkedList<Object>> pedido=new  HashMap<>();
     
     @FXML
     private VBox root;
@@ -86,10 +86,14 @@ public class Mesero2Controller extends MeseroController {
             control = (Mesero3Controller)Sares.setContent("sares/fxml/Mesero3.fxml", (Node)event.getSource());
         }else if("Platos Fuerte".equals(this.menu_Options.getSelectionModel().getSelectedItem().split(".-")[1])) {
             control = (Mesero3Controller)Sares.setContent("sares/fxml/Mesero3.fxml", (Node)event.getSource());
+        }else if("Bebidas".equals(this.menu_Options.getSelectionModel().getSelectedItem().split(".-")[1])) {
+            control = (Mesero3Controller)Sares.setContent("sares/fxml/Mesero3.fxml", (Node)event.getSource());
+        }else if("Postres".equals(this.menu_Options.getSelectionModel().getSelectedItem().split(".-")[1])) {
+            control = (Mesero3Controller)Sares.setContent("sares/fxml/Mesero3.fxml", (Node)event.getSource());
         }
         control.assignCategoria(Categoria.getCategoria(idcategoria));
         control.meseroControllerCreate(this.getMesero());
-        control.setCuentaMesa(mesaText.getText(), cuentaText.getText());
+        control.setCuentaMesa(mesaText.getText(), cuentaText.getText(),pedido);
         control.setVentana();
             
     
