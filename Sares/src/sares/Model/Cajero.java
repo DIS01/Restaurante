@@ -33,8 +33,8 @@ public class Cajero extends Empleado {
             // TODO implement here
     }
         
-    public static Cajero getInformacionCajero(int dni,Conexion co) throws SQLException{
-        ResultSet cajero = co.consultar("Select * From Persona,Empleado where Persona.dni="+dni + " and Persona.dni=Empleado.persona ");
+    public static Cajero getInformacionCajero(int dni) throws SQLException{
+        ResultSet cajero = Conexion.consultar("Select * From Persona,Empleado where Persona.dni="+dni + " and Persona.dni=Empleado.persona ");
         cajero.next();
         return new Cajero(cajero.getString("dni"),cajero.getString("nombres"),cajero.getString("apellidos"),cajero.getString("domicilio"));
 

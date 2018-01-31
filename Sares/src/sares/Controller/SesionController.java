@@ -8,6 +8,7 @@ package sares.Controller;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.CallableStatement;
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
@@ -45,7 +46,9 @@ public class SesionController implements Initializable {
     final int CAJERO = 3;
     final int COCINERO = 4;
     
-    Conexion conexionConDB;
+    //Conexion conexionConDB;
+    Connection conexionConDB;
+    
     ResultSet usuario;
     @FXML
     private Label wrongUser;
@@ -62,8 +65,9 @@ public class SesionController implements Initializable {
     }    
     
     private void pruebaIngresoCredenciales() throws SQLException{
-        this.conexionConDB = new Conexion();
-        CallableStatement statement = conexionConDB.getConexion().prepareCall("{call iniciarSesion(?,?)}");
+        //this.conexionConDB = new Conexion();
+        this.conexionConDB = Conexion.getConexion();
+        CallableStatement statement = conexionConDB.prepareCall("{call iniciarSesion(?,?)}");
         statement.setString(1,user.getText()); 
         statement.setString(2,password.getText()); 
         statement.execute();
@@ -76,12 +80,12 @@ public class SesionController implements Initializable {
                 System.out.println("administrador");
                 break;
             case MESERO:
-                Mesero mesero= Mesero.getMesero(usuario.getInt("persona"),conexionConDB);
+                Mesero mesero= Mesero.getMesero(usuario.getInt("persona"));
                 MeseroController control = (MeseroController)Sares.setContent("sares/fxml/Mesero.fxml", btnIngresar);
                 control.meseroControllerCreate(mesero);
                 break;
             case CAJERO:
-                Cajero c= Cajero.getInformacionCajero(usuario.getInt("persona"),conexionConDB);
+                Cajero c= Cajero.getInformacionCajero(usuario.getInt("persona"));
                 CajeroController controlc = (CajeroController)Sares.setContent("sares/fxml/Cajero.fxml", btnIngresar);
                 controlc.setnombre(c);
                 break;
@@ -109,8 +113,7 @@ public class SesionController implements Initializable {
         
         pruebaIngresoCredenciales();
         
-        if(usuario.next())
-        {   
+        if(usuario.next()){   
             System.out.println("Existe Usuario!!");
             verifyPassword();
         }

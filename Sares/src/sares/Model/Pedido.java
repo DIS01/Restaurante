@@ -81,9 +81,8 @@ public class Pedido {
     
     public static LinkedList<Pedido> getPedidos() throws SQLException, ParseException{
         LinkedList<Pedido> lista= new LinkedList();
-        Conexion c=new Conexion();
         Pedido pedido;
-        ResultSet pedidoRS = c.consultar("SELECT * FROM Pedido"); 
+        ResultSet pedidoRS = Conexion.consultar("SELECT * FROM Pedido"); 
         while (pedidoRS.next()){
             pedido= new Pedido(pedidoRS.getInt("id"),pedidoRS.getTime("horaingreso"),pedidoRS.getTime("tiempoestimado"),pedidoRS.getString("estado"),null,pedidoRS.getDate("fecha"));
            lista.add(pedido);
@@ -94,9 +93,8 @@ public class Pedido {
     
     public static LinkedList<Pedido> getPedidos(int idCuenta) throws SQLException, ParseException{
         LinkedList<Pedido> lista= new LinkedList();
-        Conexion c=new Conexion();
         Pedido pedido;
-        ResultSet pedidoRS = c.consultar("SELECT * FROM Pedido where cuenta="+idCuenta); 
+        ResultSet pedidoRS = Conexion.consultar("SELECT * FROM Pedido where cuenta="+idCuenta); 
         while (pedidoRS.next()){
             pedido= new Pedido(pedidoRS.getInt("id"),pedidoRS.getTime("horaingreso"),pedidoRS.getTime("tiempoestimado"),pedidoRS.getString("estado"),null,pedidoRS.getDate("fecha"));
            lista.add(pedido);
