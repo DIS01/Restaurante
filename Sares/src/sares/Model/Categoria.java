@@ -1,5 +1,8 @@
 package sares.Model;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.text.ParseException;
 import java.util.*;
 
 /**
@@ -20,10 +23,6 @@ public class Categoria {
 	 */
 	private String nombre;
 
-	/**
-	 * 
-	 */
-        private String descripcion;
         /**
 	 * 
 	 */
@@ -44,4 +43,16 @@ public class Categoria {
     public void setListItems(LinkedList<Item> listItems) {
         this.listItem = listItems;
     }
+    
+    public static Categoria getCategoria(int idCategoria) throws SQLException, ParseException{
+        Conexion c=new Conexion();
+        Categoria categoria=null;
+            try (ResultSet categoriaRS = c.consultar("SELECT * FROM Categoria where id="+idCategoria)) {
+                if(categoriaRS.next()){
+                    categoria= new Categoria(categoriaRS.getString("nombre"));
+                }   }
+        c.CerrarConexion();
+        return categoria;
+    }
+    
 }

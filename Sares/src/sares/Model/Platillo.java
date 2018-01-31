@@ -1,23 +1,27 @@
 package sares.Model;
 
 import java.sql.Time;
-import java.util.*;
 
 /**
  * 
  */
 public class Platillo extends Item{
 
-    public Platillo(Time tiempoEstimado, float precio, String nombre, String descripcion, boolean promocion, float porcentaje) {
-        super(precio, nombre, descripcion, promocion, porcentaje);
+    /**
+     *  
+    */
+    private Time tiempoEstimado;
+        
+    public Platillo(Time tiempoEstimado, float valor, String nombre, boolean activo, Categoria categoria) {
+        super(valor, nombre, activo, categoria);
         this.tiempoEstimado = tiempoEstimado;
     }
 
-	/**
-	 * 
-	 */
-	private Time tiempoEstimado;
-
+    public Platillo(Time tiempoEstimado, int id, float valor, String nombre, boolean activo, Categoria categoria) {
+        super(id, valor, nombre, activo, categoria);
+        this.tiempoEstimado = tiempoEstimado;
+    }
+    
     public Time getTiempoEstimado() {
         return tiempoEstimado;
     }

@@ -4,22 +4,22 @@ package sares.Model;
  * 
  */
 public class Bebida extends Item{
+    
+    /**
+    * 
+    */
+    private String marca;
 
-    public Bebida(String marca, float contenido, float precio, String nombre, String descripcion, boolean promocion, float porcentaje) {
-        super(precio, nombre, descripcion, promocion, porcentaje);
+    public Bebida(String marca, int id, float valor, String nombre, boolean activo, Categoria categoria) {
+        super(id, valor, nombre, activo, categoria);
         this.marca = marca;
-        this.contenido = contenido;
     }
-
-	/**
-	 * 
-	 */
-	private String marca;
-        /**
-	 * 
-	 */
-	private float contenido;
-
+        
+    public Bebida(String marca, float valor, String nombre, boolean activo, Categoria categoria) {
+        super(valor, nombre, activo, categoria);
+        this.marca = marca;
+    }
+    
     public String getMarca() {
         return marca;
     }
@@ -27,14 +27,5 @@ public class Bebida extends Item{
     public void setMarca(String marca) {
         this.marca = marca;
     }
-
-    public float getContenido() {
-        return contenido;
-    }
-
-    public void setContenido(float contenido) {
-        this.contenido = contenido;
-    }
-
     
 }

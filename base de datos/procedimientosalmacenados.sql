@@ -12,6 +12,30 @@ BEGIN
 END $$;
 
 DELIMITER $$
+CREATE PROCEDURE cuentaCliente(clienteID INT, cuentaID INT ,totalPago FLOAT )   
+BEGIN  
+    UPDATE Cuenta SET cliente=clienteID,pagada=1, total=totalPago WHERE cuenta=cuentaID;
+END $$;
+
+DELIMITER $$
+CREATE PROCEDURE registrarPagoCuenta(tipoPagoID INT, cuentaID INT, cantidad float  )   
+BEGIN  
+	INSERT INTO PagoCuenta(tipoPago,cuenta,valor) values (tipoPagoID,cuentaID,cantidad);
+END $$;
+
+DELIMITER $$
+CREATE PROCEDURE registrarPagoElectronico(identificadorID VARCHAR(100),pagoCuentaID INT)   
+BEGIN  
+	INSERT INTO PagoDineroElectronico(identificador,pagoCuenta) values (identificadorID,pagoCuentaID);
+END $$;
+
+DELIMITER $$
+CREATE PROCEDURE registrarPagoTarjeta(numTarjetaID VARCHAR(100),pagoCuentaID INT)   
+BEGIN  
+	INSERT INTO PagoTarjeta(numTarjeta,pagoCuenta) values (numTarjetaID,pagoCuentaID);
+END $$;
+
+DELIMITER $$
 CREATE PROCEDURE insertarPedido(horaIngreso Time, tiempoEstimado Time, estado VARCHAR(100),  mesa int)   
 BEGIN  
     INSERT INTO Pedido(estado,mesa,horaIngreso,tiempoEstimado) 

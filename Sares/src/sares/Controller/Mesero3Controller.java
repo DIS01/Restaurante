@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -21,7 +22,6 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
@@ -43,22 +43,12 @@ import sares.Model.Bebida;
  *
  * @author steevenrodriguez
  */
-public class Mesero3Controller implements Initializable {
+public class Mesero3Controller extends MeseroController {
 
-    private Mesero mesero;
-    private Categoria categoria;
-
-    public Mesero3Controller() {
-    }
-
-    public Mesero3Controller(Categoria categoria) {
-        this.categoria = new Categoria();
-        this.categoria = categoria;
-    }
-    private Calendar time;
+    private Categoria categoria;    
     private LinkedList<Item> items;
     private ObservableList<HBox> items1;
-    private HashMap<Item, LinkedList<Object>> pedido = new HashMap<>();
+    private HashMap<Item, LinkedList<Object>> pedido ;
     @FXML
     private VBox root;
     @FXML
@@ -66,9 +56,10 @@ public class Mesero3Controller implements Initializable {
     @FXML
     private Label mesero3LblNombre;
     @FXML
-    private Label tiempo;
+    private Label mesa;
     @FXML
-    private Button BtnSignOut;
+    private Label cuenta;
+
     @FXML
     private ListView<HBox> mesero3ListViewItems;
     @FXML
@@ -79,56 +70,12 @@ public class Mesero3Controller implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-
-            this.time = Calendar.getInstance();
-            SimpleDateFormat sdf1 = new SimpleDateFormat("HH:mm:ss");
-            this.tiempo.setText(sdf1.format(this.time.getTime()));
-            this.hbox.setSpacing(100);
-
-            
-
-            Thread thread = new Thread(new Runnable() {
-                @Override
-
-                public void run() {
-                    while (true) {
-                        try {
-                            Thread.sleep(1000);
-                        } catch (InterruptedException ex) {
-                            Logger.getLogger(MeseroController.class.getName()).log(Level.SEVERE, null, ex);
-                        }
-                        Platform.runLater(new Runnable() {
-
-                            public void run() {
-                                Mesero3Controller.this.time = Calendar.getInstance();
-                                SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
-                                Mesero3Controller.this.tiempo.setText(sdf.format(Mesero3Controller.this.time.getTime()));
-
-                            }
-                        });
-                    }
-                }
-            });
-            thread.setDaemon(true);
-            thread.start();
-
-
+        reloj();
     }
-
-    @FXML
-    private void handleSignOutAction(MouseEvent event) {
-        try {
-            System.out.println("SignOut");
-            Sares.setContent("sares/fxml/Sesion.fxml", root);
-        } catch (IOException ex) {
-            Logger.getLogger(Mesero2Controller.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-
+    
     @FXML
     private void handleGoBack(MouseEvent event) {
         try {
-            
             this.items1.forEach((t) -> {
                 TextField tf = (TextField) t.getChildren().get(1);
                 
@@ -139,7 +86,7 @@ public class Mesero3Controller implements Initializable {
                     String nombre1 = nombre.getText();
                     this.items.forEach((item) -> {
                         
-                        if (item.getNombre().equals(nombre1)) {
+                        if (item.getNombre().equals(nombre1.split(".-")[1])) {
                             System.out.println(item.getNombre());
                             LinkedList<Object> details = new LinkedList<>();
                             TextArea ta1 = (TextArea) vboxTemp.getChildren().get(1);
@@ -148,98 +95,89 @@ public class Mesero3Controller implements Initializable {
                             details.add(ta1);
                             
                             this.pedido.put(item, details);
-
                         }
                     });
-
                 }
-
             });
             Mesero2Controller control = (Mesero2Controller) Sares.setContent("sares/fxml/Mesero2.fxml", hbox);
             control.setPedido(pedido);
+            control.meseroControllerCreate(this.getMesero());
+            control.setCuentaMesa(mesa.getText().split("#:")[1], cuenta.getText().split("#:")[1]);
         } catch (IOException ex) {
             Logger.getLogger(Mesero3Controller.class.getName()).log(Level.SEVERE, null, ex);
         }
-
-    }
-
-    public void assignMesero(Mesero mesero) {
-        this.mesero = new Mesero();
-        this.mesero = mesero;
-        this.mesero3LblNombre.setText(this.mesero.getNombre());
     }
 
     public void assignCategoria(Categoria categoria) {
         this.categoria = categoria;
     }
 
-    public LinkedList<Item> getItems(Categoria c) throws SQLException {
+    public LinkedList<Item> getItems(Categoria c) throws SQLException, ParseException {
         LinkedList<Item> lista = new LinkedList();
         Conexion co = new Conexion();
         if ("Bebidas".equals(c.getNombre())) {
             ResultSet itemsRS = co.consultar("SELECT * FROM Item,Bebida where Item.id=Bebida.item");
             while (itemsRS.next()) {
-                lista.add(new Bebida(itemsRS.getString("marca"), itemsRS.getFloat("contenido"), itemsRS.getFloat("valor"), itemsRS.getString("nombre"), itemsRS.getString("descripcion"), itemsRS.getBoolean("promo"),
-                        itemsRS.getFloat("porcentaje")));
+                lista.add(new Bebida(itemsRS.getString("marca"),itemsRS.getInt("id"), itemsRS.getFloat("valor"), itemsRS.getString("nombre"), itemsRS.getBoolean("activo"), Categoria.getCategoria(itemsRS.getInt("categoria"))));
             }
         } else if ("Combo".equals(c.getNombre())) {
 
         } else if ("Platillos de entrada".equals(c.getNombre())) {
-            ResultSet itemsRS = co.consultar("SELECT * FROM Item,CategoriaItem,Platillo where Item.id=Platillo.item and Item.id=CategoriaItem.item and CategoriaItem.categoria=1");
+            ResultSet itemsRS = co.consultar("SELECT * FROM Item,Categoria,Platillo where Item.id=Platillo.item and Item.categoria=Categoria.id and Categoria.nombre=\""+c.getNombre()+"\"");
             while (itemsRS.next()) {
-                lista.add(new Platillo(itemsRS.getTime("tiempoEstimado"), itemsRS.getFloat("valor"), itemsRS.getString("nombre"), itemsRS.getString("descripcion"), itemsRS.getBoolean("promo"), itemsRS.getFloat("porcentaje")));
-
+                lista.add(new Platillo(itemsRS.getTime("tiempoEstimado"),itemsRS.getInt("id"), itemsRS.getFloat("valor"), itemsRS.getString("nombre"), itemsRS.getBoolean("activo"), Categoria.getCategoria(itemsRS.getInt("categoria"))));
             }
         } else if ("Platos Fuerte".equals(c.getNombre())) {
-            ResultSet itemsRS = co.consultar("SELECT * FROM Item,CategoriaItem,Platillo where Item.id=Platillo.item and Item.id=CategoriaItem.item and CategoriaItem.categoria=2");
+            ResultSet itemsRS = co.consultar("SELECT * FROM Item,Categoria,Platillo where Item.id=Platillo.item and Item.categoria=Categoria.id and Categoria.nombre=\""+c.getNombre()+"\"");
             while (itemsRS.next()) {
-                lista.add(new Platillo(itemsRS.getTime("tiempoEstimado"), itemsRS.getFloat("valor"), itemsRS.getString("nombre"), itemsRS.getString("descripcion"), itemsRS.getBoolean("promo"), itemsRS.getFloat("porcentaje")));
-
+                lista.add(new Platillo(itemsRS.getTime("tiempoEstimado"),itemsRS.getInt("id"), itemsRS.getFloat("valor"), itemsRS.getString("nombre"), itemsRS.getBoolean("activo"), Categoria.getCategoria(itemsRS.getInt("categoria"))));
             }
         } else if ("Postres".equals(c.getNombre())) {
-            ResultSet itemsRS = co.consultar("SELECT * FROM Item,CategoriaItem,Platillo where Item.id=Platillo.item and Item.id=CategoriaItem.item and CategoriaItem.categoria=4");
+            ResultSet itemsRS = co.consultar("SELECT * FROM Item,Categoria,Platillo where Item.id=Platillo.item and Item.categoria=Categoria.id and Categoria.nombre=\""+c.getNombre()+"\"");
             while (itemsRS.next()) {
-                lista.add(new Platillo(itemsRS.getTime("tiempoEstimado"), itemsRS.getFloat("valor"), itemsRS.getString("nombre"), itemsRS.getString("descripcion"), itemsRS.getBoolean("promo"), itemsRS.getFloat("porcentaje")));
+                lista.add(new Platillo(itemsRS.getTime("tiempoEstimado"),itemsRS.getInt("id"), itemsRS.getFloat("valor"), itemsRS.getString("nombre"), itemsRS.getBoolean("activo"), Categoria.getCategoria(itemsRS.getInt("categoria"))));
             }
             itemsRS.close();
         }
         return lista;
     }
-
-    public void setVentana() throws SQLException{
+    
+    public void setVentana() throws SQLException, ParseException{
         this.items = new LinkedList<>();
-            this.items = this.getItems(this.categoria);
-            items1 = FXCollections.observableArrayList();
+        this.items = this.getItems(this.categoria);
+        items1 = FXCollections.observableArrayList();
 
-            this.items.forEach((temp) -> {
-                HBox hbox1 = new HBox();
-                VBox temp1 = new VBox();
-                Label platillo = new Label(temp.getNombre());
-                platillo.setOnMouseClicked((event) -> {
-                    if (temp1.getChildren().get(1).isVisible()) {
-                        temp1.getChildren().get(1).setVisible(false);
-                    } else {
-                        temp1.getChildren().get(1).setVisible(true);
-                    }
-
-                });
-                TextArea ta = new TextArea();
-                ta.setVisible(false);
-                ta.setMaxSize(200, 10);
-                temp1.getChildren().addAll(platillo, ta);
-                TextField tf1 = new TextField();
-                tf1.setMaxSize(40, 40);
-                tf1.textProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue) -> {
-                    if (!newValue.matches("\\d*")) {
-                        tf1.setText(newValue.replaceAll("[^\\d]", ""));
-                    }
-                });
-                tf1.setText("0");
-                hbox1.getChildren().addAll(temp1, tf1);
-                hbox1.setSpacing(290);
-
-                items1.add(hbox1);
+        this.items.forEach((temp) -> {
+            HBox hbox1 = new HBox();
+            VBox temp1 = new VBox();
+            Label platillo = new Label(temp.getId()+".-"+temp.getNombre());
+            platillo.setOnMouseClicked((event) -> {
+                if (temp1.getChildren().get(1).isVisible()) {
+                    temp1.getChildren().get(1).setVisible(false);
+                } else {
+                    temp1.getChildren().get(1).setVisible(true);
+                }
             });
-            this.mesero3ListViewItems.setItems(items1);
+            TextArea ta = new TextArea();
+            ta.setVisible(false);
+            ta.setMaxSize(200, 10);
+            temp1.getChildren().addAll(platillo, ta);
+            TextField tf1 = new TextField();
+            tf1.setMaxSize(40, 40);
+            tf1.textProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue) -> {
+                if (!newValue.matches("\\d*")) {
+                    tf1.setText(newValue.replaceAll("[^\\d]", ""));
+                }
+            });
+            tf1.setText("0");
+            hbox1.getChildren().addAll(temp1, tf1);
+            hbox1.setSpacing(290);
+            items1.add(hbox1);
+        });
+        this.mesero3ListViewItems.setItems(items1);
+    }
+    public void setCuentaMesa(String mesa,String cuenta){
+        this.mesa.setText("Mesa #:"+ mesa);
+        this.cuenta.setText("Cuenta #:"+cuenta);   
     }
 }

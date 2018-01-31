@@ -11,52 +11,50 @@ package sares.Model;
  */
 public class Item{
     /**
-	 * 
-	 */
-	protected float precio;
+    * 
+    */
+    protected int id;
+    /**
+    * 
+    */
+    protected float valor;
 
-	/**
-	 * 
-	 */
-	protected String nombre;
-        
-        /**
-	 * 
-	 */
-	protected String descripcion;
+   /**
+    * 
+    */
+   protected String nombre;
 
-        /**
-	 * 
-	 */
-	protected boolean promocion;
-        
-        /**
-	 * 
-	 */
-	protected float porcentaje;
+   /**
+    * 
+    */
+   protected boolean activo;
 
-    public Item(float precio, String nombre, String descripcion, boolean promocion, float porcentaje) {
-        this.precio = precio;
+   /**
+    * 
+    */
+   protected Categoria categoria;
+
+    public Item(float valor, String nombre, boolean activo, Categoria categoria) {
+        this.valor = valor;
         this.nombre = nombre;
-        this.descripcion = descripcion;
-        this.promocion = promocion;
-        this.porcentaje = porcentaje;
+        this.activo = activo;
+        this.categoria = categoria;
     }
 
-    public float getPorcentaje() {
-        return porcentaje;
+    public Item(int id, float valor, String nombre, boolean activo, Categoria categoria) {
+        this.id = id;
+        this.valor = valor;
+        this.nombre = nombre;
+        this.activo = activo;
+        this.categoria = categoria;
     }
 
-    public void setPorcentaje(float porcentaje) {
-        this.porcentaje = porcentaje;
+    public float getValor() {
+        return valor;
     }
 
-    public float getPrecio() {
-        return precio;
-    }
-
-    public void setPrecio(float precio) {
-        this.precio = precio;
+    public void setValor(float valor) {
+        this.valor = valor;
     }
 
     public String getNombre() {
@@ -67,21 +65,29 @@ public class Item{
         this.nombre = nombre;
     }
 
-    public String getDescripcion() {
-        return descripcion;
+    public boolean isActivo() {
+        return activo;
     }
 
-    public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
+    public void setActivo(boolean activo) {
+        this.activo = activo;
     }
 
-    public boolean isPromocion() {
-        return promocion;
+    public Categoria getCategoria() {
+        return categoria;
     }
 
-    public void setPromocion(boolean promocion) {
-        this.promocion = promocion;
+    public void setCategoria(Categoria categoria) {
+        this.categoria = categoria;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
         
-        
+   
 }

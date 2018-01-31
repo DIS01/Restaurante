@@ -21,6 +21,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import sares.Model.Cajero;
 import sares.Model.Conexion;
+import sares.Model.Mesero;
 import sares.Sares;
 
 /**
@@ -61,7 +62,6 @@ public class SesionController implements Initializable {
     }    
     
     private void pruebaIngresoCredenciales() throws SQLException{
-        ResultSet EsUsuario;
         this.conexionConDB = new Conexion();
         CallableStatement statement = conexionConDB.getConexion().prepareCall("{call iniciarSesion(?,?)}");
         statement.setString(1,user.getText()); 
@@ -76,9 +76,7 @@ public class SesionController implements Initializable {
                 System.out.println("administrador");
                 break;
             case MESERO:
-                System.out.println("mesero");
-                ResultSet mesero = conexionConDB.consultar("Select * From Persona where dni="+usuario.getInt("persona"));
-                mesero.next();
+                Mesero mesero= Mesero.getMesero(usuario.getInt("persona"),conexionConDB);
                 MeseroController control = (MeseroController)Sares.setContent("sares/fxml/Mesero.fxml", btnIngresar);
                 control.meseroControllerCreate(mesero);
                 break;
