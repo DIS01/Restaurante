@@ -142,8 +142,10 @@ CREATE TABLE Cuenta(
 	total FLOAT,
 	cliente INT,
 	mesa INT,
+	mesero INT,
 	FOREIGN KEY (cliente) REFERENCES Cliente(id),
-	FOREIGN KEY (mesa) REFERENCES Mesa(id)	
+	FOREIGN KEY (mesa) REFERENCES Mesa(id),
+	FOREIGN KEY (mesero) REFERENCES Empleado(id)
 );
 
 CREATE TABLE Pedido(
