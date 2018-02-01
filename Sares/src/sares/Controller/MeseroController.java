@@ -87,6 +87,61 @@ public class MeseroController implements Initializable {
     
     @FXML
     public void informacionUsuario(ActionEvent e){
+        this.setUp();
+    }
+    
+    @FXML
+    private void seleccionMenu(MouseEvent event) throws IOException, SQLException {
+        
+        System.out.println(this.escogerMenu.getSelectionModel().getSelectedItem());
+
+        if (null != this.escogerMenu.getSelectionModel().getSelectedItem()) switch (this.escogerMenu.getSelectionModel().getSelectedItem()) {
+            case "Crear Pedido":
+                Mesero2Controller control = (Mesero2Controller)Sares.setContent("sares/fxml/Mesero2.fxml", (Node)event.getSource());
+                control.meseroControllerCreate(this.mesero);
+                break;
+            case "Modificar Pedido":
+                break;
+            case "Eliminar Pedido":
+                break;
+            default:
+                break;
+        }
+    }
+   
+    public void meseroControllerCreate(Mesero mesero) {
+        this.mesero = mesero;
+        this.nombre.setText(nombre.getText()+mesero.getNombres());
+    }
+    
+    public Mesero getMesero(){
+        return this.mesero;
+    }
+    public void reloj(){
+        this.calendar = Calendar.getInstance();
+        SimpleDateFormat sdf1 = new SimpleDateFormat("HH:mm:ss");
+        this.tiempo.setText(sdf1.format(this.calendar.getTime()));
+        this.hbox.setSpacing(100);
+        Thread thread;
+        thread = new Thread(() -> {
+            while (cont != 100) {
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(MeseroController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                Platform.runLater(() -> {
+                    MeseroController.this.calendar = Calendar.getInstance();
+                    SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+                    MeseroController.this.tiempo.setText(sdf.format(MeseroController.this.calendar.getTime()));
+                    cont++;
+                });
+            }
+        });
+        thread.setDaemon(true);
+        thread.start();
+    }
+    private void setUp(){
         Dialog dialog = new Dialog<>();
         dialog.setTitle("Información usuario");
         dialog.setHeaderText(null);
@@ -122,49 +177,5 @@ public class MeseroController implements Initializable {
 
         dialog.getDialogPane().setContent(grid);
         dialog.showAndWait();
-    }
-    
-    @FXML
-    private void seleccionMenu(MouseEvent event) throws IOException, SQLException {
-        
-        System.out.println(this.escogerMenu.getSelectionModel().getSelectedItem());
-
-        if ("Crear Pedido".equals(this.escogerMenu.getSelectionModel().getSelectedItem())) {
-            Mesero2Controller control = (Mesero2Controller)Sares.setContent("sares/fxml/Mesero2.fxml", (Node)event.getSource());
-            control.meseroControllerCreate(this.mesero);  
-        }
-    }
-   
-    public void meseroControllerCreate(Mesero mesero) {
-        this.mesero = mesero;
-        this.nombre.setText(nombre.getText()+mesero.getNombres());
-    }
-    
-    public Mesero getMesero(){
-        return this.mesero;
-    }
-    public void reloj(){
-        this.calendar = Calendar.getInstance();
-        SimpleDateFormat sdf1 = new SimpleDateFormat("HH:mm:ss");
-        this.tiempo.setText(sdf1.format(this.calendar.getTime()));
-        this.hbox.setSpacing(100);
-        Thread thread;
-        thread = new Thread(() -> {
-            while (cont != 100) {
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException ex) {
-                    Logger.getLogger(MeseroController.class.getName()).log(Level.SEVERE, null, ex);
-                }
-                Platform.runLater(() -> {
-                    MeseroController.this.calendar = Calendar.getInstance();
-                    SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
-                    MeseroController.this.tiempo.setText(sdf.format(MeseroController.this.calendar.getTime()));
-                    cont++;
-                });
-            }
-        });
-        thread.setDaemon(true);
-        thread.start();
     }
 }

@@ -14,7 +14,6 @@ import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import sares.Model.Cliente;
@@ -75,7 +74,8 @@ public class Cajero2Controller extends CajeroController {
     }
     
     public boolean validoRegistroCliente(){
-        return this.dni.getText().length()>=2 && this.nombres.getText().length()>=2 && this.apellidos.getText().length()>=2 && this.domicilio.getText().length()>=2;
+        return this.dni.getText().length()>=2 && this.nombres.getText().length()>=2 
+                && this.apellidos.getText().length()>=2 && this.domicilio.getText().length()>=2;
     }
     
     public void ventanaEmegente(Alert.AlertType tipo,String titulo, String mensaje){
