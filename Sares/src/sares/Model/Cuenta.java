@@ -74,7 +74,7 @@ public class Cuenta {
     
     @Override
     public String toString() {
-        return this.id +", " + this.mesa;
+        return this.id +", " + this.pagada;
     }   
     
     public static int insertarCuenta(int mesa ) throws SQLException{
@@ -86,4 +86,12 @@ public class Cuenta {
         return r.getInt(1);
     }
 
+    public static void cuentaCliente(int clienteID ,int  cuentaID ,float totalPago ) throws SQLException{
+        CallableStatement statement = Conexion.getConexion().prepareCall("{call cuentaCliente(?,?,?)}");
+        statement.setInt(1,clienteID); 
+        statement.setInt(1,cuentaID);
+        statement.setFloat(1,totalPago);
+        statement.execute();
+        ResultSet r = statement.getResultSet();
+    }
 }

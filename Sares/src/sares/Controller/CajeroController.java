@@ -37,7 +37,6 @@ import sares.Sares;
 public class CajeroController implements Initializable {
     private static final String opcion1="Registrar Cliente";
     private static final String opcion2="Registrar pago cuenta";
-    private static final String opcion3="Registrar pago";
     private Cajero cajero;
     private int cont = 0;
     private Calendar calendar;
@@ -77,7 +76,7 @@ public class CajeroController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         reloj();
         ObservableList<String> opcionesO = FXCollections.observableArrayList(
-                opcion1,opcion2,opcion3);
+                opcion1,opcion2);
         this.opciones.setItems(opcionesO);
     }
  

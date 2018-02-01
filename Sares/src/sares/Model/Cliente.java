@@ -54,7 +54,7 @@ public class Cliente extends Persona {
 
     @Override
     public String toString() {
-        return this.getApellidos() +", " + this.getNombres() + ", " + this.dni;
+        return this.dni +", " + this.getNombres() + ", " + this.getApellidos();
     }
         
 }

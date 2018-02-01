@@ -9,9 +9,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.text.ParseException;
-import java.util.Iterator;
 import java.util.LinkedList;
-import java.util.Observable;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -34,12 +32,10 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.util.Pair;
-import org.controlsfx.control.PropertySheet.Item;
 import sares.Model.Cliente;
 import sares.Sares;
 import org.controlsfx.control.textfield.TextFields;
 import sares.Model.Cuenta;
-import sares.Model.MetodoPago;
 import sares.Model.PagoContexto;
 import sares.Model.Pedido;
 /**
@@ -162,7 +158,6 @@ public class Cajero3Controller extends CajeroController {
             this.getTotal();
         }else{
             descuentoCheck.setSelected(true);
-      
             this.descuentoPorcentaje.setEditable(true);
         }
     }
@@ -193,6 +188,7 @@ public class Cajero3Controller extends CajeroController {
    
     @FXML
     public void registrarCuenta(MouseEvent event) throws SQLException{
+        Cuenta.cuentaCliente(Integer.parseInt(this.clientes.getText().split(",")[0]),Integer.parseInt(this.cuentas.getText().split(",")[0]), totalvalor);
         
     }
     
@@ -200,73 +196,34 @@ public class Cajero3Controller extends CajeroController {
     public void actualizar(KeyEvent event){
         this.descuentoPorcentaje.setStyle(" -fx-background-color: silver; -fx-border-width: 2px ;");
         try {
-            if (this.descuentoPorcentaje.getText() != null || !" ".equals(this.descuentoPorcentaje.getText()) ||  this.descuentoPorcentaje.getText().isEmpty() 
-                    || !"  ".equals(this.descuentoPorcentaje.getText()) ){
+            if ( Float.parseFloat(descuentoPorcentaje.getText()) >=0.0f && Float.parseFloat(descuentoPorcentaje.getText())<=12.0f){
                 this.descuentoValor.setText(Float.toString(subtotal*Float.parseFloat(descuentoPorcentaje.getText())/100f));
             }else{
-                this.descuentoValor.setText("0.0");     
+                this.descuentoValor.setText("0.0");
+                this.descuentoPorcentaje.setText("0.0");
             }
-        }catch(Exception e){
+        }catch(NumberFormatException e){
             this.descuentoPorcentaje.setStyle("-fx-border-color: red ; -fx-border-width: 2px ;");
             this.descuentoValor.setText("0.0");
         }
-        this.totalvalor=this.subtotal-Float.parseFloat(this.descuentoValor.getText())+Float.parseFloat(this.propina.getText());
-        this.total.setText(Float.toString(this.totalvalor));
+        getTotal();
     }
     
     @FXML
     private void elegirOpcion(MouseEvent event) throws IOException, SQLException {
         if ("Tarjeta de crédito".equals(this.formaPagos.getSelectionModel().getSelectedItem())) {
-            Dialog<Pair<String, String>> dialog = new Dialog<>();
-            dialog.setTitle("Forma de pago: tarjeta de pago");
-            dialog.setHeaderText(null);
-            ButtonType loginButtonType = new ButtonType("Agregar Pago", ButtonData.OK_DONE);
-            dialog.getDialogPane().getButtonTypes().addAll(loginButtonType, ButtonType.CANCEL);
-
-            GridPane grid = new GridPane();
-            grid.setHgap(10);
-            grid.setVgap(10);
-            grid.setPadding(new Insets(20, 150, 10, 10));
-
-            TextField numCuenta = new TextField();
-            numCuenta.setPromptText("número de cuenta");
-           TextField monto = new TextField();
-            monto.setText(this.total.getText());
-
-            grid.add(new Label("ingrese número de cuenta:"), 0, 0);
-            grid.add(numCuenta, 1, 0);
-            grid.add(new Label("monto:"), 0, 1);
-            grid.add(monto, 1, 1);
-
-            Node loginButton = dialog.getDialogPane().lookupButton(loginButtonType);
-            loginButton.setDisable(true);
-
-            numCuenta.textProperty().addListener((observable, oldValue, newValue) -> {
-                loginButton.setDisable(newValue.trim().isEmpty());
-            });
-            monto.textProperty().addListener((observable, oldValue, newValue) -> {
-                loginButton.setDisable(newValue.trim().isEmpty());
-            });
-
-            dialog.getDialogPane().setContent(grid);
-
-             dialog.setResultConverter(dialogButton -> {
-                if (dialogButton == loginButtonType) {
-                    return new Pair<>(numCuenta.getText(),monto.getText());
-                }
-                return null;
-            });
-            Optional<Pair<String, String>> result = dialog.showAndWait();
-            result.ifPresent(pago -> {
+           pago("tarjeta de pago","ingrese tarjeta").ifPresent(pago -> {
                 this.listapagos.getItems().add(listapagos.getItems().size(), pago.getValue()); 
             });
         }else if ("Dinero electrónico".equals(this.formaPagos.getSelectionModel().getSelectedItem())) {
-         
+             pago("Dinero electrónico","ingrese identificador").ifPresent(pago -> {
+                this.listapagos.getItems().add(listapagos.getItems().size(), pago.getValue()); 
+            });
         }else if ("Efectivo".equals(this.formaPagos.getSelectionModel().getSelectedItem())) {
-            TextInputDialog dialog = new TextInputDialog(this.total.getText());
+            TextInputDialog dialog = new TextInputDialog(Float.toString(Float.parseFloat(this.total.getText())-getpagado()));
             dialog.setTitle("Forma de Pago: efectivo");
             dialog.setHeaderText(null);
-            dialog.setContentText("Ingrese la cantidad a pagar:");
+            dialog.setContentText("ingrese el monto");
             Optional<String> result = dialog.showAndWait();
             result.ifPresent(name -> this.listapagos.getItems().add(listapagos.getItems().size(), name));
         }
@@ -277,15 +234,59 @@ public class Cajero3Controller extends CajeroController {
      *
      */
     public void enableRegistro(){
-        this.registrar.setDisable(! pagado() );       
+        this.registrar.setDisable(getpagado()<Float.parseFloat(this.total.getText()) );       
     }
         
-    public boolean pagado(){
+    public Float getpagado(){
         float pagos=0.0f;
         for (String pago : listapagos.getItems()) {
             pagos+=Float.parseFloat(pago);
         }
-        System.out.println(pagos);
-        return pagos>=Float.parseFloat(this.total.getText());
+        return pagos;
+    }
+    
+    public Optional<Pair<String, String>> pago(String formaPago,String mensaje){
+        Dialog<Pair<String, String>> dialog = new Dialog<>();
+        dialog.setTitle("Forma de pago: "+formaPago);
+        dialog.setHeaderText(null);
+        ButtonType loginButtonType = new ButtonType("Agregar Pago", ButtonData.OK_DONE);
+        dialog.getDialogPane().getButtonTypes().addAll(loginButtonType, ButtonType.CANCEL);
+
+        GridPane grid = new GridPane();
+        grid.setHgap(10);
+        grid.setVgap(10);
+        grid.setPadding(new Insets(20, 150, 10, 10));
+
+        TextField numCuenta = new TextField();
+        numCuenta.setPromptText(mensaje);
+        TextField monto = new TextField();
+        monto.setText(Float.toString(this.totalvalor-getpagado()));
+
+        grid.add(new Label(mensaje), 0, 0);
+        grid.add(numCuenta, 1, 0);
+        grid.add(new Label("monto:"), 0, 1);
+        grid.add(monto, 1, 1);
+
+        Node loginButton = dialog.getDialogPane().lookupButton(loginButtonType);
+        loginButton.setDisable(true);
+        monto.textProperty().addListener((observable, oldValue, newValue) -> {
+            try{
+            monto.setStyle(" -fx-background-color: silver; -fx-border-width: 2px ;");
+            loginButton.setDisable(numCuenta.getText().isEmpty() || newValue.trim().isEmpty() || Float.parseFloat(newValue)<=0.0f ||  getpagado()>Float.parseFloat(this.total.getText())-Float.parseFloat(monto.getText()));      
+            }catch(NumberFormatException e){
+                monto.setStyle("-fx-border-color: red ; -fx-border-width: 2px ;");
+                 loginButton.setDisable(true);
+            }
+        });
+        dialog.getDialogPane().setContent(grid);
+
+         dialog.setResultConverter(dialogButton -> {
+            if (dialogButton == loginButtonType) {
+                return new Pair<>(numCuenta.getText(),monto.getText());
+            }
+            return null;
+        });
+        Optional<Pair<String, String>> result = dialog.showAndWait();
+        return result;
     }
 }
