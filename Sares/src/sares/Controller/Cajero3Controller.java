@@ -143,6 +143,16 @@ public class Cajero3Controller extends CajeroController {
     }
     
     @FXML 
+    private void setCliente(MouseEvent e) throws SQLException, ParseException{
+        if (listaCliente.isSelected()){
+            listaCliente.setSelected(false);
+        }else{
+            listaCliente.setSelected(true);
+            clientes.setEditable(false);
+        }
+    }
+    
+    @FXML 
     private void descuentocheckporcentaje(MouseEvent e){
         if (descuentoCheck.isSelected()){
             descuentoCheck.setSelected(false);

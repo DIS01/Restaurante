@@ -42,7 +42,7 @@
             <Label alignment="TOP_CENTER" contentDisplay="CENTER" prefHeight="23.0" prefWidth="264.0" text="Descuento" textAlignment="CENTER" GridPane.rowIndex="3" />
             <ListView fx:id="formaPagos" onMouseClicked="#elegirOpcion" prefHeight="35.0" prefWidth="120.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
             <CheckBox fx:id="listoCuenta" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onMouseClicked="#generarlistaCuenta" prefHeight="36.0" prefWidth="17.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
-            <CheckBox fx:id="listoCliente" mnemonicParsing="false" prefHeight="33.0" prefWidth="22.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+            <CheckBox fx:id="listoCliente" mnemonicParsing="false" onMouseClicked="#setCliente" prefHeight="33.0" prefWidth="22.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
             <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="2" GridPane.rowIndex="3" />
             <Label fx:id="descuentoValor" alignment="CENTER_RIGHT" contentDisplay="RIGHT" prefHeight="33.0" prefWidth="152.0" text="0.0" textAlignment="RIGHT" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="3" />
             <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="3">
