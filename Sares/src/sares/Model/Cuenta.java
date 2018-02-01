@@ -77,9 +77,10 @@ public class Cuenta {
         return this.id +", " + this.pagada;
     }   
     
-    public static int insertarCuenta(int mesa ) throws SQLException{
-        CallableStatement statement = Conexion.getConexion().prepareCall("{call insertarCuentaMesero(?)}");
+    public static int insertarCuenta(int mesa, int meseroID ) throws SQLException{
+        CallableStatement statement = Conexion.getConexion().prepareCall("{call insertarCuentaMesero(?,?)}");
         statement.setInt(1,mesa); 
+        statement.setInt(2,meseroID); 
         statement.execute();
         ResultSet r = statement.getResultSet();
         r.next();
@@ -89,8 +90,8 @@ public class Cuenta {
     public static void cuentaCliente(int clienteID ,int  cuentaID ,float totalPago ) throws SQLException{
         CallableStatement statement = Conexion.getConexion().prepareCall("{call cuentaCliente(?,?,?)}");
         statement.setInt(1,clienteID); 
-        statement.setInt(1,cuentaID);
-        statement.setFloat(1,totalPago);
+        statement.setInt(2,cuentaID);
+        statement.setFloat(3,totalPago);
         statement.execute();
         ResultSet r = statement.getResultSet();
     }

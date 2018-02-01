@@ -134,7 +134,7 @@ public class Mesero2Controller extends MeseroController {
     
     @FXML
     private void handleGoBack(MouseEvent event) throws SQLException, IOException {
-        int cuentaID=Cuenta.insertarCuenta(Integer.parseInt(mesaText.getText()));
+        int cuentaID=Cuenta.insertarCuenta(Integer.parseInt(mesaText.getText()),this.getMesero().getId());
         int pedidoID=Pedido.insertarPedido("en cola", cuentaID);
         float total=0.0f;
         int contador=0;

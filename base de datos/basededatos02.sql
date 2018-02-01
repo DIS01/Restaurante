@@ -182,6 +182,15 @@ CREATE TABLE TipoPago(
 	tipo VARCHAR(100)
 );
 
+CREATE TABLE PagoCuenta(
+	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	tipoPago INT,
+	cuenta INT,
+	valor float,
+	FOREIGN KEY (tipoPago) REFERENCES TipoPago(id),
+	FOREIGN KEY (cuenta) REFERENCES Cuenta(id)
+);
+
 CREATE TABLE PagoDineroElectronico(
 	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	identificador VARCHAR(100),
@@ -196,14 +205,7 @@ CREATE TABLE PagoTarjeta(
 	FOREIGN KEY (pagoCuenta) REFERENCES PagoCuenta(id)
 	);
 
-CREATE TABLE PagoCuenta(
-	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-	tipoPago INT,
-	cuenta INT,
-	valor float,
-	FOREIGN KEY (tipoPago) REFERENCES TipoPago(id),
-	FOREIGN KEY (cuenta) REFERENCES Cuenta(id)
-);
+
 
 CREATE TABLE Reporte(
 	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,

@@ -117,7 +117,7 @@ INSERT INTO Mesa(id2,ambienteMesa) values(1,1);
 INSERT INTO Mesa(id2,ambienteMesa) values(1,2);
 
 #cuenta
-INSERT INTO Cuenta(pagada , total,mesa) values (0,21.0,1);
+INSERT INTO Cuenta(pagada , total,mesa,mesero) values (0,21.0,1,1);
 
 #pedido1
 INSERT INTO Pedido(horaIngreso,tiempoEstimado,estado,cuenta,fecha ) Values("11:03:33","00:03:33","Preparando",1,"2018-01-28");
