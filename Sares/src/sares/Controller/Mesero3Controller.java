@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package sares.Controller;
 
 import java.io.IOException;
@@ -65,6 +60,7 @@ public class Mesero3Controller extends MeseroController {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         reloj();
+        BtnGuardar.setDisable(true);
     }
     
     @FXML
@@ -109,26 +105,26 @@ public class Mesero3Controller extends MeseroController {
     public LinkedList<Item> getItems(Categoria c) throws SQLException, ParseException {
         LinkedList<Item> lista = new LinkedList();
         if ("Bebidas".equals(c.getNombre())) {
-            ResultSet itemsRS = Conexion.consultar("SELECT * FROM Item,Bebida where Item.id=Bebida.item");
+            ResultSet itemsRS = Conexion.consultar("SELECT * FROM Item,Bebida,Inventario  where Item.id=Bebida.item and Item.id=Inventario.item");
             while (itemsRS.next()) {
-                lista.add(new Bebida(itemsRS.getString("marca"),itemsRS.getInt("id"), itemsRS.getFloat("valor"), itemsRS.getString("nombre"), itemsRS.getBoolean("activo"), Categoria.getCategoria(itemsRS.getInt("categoria"))));
+                lista.add(new Bebida(itemsRS.getString("marca"),itemsRS.getInt("id"), itemsRS.getFloat("valor"), itemsRS.getString("nombre"), itemsRS.getBoolean("activo"), Categoria.getCategoria(itemsRS.getInt("categoria")),itemsRS.getFloat("stock")));
             }
         } else if ("Combo".equals(c.getNombre())) {
 
         } else if ("Platillos de entrada".equals(c.getNombre())) {
-            ResultSet itemsRS = Conexion.consultar("SELECT * FROM Item,Categoria,Platillo where Item.id=Platillo.item and Item.categoria=Categoria.id and Categoria.nombre=\""+c.getNombre()+"\"");
+            ResultSet itemsRS = Conexion.consultar("SELECT * FROM Item,Categoria,Platillo,Inventario where Item.id=Inventario.item and Item.id=Platillo.item and Item.categoria=Categoria.id and Categoria.nombre=\""+c.getNombre()+"\" and stock>0");
             while (itemsRS.next()) {
-                lista.add(new Platillo(itemsRS.getFloat("tiempoEstimado"),itemsRS.getInt("id"), itemsRS.getFloat("valor"), itemsRS.getString("nombre"), itemsRS.getBoolean("activo"), Categoria.getCategoria(itemsRS.getInt("categoria"))));
+                lista.add(new Platillo(itemsRS.getFloat("tiempoEstimado"),itemsRS.getInt("id"), itemsRS.getFloat("valor"), itemsRS.getString("nombre"), itemsRS.getBoolean("activo"), Categoria.getCategoria(itemsRS.getInt("categoria")),itemsRS.getFloat("stock")));
             }
         } else if ("Platos Fuerte".equals(c.getNombre())) {
-            ResultSet itemsRS = Conexion.consultar("SELECT * FROM Item,Categoria,Platillo where Item.id=Platillo.item and Item.categoria=Categoria.id and Categoria.nombre=\""+c.getNombre()+"\"");
+            ResultSet itemsRS = Conexion.consultar("SELECT * FROM Item,Categoria,Platillo,Inventario where Item.id=Inventario.item and Item.id=Platillo.item and Item.categoria=Categoria.id and Categoria.nombre=\""+c.getNombre()+"\" and stock>0 ");
             while (itemsRS.next()) {
-                lista.add(new Platillo(itemsRS.getFloat("tiempoEstimado"),itemsRS.getInt("id"), itemsRS.getFloat("valor"), itemsRS.getString("nombre"), itemsRS.getBoolean("activo"), Categoria.getCategoria(itemsRS.getInt("categoria"))));
+                lista.add(new Platillo(itemsRS.getFloat("tiempoEstimado"),itemsRS.getInt("id"), itemsRS.getFloat("valor"), itemsRS.getString("nombre"), itemsRS.getBoolean("activo"), Categoria.getCategoria(itemsRS.getInt("categoria")),itemsRS.getFloat("stock")));
             }
         } else if ("Postres".equals(c.getNombre())) {
-            ResultSet itemsRS = Conexion.consultar("SELECT * FROM Item,Categoria,Platillo where Item.id=Platillo.item and Item.categoria=Categoria.id and Categoria.nombre=\""+c.getNombre()+"\"");
+            ResultSet itemsRS = Conexion.consultar("SELECT * FROM Item,Categoria,Platillo,Inventario where Item.id=Inventario.item and Item.id=Platillo.item and Item.categoria=Categoria.id and Categoria.nombre=\""+c.getNombre()+"\" and stock>0");
             while (itemsRS.next()) {
-                lista.add(new Platillo(itemsRS.getFloat("tiempoEstimado"),itemsRS.getInt("id"), itemsRS.getFloat("valor"), itemsRS.getString("nombre"), itemsRS.getBoolean("activo"), Categoria.getCategoria(itemsRS.getInt("categoria"))));
+                lista.add(new Platillo(itemsRS.getFloat("tiempoEstimado"),itemsRS.getInt("id"), itemsRS.getFloat("valor"), itemsRS.getString("nombre"), itemsRS.getBoolean("activo"), Categoria.getCategoria(itemsRS.getInt("categoria")),itemsRS.getFloat("stock")));
             }
         }
         return lista;
@@ -138,8 +134,8 @@ public class Mesero3Controller extends MeseroController {
         this.items = new LinkedList<>();
         this.items = this.getItems(this.categoria);
         items1 = FXCollections.observableArrayList();
-
-        this.items.forEach((temp) -> {
+        
+        this.items.forEach((Item temp) -> {
             HBox hbox1 = new HBox();
             VBox temp1 = new VBox();
             Label platillo = new Label(temp.getId()+".-"+temp.getNombre());
@@ -151,23 +147,35 @@ public class Mesero3Controller extends MeseroController {
                 }
             });
             TextArea ta = new TextArea();
-            ta.setVisible(false);
-            ta.setMaxSize(200, 10);
+            ta.setVisible(true);
+            ta.setMaxSize(300, 8);
             temp1.getChildren().addAll(platillo, ta);
             TextField tf1 = new TextField();
-            tf1.setMaxSize(40, 40);
+            tf1.setMaxSize(50, 40);
             tf1.textProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue) -> {
-                if (!newValue.matches("\\d*")) {
-                    tf1.setText(newValue.replaceAll("[^\\d]", ""));
+                try{
+                    if (!newValue.matches("\\d*")) {
+                        tf1.setText(newValue.replaceAll("[^\\d]", ""));
+                    }else if(Integer.parseInt(newValue)<0 || Integer.parseInt(newValue)>temp.getStock()){
+                        this.BtnGuardar.setDisable(true);
+                        tf1.setText("0");
+                    }    
+                }catch(NumberFormatException e){
+                     this.BtnGuardar.setDisable(true);
+                       
                 }
             });
             tf1.setText("0");
-            hbox1.getChildren().addAll(temp1, tf1);
-            hbox1.setSpacing(290);
+            Label stock=new Label();
+            stock.setMaxSize(50, 40);
+            stock.setText(" / "+temp.getStock());
+            hbox1.getChildren().addAll(temp1, tf1,stock);
+            hbox1.setSpacing(50);
             items1.add(hbox1);
         });
         this.mesero3ListViewItems.setItems(items1);
     }
+
     public void setCuentaMesa(String cuenta,HashMap<Item, LinkedList<Object>> pedido ){
        this.cuenta.setText("Cuenta #:"+cuenta);   
         this.pedido=pedido;

@@ -33,13 +33,22 @@ public class Item{
     * 
     */
    protected Categoria categoria;
+   
+   /**
+    * 
+    */
+   protected float Stock;
 
-    public Item(float valor, String nombre, boolean activo, Categoria categoria) {
+    public Item(int id, float valor, String nombre, boolean activo, Categoria categoria, float Stock) {
+        this.id = id;
         this.valor = valor;
         this.nombre = nombre;
         this.activo = activo;
         this.categoria = categoria;
+        this.Stock = Stock;
     }
+
+    
 
     public Item(int id, float valor, String nombre, boolean activo, Categoria categoria) {
         this.id = id;
@@ -88,6 +97,16 @@ public class Item{
     public void setId(int id) {
         this.id = id;
     }
+
+    public float getStock() {
+        return Stock;
+    }
+
+    public void setStock(float Stock) {
+        this.Stock = Stock;
+    }
+    
+    
         
    
 }
