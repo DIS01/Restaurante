@@ -128,6 +128,7 @@ public class Mesero2Controller extends MeseroController {
      * @param pedido the pedido to set
      */
     public void setPedido(HashMap<Item,LinkedList<Object>> pedido) {
+        int contador=0;
         float te=0.0f;
         this.pedido = pedido;
         this.listaitems.setItems(null);
@@ -135,15 +136,22 @@ public class Mesero2Controller extends MeseroController {
         LinkedList<String> list=new LinkedList<>();
         for (HashMap.Entry<Item,LinkedList<Object>> entry : pedido.entrySet()) {
             if(entry.getKey().getCategoria().getNombre().equals("Platillos de entrada") || entry.getKey().getCategoria().getNombre().equals("Platos Fuerte") || entry.getKey().getCategoria().getNombre().equals("Postres")){
-                Platillo p=(Platillo)entry.getKey();
-                te+=p.getTiempoEstimado();
+                Platillo c=(Platillo)entry.getKey();
+                if(te<c.getTiempoEstimado()){
+                    te=c.getTiempoEstimado();
+                }
+                contador+=(Integer) entry.getValue().get(0);
             }else if(entry.getKey().getCategoria().getNombre().equals("Combo") ){
                 Combo c=(Combo)entry.getKey();
-                te+=c.getTiempoEstimado();
+                if(te<c.getTiempoEstimado()){
+                    te=c.getTiempoEstimado();
+                }
+                contador+=(Integer) entry.getValue().get(0);
             }
-            te+=(Integer) entry.getValue().get(0);
             list.add(entry.getKey()+","+entry.getValue().get(0));
         }
+        te=te+3*(contador-1);
+        if(contador==0) te=0.0f;
         this.tiempoEstimado.setText("Tiempo: "+te);
         this.listaitems.setItems(FXCollections.observableList(list));
     }
@@ -151,41 +159,22 @@ public class Mesero2Controller extends MeseroController {
      public void setCuentaMesa(String cuenta){
         this.cuentaText.setText(cuenta);
     }
+     
     @FXML
     private void handleGoBack(MouseEvent event) throws SQLException, IOException {
-        int cuentaID=Cuenta.insertarCuenta(Integer.parseInt(/*mesaText.getText())*/"s"),this.getMesero().getId());
+        int cuentaID=Integer.parseInt(this.cuentaText.getText().split(",")[0]);
         int pedidoID=Pedido.insertarPedido("en cola", cuentaID);
         float total=0.0f;
         int contador=0;
-        Time temp;
-        Time tiempo=new Time(0,0,0);
         for (HashMap.Entry<Item,LinkedList<Object>> entry : pedido.entrySet()) {
             total+=entry.getKey().getValor()*(Integer) entry.getValue().get(0);
             contador++;
-            temp=tiempoPlatillo(entry.getKey());
-            if(tiempo.compareTo(temp)<0){
-                tiempo=temp;
-            } 
-            PedidoDetalle.insertarPedidoDetalleMesero(pedidoID,entry.getKey().getId() ,total,(Integer) entry.getValue().get(0),(String)entry.getValue().get(1).toString() );
+            PedidoDetalle.insertarPedidoDetalleMesero(pedidoID,entry.getKey().getId() ,total,(Integer) entry.getValue().get(0),(String)entry.getValue().get(1).toString(), (int) (entry.getKey().getStock()-(Integer) entry.getValue().get(0)));
         }
-        Pedido.actualizarPedidoCuenta(cuentaID, pedidoID,getTime(tiempo,3*(contador-1)), total);
+        Pedido.actualizarPedidoCuenta(cuentaID, pedidoID,Float.parseFloat(tiempoEstimado.getText().split(":")[1]), total);
         MeseroController control = (MeseroController)Sares.setContent("sares/fxml/Mesero.fxml", buttonGoBack);
         control.meseroControllerCreate(this.getMesero());
+        control.mensajeExitoso("Registro correcto del pedido");
     }
-    
-    public Time getTime(Time t1, int adicionalmin){
-        Time t2 =Time.valueOf("00:"+adicionalmin+":00");
-        return new Time(t1.getTime()+t2.getTime());
-        
-    }
-    public static Time tiempoPlatillo(Item item) throws SQLException{
-        if(item.getCategoria().getNombre().equals("Platillos de entrada") || item.getCategoria().getNombre().equals("Postres") || item.getCategoria().getNombre().equals("Platos Fuerte") ){
-            ResultSet r=Conexion.consultar("Select * from Item,Platillo where Item.id=Platillo.item and Item.id="+item.getId());
-            if (r.next()){
-                return r.getTime("tiempoEstimado");
-            }
-        }
-        return null;
-    }
-    
+  
 }

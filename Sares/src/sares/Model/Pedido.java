@@ -25,7 +25,7 @@ public class Pedido {
     /**
      * 
      */
-    public Time tiempoestimado;
+    public float tiempoestimado;
 
     /**
      * 
@@ -48,7 +48,7 @@ public class Pedido {
     public Pedido() {
     }
 
-    public Pedido(int id, Time horaingreso, Time tiempoestimado, String estado, Cuenta cuenta, Date fecha) {
+    public Pedido(int id, Time horaingreso, float tiempoestimado, String estado, Cuenta cuenta, Date fecha) {
         this.id = id;
         this.horaingreso = horaingreso;
         this.tiempoestimado = tiempoestimado;
@@ -85,7 +85,7 @@ public class Pedido {
         Pedido pedido;
         ResultSet pedidoRS = Conexion.consultar("SELECT * FROM Pedido"); 
         while (pedidoRS.next()){
-            pedido= new Pedido(pedidoRS.getInt("id"),pedidoRS.getTime("horaingreso"),pedidoRS.getTime("tiempoestimado"),pedidoRS.getString("estado"),null,pedidoRS.getDate("fecha"));
+            pedido= new Pedido(pedidoRS.getInt("id"),pedidoRS.getTime("horaingreso"),pedidoRS.getFloat("tiempoestimado"),pedidoRS.getString("estado"),null,pedidoRS.getDate("fecha"));
            lista.add(pedido);
         }
         pedidoRS.close();
@@ -97,7 +97,7 @@ public class Pedido {
         Pedido pedido;
         ResultSet pedidoRS = Conexion.consultar("SELECT * FROM Pedido where cuenta="+idCuenta); 
         while (pedidoRS.next()){
-            pedido= new Pedido(pedidoRS.getInt("id"),pedidoRS.getTime("horaingreso"),pedidoRS.getTime("tiempoestimado"),pedidoRS.getString("estado"),null,pedidoRS.getDate("fecha"));
+            pedido= new Pedido(pedidoRS.getInt("id"),pedidoRS.getTime("horaingreso"),pedidoRS.getFloat("tiempoestimado"),pedidoRS.getString("estado"),null,pedidoRS.getDate("fecha"));
            lista.add(pedido);
         }
         pedidoRS.close();
@@ -127,11 +127,11 @@ public class Pedido {
         return r.getInt(1);
     }
     
-    public static void actualizarPedidoCuenta(int cuentaID ,int pedidoID,Time tiempoEstimado1,float total1) throws SQLException{
+    public static void actualizarPedidoCuenta(int cuentaID ,int pedidoID,float tiempoEstimado1,float total1) throws SQLException{
         CallableStatement statement = Conexion.getConexion().prepareCall("{call actualizarPedidoCuenta(?,?,?,?)}");
         statement.setInt(1,cuentaID); 
         statement.setInt(2,pedidoID);
-        statement.setTime(3,tiempoEstimado1);
+        statement.setFloat(3,tiempoEstimado1);
         statement.setFloat(4,total1);
         statement.execute();
     }

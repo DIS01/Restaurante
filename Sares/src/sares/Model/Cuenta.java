@@ -39,6 +39,8 @@ public class Cuenta {
     */
     private Cliente cliente;
 
+    private LinkedList<Pedido> pedidos;
+    
     public Cuenta(int id,boolean pagada, Float total, Mesa mesa) {
         this.id=id;
         this.pagada = pagada;
@@ -62,7 +64,7 @@ public class Cuenta {
     public static LinkedList<Cuenta> getCuentas() throws SQLException, ParseException{
         LinkedList<Cuenta> lista= new LinkedList();
         Cuenta cuenta;
-        try (ResultSet cuentaRS = Conexion.consultar("SELECT * FROM Cuenta")) {
+        try (ResultSet cuentaRS = Conexion.consultar("SELECT * FROM Cuenta order by id desc")) {
             while (cuentaRS.next()){
                 //cuenta= new Cuenta(cuentaRS.getInt("id"),cuentaRS.getBoolean("pagada"),cuentaRS.getFloat("total"),Mesa.getMesa(cuentaRS.getInt("mesa")));
                 cuenta= new Cuenta(cuentaRS.getInt("id"),cuentaRS.getBoolean("pagada"),cuentaRS.getFloat("total"),null); 

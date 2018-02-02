@@ -3,6 +3,7 @@ package sares.Controller;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Optional;
@@ -17,6 +18,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
@@ -40,7 +43,7 @@ import sares.Sares;
  * @author steevenrodriguez
  */
 public class MeseroController implements Initializable {
-    private final String[] opciones={"Crear cuenta(s)","Crear Pedido","Modificar Pedido","Eliminar Pedido"};
+    private final String[] opciones={"Crear cuenta(s)","Agregar Pedido","Consultar pedido","Modificar Pedido","Eliminar Pedido"};
     
     private Mesero mesero;
 
@@ -57,6 +60,9 @@ public class MeseroController implements Initializable {
     private ListView<String> escogerMenu;
     @FXML
     private ListView<String> cuentasRecientes;
+    @FXML
+    private ListView<Cuenta> cuentasCola;
+    
     @FXML
     private VBox root;
     @FXML
@@ -75,6 +81,11 @@ public class MeseroController implements Initializable {
         reloj();
         ObservableList<String> items = FXCollections.observableArrayList(opciones);
         this.escogerMenu.setItems(items);
+        try {
+            this.cuentasCola.setItems(FXCollections.observableList(Cuenta.getCuentas()));
+        } catch (SQLException | ParseException ex) {
+            Logger.getLogger(MeseroController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     @FXML
@@ -141,7 +152,7 @@ public class MeseroController implements Initializable {
                     Logger.getLogger(MeseroController.class.getName()).log(Level.SEVERE, null, ex);
                 }
             });
-        }else if ("Crear Pedido".equals(this.escogerMenu.getSelectionModel().getSelectedItem())) {
+        }else if (opciones[1].equals(this.escogerMenu.getSelectionModel().getSelectedItem())) {
             Mesero2Controller control = (Mesero2Controller)Sares.setContent("sares/fxml/Mesero2.fxml", (Node)event.getSource());
             control.meseroControllerCreate(this.mesero);  
         }
@@ -233,5 +244,13 @@ public class MeseroController implements Initializable {
         });
         Optional<Pair<String, String>> result = dialog.showAndWait();
         return result;
+    }
+    
+    public void mensajeExitoso(String mjs){
+        Alert alert = new Alert(AlertType.INFORMATION);
+        alert.setTitle("Sares");
+        alert.setHeaderText(null);
+        alert.setContentText(mjs);
+        alert.showAndWait();
     }
 }

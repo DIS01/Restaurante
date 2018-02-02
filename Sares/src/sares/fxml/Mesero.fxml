@@ -32,7 +32,7 @@
             </MenuButton>
          </children>
       </HBox>
-      <ListView fx:id="escogerMenu" onMouseClicked="#seleccionMenu" prefHeight="129.0" prefWidth="600.0" />
+      <ListView fx:id="escogerMenu" onMouseClicked="#seleccionMenu" prefHeight="154.0" prefWidth="600.0" />
       <HBox prefHeight="31.0" prefWidth="600.0">
          <children>
             <Label prefHeight="31.0" prefWidth="232.0" text="Cuentas recientes" />
