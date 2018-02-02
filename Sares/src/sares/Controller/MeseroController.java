@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package sares.Controller;
 
 import java.io.IOException;
@@ -10,6 +5,7 @@ import java.net.URL;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -21,6 +17,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
+import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
@@ -32,6 +29,8 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.util.Pair;
+import sares.Model.Cuenta;
 import sares.Model.Mesero;
 import sares.Sares;
 
@@ -41,10 +40,13 @@ import sares.Sares;
  * @author steevenrodriguez
  */
 public class MeseroController implements Initializable {
+    private final String[] opciones={"Crear cuenta(s)","Crear Pedido","Modificar Pedido","Eliminar Pedido"};
+    
     private Mesero mesero;
 
     private int cont = 0;
     private Calendar calendar;
+    
     @FXML
     private HBox hbox;
     @FXML
@@ -54,7 +56,7 @@ public class MeseroController implements Initializable {
     @FXML
     private ListView<String> escogerMenu;
     @FXML
-    private ListView<?> listarPedidos;
+    private ListView<String> cuentasRecientes;
     @FXML
     private VBox root;
     @FXML
@@ -62,16 +64,16 @@ public class MeseroController implements Initializable {
     @FXML
     private MenuButton opcionesUsuario;
 
+
     /**
      * Initializes the controller class.
      * @param url
+     * @param rb
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODOh
         reloj();
-        ObservableList<String> items = FXCollections.observableArrayList(
-                "Crear Pedido", "Modificar Pedido", "Eliminar Pedido");
+        ObservableList<String> items = FXCollections.observableArrayList(opciones);
         this.escogerMenu.setItems(items);
     }
 
@@ -126,10 +128,20 @@ public class MeseroController implements Initializable {
     
     @FXML
     private void seleccionMenu(MouseEvent event) throws IOException, SQLException {
-        
-        System.out.println(this.escogerMenu.getSelectionModel().getSelectedItem());
-
-        if ("Crear Pedido".equals(this.escogerMenu.getSelectionModel().getSelectedItem())) {
+        if (opciones[0].equals(this.escogerMenu.getSelectionModel().getSelectedItem())) {
+            crearCuentas().ifPresent(cuentas -> {
+                int cant_cuentas=0;
+                try {
+                    cant_cuentas=Integer.parseInt(cuentas.getKey());
+                    for (int i=1; i<=cant_cuentas; i++){
+                        int cuentaID=Cuenta.insertarCuenta(Integer.parseInt(cuentas.getValue()),this.getMesero().getId());
+                        this.cuentasRecientes.getItems().add(cuentasRecientes.getItems().size(), "Cuenta #: "+cuentaID+", Mesa #:"+cuentas.getValue()); 
+                    }
+                } catch (SQLException ex) {
+                    Logger.getLogger(MeseroController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            });
+        }else if ("Crear Pedido".equals(this.escogerMenu.getSelectionModel().getSelectedItem())) {
             Mesero2Controller control = (Mesero2Controller)Sares.setContent("sares/fxml/Mesero2.fxml", (Node)event.getSource());
             control.meseroControllerCreate(this.mesero);  
         }
@@ -166,5 +178,60 @@ public class MeseroController implements Initializable {
         });
         thread.setDaemon(true);
         thread.start();
+    }
+  
+    private Optional<Pair<String, String>>crearCuentas(){
+        Dialog<Pair<String, String>> dialog = new Dialog<>();
+        dialog.setTitle("Crear cuentas(s)");
+        dialog.setHeaderText(null);
+        ButtonType loginButtonType = new ButtonType("Registrar cuentas(s)", ButtonBar.ButtonData.OK_DONE);
+        dialog.getDialogPane().getButtonTypes().addAll(loginButtonType, ButtonType.CANCEL);
+
+        GridPane grid = new GridPane();
+        grid.setHgap(10);
+        grid.setVgap(10);
+        grid.setPadding(new Insets(20, 150, 10, 10));
+
+        TextField numCuentas = new TextField();
+        numCuentas.setPromptText("elegir cantidad de cuentas");
+        TextField mesa = new TextField();
+        mesa.setPromptText("elegir mesa");
+
+        grid.add(new Label("Cuentas:"), 0, 0);
+        grid.add(numCuentas, 1, 0);
+        grid.add(new Label("mesa:"), 0, 1);
+        grid.add(mesa, 1, 1);
+
+        Node loginButton = dialog.getDialogPane().lookupButton(loginButtonType);
+        loginButton.setDisable(true);
+        mesa.textProperty().addListener((observable, oldValue, newValue) -> {
+            try{
+            mesa.setStyle(" -fx-background-color: silver; -fx-border-width: 2px ;");
+            loginButton.setDisable(mesa.getText().isEmpty() || newValue.trim().isEmpty() || Integer.parseInt(newValue)<=0);      
+            }catch(NumberFormatException e){
+                mesa.setStyle("-fx-border-color: red ; -fx-border-width: 2px ;");
+                 loginButton.setDisable(true);
+            }
+        });
+        
+        numCuentas.textProperty().addListener((observable, oldValue, newValue) -> {
+            try{
+            numCuentas.setStyle(" -fx-background-color: silver; -fx-border-width: 2px ;");
+            loginButton.setDisable(numCuentas.getText().isEmpty() || newValue.trim().isEmpty() || Integer.parseInt(newValue)<=0 );      
+            }catch(NumberFormatException e){
+                numCuentas.setStyle("-fx-border-color: red ; -fx-border-width: 2px ;");
+                loginButton.setDisable(true);
+            }
+        });
+        dialog.getDialogPane().setContent(grid);
+
+         dialog.setResultConverter(dialogButton -> {
+            if (dialogButton == loginButtonType) {
+                return new Pair<>(numCuentas.getText(),mesa.getText());
+            }
+            return null;
+        });
+        Optional<Pair<String, String>> result = dialog.showAndWait();
+        return result;
     }
 }

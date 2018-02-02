@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package sares.Controller;
 
 import java.io.IOException;
@@ -27,6 +23,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import org.controlsfx.control.textfield.TextFields;
 import sares.Model.Categoria;
 import sares.Model.Conexion;
 import sares.Model.Cuenta;
@@ -53,10 +50,6 @@ public class Mesero2Controller extends MeseroController {
     @FXML
     private TextField cuentaText;
     @FXML
-    private Label mesa;
-    @FXML
-    private TextField mesaText;
-    @FXML
     private ListView<String> menu_Options;
     @FXML
     private Button buttonGoBack;
@@ -72,7 +65,10 @@ public class Mesero2Controller extends MeseroController {
         this.categoria= new LinkedList<>();
         try {
             this.categoria= this.getCategorias();
+            TextFields.bindAutoCompletion(cuentaText, Cuenta.getCuentas());
         } catch (SQLException ex) {
+            Logger.getLogger(Mesero2Controller.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ParseException ex) {
             Logger.getLogger(Mesero2Controller.class.getName()).log(Level.SEVERE, null, ex);
         }
         ObservableList<String> items = FXCollections.observableArrayList();
@@ -97,16 +93,11 @@ public class Mesero2Controller extends MeseroController {
         }
         control.assignCategoria(Categoria.getCategoria(idcategoria));
         control.meseroControllerCreate(this.getMesero());
-        control.setCuentaMesa(mesaText.getText(), cuentaText.getText(),pedido);
+        control.setCuentaMesa( cuentaText.getText(),pedido);
         control.setVentana();
-            
-    
+           
     }
     
-    public void setCuentaMesa(String mesa,String cuenta){
-        this.cuentaText.setText(cuenta);
-        this.mesaText.setText(mesa);
-    }
     public void setList(LinkedList<Categoria> list){
         this.categoria= list;
     }
@@ -132,9 +123,12 @@ public class Mesero2Controller extends MeseroController {
         this.pedido = pedido;
     }
     
+     public void setCuentaMesa(String cuenta){
+        this.cuentaText.setText(cuenta);
+    }
     @FXML
     private void handleGoBack(MouseEvent event) throws SQLException, IOException {
-        int cuentaID=Cuenta.insertarCuenta(Integer.parseInt(mesaText.getText()),this.getMesero().getId());
+        int cuentaID=Cuenta.insertarCuenta(Integer.parseInt(/*mesaText.getText())*/"s"),this.getMesero().getId());
         int pedidoID=Pedido.insertarPedido("en cola", cuentaID);
         float total=0.0f;
         int contador=0;

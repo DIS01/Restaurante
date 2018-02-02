@@ -48,7 +48,7 @@ DELIMITER $$
 CREATE PROCEDURE insertarPedidoMesero( estado VARCHAR(100), cuenta int)   
 BEGIN  
     INSERT INTO Pedido(horaIngreso,tiempoEstimado,estado,cuenta,fecha) 
-    values ( CURRENT_TIME(),"00:00:00",estado,cuenta, CURDATE() );
+    values ( CURRENT_TIME(),0.0,estado,cuenta, CURDATE() );
     Select max(p.id) from Pedido p;
 END $$;
 

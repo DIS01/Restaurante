@@ -52,8 +52,6 @@ public class Mesero3Controller extends MeseroController {
     @FXML
     private Label mesero3LblNombre;
     @FXML
-    private Label mesa;
-    @FXML
     private Label cuenta;
 
     @FXML
@@ -98,7 +96,7 @@ public class Mesero3Controller extends MeseroController {
             Mesero2Controller control = (Mesero2Controller) Sares.setContent("sares/fxml/Mesero2.fxml", hbox);
             control.setPedido(pedido);
             control.meseroControllerCreate(this.getMesero());
-            control.setCuentaMesa(mesa.getText().split("#:")[1], cuenta.getText().split("#:")[1]);
+            control.setCuentaMesa(cuenta.getText().split("#:")[1]);
         } catch (IOException ex) {
             Logger.getLogger(Mesero3Controller.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -120,17 +118,17 @@ public class Mesero3Controller extends MeseroController {
         } else if ("Platillos de entrada".equals(c.getNombre())) {
             ResultSet itemsRS = Conexion.consultar("SELECT * FROM Item,Categoria,Platillo where Item.id=Platillo.item and Item.categoria=Categoria.id and Categoria.nombre=\""+c.getNombre()+"\"");
             while (itemsRS.next()) {
-                lista.add(new Platillo(itemsRS.getTime("tiempoEstimado"),itemsRS.getInt("id"), itemsRS.getFloat("valor"), itemsRS.getString("nombre"), itemsRS.getBoolean("activo"), Categoria.getCategoria(itemsRS.getInt("categoria"))));
+                lista.add(new Platillo(itemsRS.getFloat("tiempoEstimado"),itemsRS.getInt("id"), itemsRS.getFloat("valor"), itemsRS.getString("nombre"), itemsRS.getBoolean("activo"), Categoria.getCategoria(itemsRS.getInt("categoria"))));
             }
         } else if ("Platos Fuerte".equals(c.getNombre())) {
             ResultSet itemsRS = Conexion.consultar("SELECT * FROM Item,Categoria,Platillo where Item.id=Platillo.item and Item.categoria=Categoria.id and Categoria.nombre=\""+c.getNombre()+"\"");
             while (itemsRS.next()) {
-                lista.add(new Platillo(itemsRS.getTime("tiempoEstimado"),itemsRS.getInt("id"), itemsRS.getFloat("valor"), itemsRS.getString("nombre"), itemsRS.getBoolean("activo"), Categoria.getCategoria(itemsRS.getInt("categoria"))));
+                lista.add(new Platillo(itemsRS.getFloat("tiempoEstimado"),itemsRS.getInt("id"), itemsRS.getFloat("valor"), itemsRS.getString("nombre"), itemsRS.getBoolean("activo"), Categoria.getCategoria(itemsRS.getInt("categoria"))));
             }
         } else if ("Postres".equals(c.getNombre())) {
             ResultSet itemsRS = Conexion.consultar("SELECT * FROM Item,Categoria,Platillo where Item.id=Platillo.item and Item.categoria=Categoria.id and Categoria.nombre=\""+c.getNombre()+"\"");
             while (itemsRS.next()) {
-                lista.add(new Platillo(itemsRS.getTime("tiempoEstimado"),itemsRS.getInt("id"), itemsRS.getFloat("valor"), itemsRS.getString("nombre"), itemsRS.getBoolean("activo"), Categoria.getCategoria(itemsRS.getInt("categoria"))));
+                lista.add(new Platillo(itemsRS.getFloat("tiempoEstimado"),itemsRS.getInt("id"), itemsRS.getFloat("valor"), itemsRS.getString("nombre"), itemsRS.getBoolean("activo"), Categoria.getCategoria(itemsRS.getInt("categoria"))));
             }
         }
         return lista;
@@ -170,9 +168,8 @@ public class Mesero3Controller extends MeseroController {
         });
         this.mesero3ListViewItems.setItems(items1);
     }
-    public void setCuentaMesa(String mesa,String cuenta,HashMap<Item, LinkedList<Object>> pedido ){
-        this.mesa.setText("Mesa #:"+ mesa);
-        this.cuenta.setText("Cuenta #:"+cuenta);   
+    public void setCuentaMesa(String cuenta,HashMap<Item, LinkedList<Object>> pedido ){
+       this.cuenta.setText("Cuenta #:"+cuenta);   
         this.pedido=pedido;
     }
 }

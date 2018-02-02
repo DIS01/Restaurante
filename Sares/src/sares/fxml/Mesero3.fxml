@@ -35,7 +35,6 @@
       <HBox prefHeight="42.0" prefWidth="600.0">
          <children>
             <Label fx:id="cuenta" prefHeight="40.0" prefWidth="224.0" text="Cuenta #:" />
-            <Label fx:id="mesa" prefHeight="39.0" prefWidth="328.0" text="Mesa #:" />
          </children>
       </HBox>
       <ListView id="mesero3ListViewItems" fx:id="mesero3ListViewItems" prefHeight="298.0" prefWidth="600.0" />
