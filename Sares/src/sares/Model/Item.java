@@ -105,6 +105,11 @@ public class Item{
     public void setStock(float Stock) {
         this.Stock = Stock;
     }
+
+    @Override
+    public String toString() {
+        return  id + ", valor=" + valor + ", nombre=" + nombre  ;
+    }
     
     
         

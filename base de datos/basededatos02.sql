@@ -29,7 +29,7 @@ CREATE TABLE Bebida(
 
 CREATE TABLE Combo(
 	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-	tiempoPreparacion float,
+	tiempoEstimado float,
 	item INT,
 	FOREIGN KEY (item) REFERENCES Item(id)
 );

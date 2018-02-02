@@ -120,7 +120,7 @@ INSERT INTO Inventario(stock, item) values(8.0,20);
 # combo
 INSERT INTO Item(valor,nombre,categoria,activo) values (30.0,"miercoles loco",5,1);
 
-INSERT INTO Combo(tiempoPreparacion,item) values (20.0,21);
+INSERT INTO Combo(tiempoEstimado,item) values (20.0,21);
 
 INSERT INTO ComboItem(combo,item,cantidadItem) values(1,3,1);
 INSERT INTO ComboItem(combo,item,cantidadItem) values(1,6,2);

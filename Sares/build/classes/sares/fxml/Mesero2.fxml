@@ -49,7 +49,7 @@
             </AnchorPane>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                <children>
-                  <ListView prefHeight="158.0" prefWidth="315.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                  <ListView fx:id="listaitems" prefHeight="158.0" prefWidth="315.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                </children>
             </AnchorPane>
         </items>
@@ -57,6 +57,7 @@
       <Pane prefHeight="96.0" prefWidth="640.0">
          <children>
             <Button fx:id="buttonGoBack" contentDisplay="CENTER" layoutX="438.0" layoutY="48.0" mnemonicParsing="false" onMouseClicked="#handleGoBack" text="Finalizar Pedido" textAlignment="CENTER" />
+            <Label fx:id="tiempoEstimado" layoutX="475.0" layoutY="4.0" prefHeight="21.0" prefWidth="152.0" text="Tiempo : " />
          </children>
       </Pane>
    </children>

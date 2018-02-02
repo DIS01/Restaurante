@@ -28,6 +28,7 @@ import sares.Model.Item;
 import sares.Model.Platillo;
 import sares.Sares;
 import sares.Model.Bebida;
+import sares.Model.Combo;
 
 /**
  * FXML Controller class
@@ -60,7 +61,6 @@ public class Mesero3Controller extends MeseroController {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         reloj();
-        BtnGuardar.setDisable(true);
     }
     
     @FXML
@@ -75,15 +75,11 @@ public class Mesero3Controller extends MeseroController {
                     Label nombre = (Label) vboxTemp.getChildren().get(0);
                     String nombre1 = nombre.getText();
                     this.items.forEach((item) -> {
-                        
                         if (item.getNombre().equals(nombre1.split(".-")[1])) {
-                            System.out.println(item.getNombre());
                             LinkedList<Object> details = new LinkedList<>();
                             TextArea ta1 = (TextArea) vboxTemp.getChildren().get(1);
-                            Integer cantidad = Integer.parseInt(tf.getText());
-                            details.add(cantidad);
-                            details.add(ta1);
-                            
+                            details.add(Integer.parseInt(tf.getText()));
+                            details.add(ta1.getText());
                             this.pedido.put(item, details);
                         }
                     });
@@ -110,7 +106,10 @@ public class Mesero3Controller extends MeseroController {
                 lista.add(new Bebida(itemsRS.getString("marca"),itemsRS.getInt("id"), itemsRS.getFloat("valor"), itemsRS.getString("nombre"), itemsRS.getBoolean("activo"), Categoria.getCategoria(itemsRS.getInt("categoria")),itemsRS.getFloat("stock")));
             }
         } else if ("Combo".equals(c.getNombre())) {
-
+            ResultSet itemsRS = Conexion.consultar("SELECT * FROM Item,Combo,Inventario  where Item.id=Combo.item and Item.id=Inventario.item");
+            while (itemsRS.next()) {
+                lista.add(new Combo(null, itemsRS.getFloat("tiempoEstimado"),itemsRS.getInt("id"), itemsRS.getFloat("valor"), itemsRS.getString("nombre"), itemsRS.getBoolean("activo"), Categoria.getCategoria(itemsRS.getInt("categoria")),itemsRS.getFloat("stock")));
+            }
         } else if ("Platillos de entrada".equals(c.getNombre())) {
             ResultSet itemsRS = Conexion.consultar("SELECT * FROM Item,Categoria,Platillo,Inventario where Item.id=Inventario.item and Item.id=Platillo.item and Item.categoria=Categoria.id and Categoria.nombre=\""+c.getNombre()+"\" and stock>0");
             while (itemsRS.next()) {
@@ -160,9 +159,9 @@ public class Mesero3Controller extends MeseroController {
                         this.BtnGuardar.setDisable(true);
                         tf1.setText("0");
                     }    
+                        this.BtnGuardar.setDisable(false);
                 }catch(NumberFormatException e){
                      this.BtnGuardar.setDisable(true);
-                       
                 }
             });
             tf1.setText("0");
@@ -179,5 +178,13 @@ public class Mesero3Controller extends MeseroController {
     public void setCuentaMesa(String cuenta,HashMap<Item, LinkedList<Object>> pedido ){
        this.cuenta.setText("Cuenta #:"+cuenta);   
         this.pedido=pedido;
+    }
+    
+    @FXML
+    public void regresarCategorias(MouseEvent e) throws IOException{
+        Mesero2Controller control = (Mesero2Controller) Sares.setContent("sares/fxml/Mesero2.fxml", this.BtnGuardar);
+        control.setPedido(pedido);
+        control.meseroControllerCreate(this.getMesero());
+        control.setCuentaMesa(cuenta.getText().split("#:")[1]);
     }
 }
