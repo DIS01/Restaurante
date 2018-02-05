@@ -49,11 +49,17 @@ INSERT INTO Item(valor,nombre,categoria,activo) values (3.4,"Salpicón de salmó
 INSERT INTO Item(valor,nombre,categoria,activo) values (2.3,"Torre de Fiambre",1,1);
 INSERT INTO Item(valor,nombre,categoria,activo) values (2.34,"Huevos rellenos al curry",1,1);
 
-INSERT INTO Platillo(tiempoEstimado,item) values ('00:05:00',1);
-INSERT INTO Platillo(tiempoEstimado,item) values ('00:05:00',2);
-INSERT INTO Platillo(tiempoEstimado,item) values ('00:05:00',3);
-INSERT INTO Platillo(tiempoEstimado,item) values ('00:15:00',4);
-INSERT INTO Platillo(tiempoEstimado,item) values ('00:10:00',5);
+INSERT INTO Platillo(tiempoEstimado,item) values (3.0,1);
+INSERT INTO Platillo(tiempoEstimado,item) values (4.0,2);
+INSERT INTO Platillo(tiempoEstimado,item) values (5.0,3);
+INSERT INTO Platillo(tiempoEstimado,item) values (6.0,4);
+INSERT INTO Platillo(tiempoEstimado,item) values (7.0,5);
+
+INSERT INTO Inventario(stock, item) values(5.0,1); 
+INSERT INTO Inventario(stock, item) values(10.0,2);
+INSERT INTO Inventario(stock, item) values(15.0,3);
+INSERT INTO Inventario(stock, item) values(5.0,4);
+INSERT INTO Inventario(stock, item) values(10.0,5);
 
 # platos fuertes
 INSERT INTO Item(valor,nombre,categoria,activo) values (2.99,"aguado de pollo",2,1);
@@ -62,12 +68,17 @@ INSERT INTO Item(valor,nombre,categoria,activo) values (2.00,"Arroz con menestra
 INSERT INTO Item(valor,nombre,categoria,activo) values (3.00,"arroz marinero",2,1);
 INSERT INTO Item(valor,nombre,categoria,activo) values (2.00,"carne colorada",2,1);
 
-INSERT INTO Platillo(tiempoEstimado,item) values ('00:20:00',6);
-INSERT INTO Platillo(tiempoEstimado,item) values ('00:30:00',7);
-INSERT INTO Platillo(tiempoEstimado,item) values ('00:10:00',8);
-INSERT INTO Platillo(tiempoEstimado,item) values ('00:20:00',9);
-INSERT INTO Platillo(tiempoEstimado,item) values ('00:25:00',10);
+INSERT INTO Platillo(tiempoEstimado,item) values (5.0,6);
+INSERT INTO Platillo(tiempoEstimado,item) values (6.0,7);
+INSERT INTO Platillo(tiempoEstimado,item) values (7.0,8);
+INSERT INTO Platillo(tiempoEstimado,item) values (8.0,9);
+INSERT INTO Platillo(tiempoEstimado,item) values (9.0,10);
 
+INSERT INTO Inventario(stock, item) values(4.0,6); 
+INSERT INTO Inventario(stock, item) values(9.0,7);
+INSERT INTO Inventario(stock, item) values(12.0,8);
+INSERT INTO Inventario(stock, item) values(4.0,9);
+INSERT INTO Inventario(stock, item) values(9.0,10);
 # bebidas
 INSERT INTO Item(valor,nombre,categoria,activo) values (3.00,"Tequila blanco",3,1);
 INSERT INTO Item(valor,nombre,categoria,activo) values (4.00,"Whisky dorado",3,1);
@@ -81,6 +92,12 @@ INSERT INTO Bebida(marca,item) values("R. Gonzalez.",13);
 INSERT INTO Bebida(marca,item) values("R. Gonzalez.",14);
 INSERT INTO Bebida(marca,item) values("J. W.",15);
 
+INSERT INTO Inventario(stock, item) values(3.0,11); 
+INSERT INTO Inventario(stock, item) values(8.0,12);
+INSERT INTO Inventario(stock, item) values(11.0,13);
+INSERT INTO Inventario(stock, item) values(3.0,14);
+INSERT INTO Inventario(stock, item) values(8.0,15);
+
 # postres
 INSERT INTO Item(valor,nombre,categoria,activo) values (4.00,"Cheese Cake de Guayaba",4,1);
 INSERT INTO Item(valor,nombre,categoria,activo) values (3.00,"Fondant de Chocolate",4,1);
@@ -88,21 +105,28 @@ INSERT INTO Item(valor,nombre,categoria,activo) values (2.00,"Merengue con Almen
 INSERT INTO Item(valor,nombre,categoria,activo) values (2.90,"Crujiente de Avellana",4,1);
 INSERT INTO Item(valor,nombre,categoria,activo) values (3.00,"Tiramisú de Café",4,1);
 
-INSERT INTO Platillo(tiempoEstimado,item) values("00:05:00",16);
-INSERT INTO Platillo(tiempoEstimado,item) values("00:05:00",17);
-INSERT INTO Platillo(tiempoEstimado,item) values("00:05:00",18);
-INSERT INTO Platillo(tiempoEstimado,item) values("00:05:00",19);
-INSERT INTO Platillo(tiempoEstimado,item) values("00:05:00",20);
+INSERT INTO Platillo(tiempoEstimado,item) values(4.0,16);
+INSERT INTO Platillo(tiempoEstimado,item) values(4.0,17);
+INSERT INTO Platillo(tiempoEstimado,item) values(3.0,18);
+INSERT INTO Platillo(tiempoEstimado,item) values(3.0,19);
+INSERT INTO Platillo(tiempoEstimado,item) values(4.0,20);
+
+INSERT INTO Inventario(stock, item) values(3.0,16); 
+INSERT INTO Inventario(stock, item) values(8.0,17);
+INSERT INTO Inventario(stock, item) values(11.0,18);
+INSERT INTO Inventario(stock, item) values(3.0,19);
+INSERT INTO Inventario(stock, item) values(8.0,20);
 
 # combo
 INSERT INTO Item(valor,nombre,categoria,activo) values (30.0,"miercoles loco",5,1);
 
-INSERT INTO Combo(tiempoPreparacion,item) values ("00:20:00",21);
+INSERT INTO Combo(tiempoEstimado,item) values (20.0,21);
 
 INSERT INTO ComboItem(combo,item,cantidadItem) values(1,3,1);
 INSERT INTO ComboItem(combo,item,cantidadItem) values(1,6,2);
 INSERT INTO ComboItem(combo,item,cantidadItem) values(1,7,1);
 
+INSERT INTO Inventario(stock, item) values(8.0,21);
 # info mesas restaurante
 INSERT INTO Ambiente(nombre,activo) values("primera categoria",1);
 INSERT INTO Ambiente(nombre,activo) values("segunda categoria",1);
@@ -113,14 +137,14 @@ INSERT INTO TipoMesa(stock,tipo,asignada,numSillas) VALUES (3,"pareja",0,2);
 INSERT INTO AmbienteMesa(ambiente,tipoMesa,asignadas) values (1,1,0);
 INSERT INTO AmbienteMesa(ambiente,tipoMesa,asignadas) values (2,1,0);
 
-INSERT INTO Mesa(id2,ambienteMesa) values(1,1);
-INSERT INTO Mesa(id2,ambienteMesa) values(1,2);
+INSERT INTO Mesa(id2,ambienteMesa,disponible) values(1,1,1);
+INSERT INTO Mesa(id2,ambienteMesa,disponible ) values(1,2,1);
 
 #cuenta
 INSERT INTO Cuenta(pagada , total,mesa,mesero) values (0,21.0,1,1);
 
 #pedido1
-INSERT INTO Pedido(horaIngreso,tiempoEstimado,estado,cuenta,fecha ) Values("11:03:33","00:03:33","Preparando",1,"2018-01-28");
+INSERT INTO Pedido(horaIngreso,tiempoEstimado,estado,cuenta,fecha ) Values("11:03:33",33.0,"Preparando",1,"2018-01-28");
 
 INSERT INTO PedidoDetalle(pedido,item,precio,cantidad,detalle) Values (1,1,23.2,2,"sin azucar");
 INSERT INTO PedidoDetalle(pedido,item,precio,cantidad,detalle) Values (1,2,22.2,1,"sin 1");
@@ -128,7 +152,7 @@ INSERT INTO PedidoDetalle(pedido,item,precio,cantidad,detalle) Values (1,3,20.2,
 INSERT INTO PedidoDetalle(pedido,item,precio,cantidad,detalle) Values (1,4,23.2,1,"sin 3");
 
 #pedido2
-INSERT INTO Pedido(horaIngreso,tiempoEstimado,estado,cuenta,fecha ) Values("12:03:33","00:05:33","Preparando",1,"2018-01-28");
+INSERT INTO Pedido(horaIngreso,tiempoEstimado,estado,cuenta,fecha ) Values("12:03:33",40.0,"Preparando",1,"2018-01-28");
 
 INSERT INTO PedidoDetalle(pedido,item,precio,cantidad,detalle) Values (2,1,23.2,2,"sin 1");
 INSERT INTO PedidoDetalle(pedido,item,precio,cantidad,detalle) Values (2,2,22.2,1,"sin 2");

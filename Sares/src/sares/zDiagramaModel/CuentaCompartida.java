@@ -1,7 +1,6 @@
 package sares.zDiagramaModel;
 
 import sares.Model.Cuenta;
-import sares.zDiagramaView.Ventas;
 import java.util.*;
 
 /**
@@ -23,7 +22,7 @@ public class CuentaCompartida{
 	/**
 	 * 
 	 */
-	private Ventas venta;
+
 
 
 

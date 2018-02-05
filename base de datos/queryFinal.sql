@@ -5,5 +5,5 @@ BEGIN
     FROM Empleado emp, Persona per, Cuenta cue, Pedido ped, PedidoDetalle pdt
     WHERE emp.persona = per.dni and cue.mesero = emp.id and ped.cuenta = cue.id
     	  and pdt.pedido = ped.id and cue.total > valor
-    GROUP BY cue.id
-END $$;
+    GROUP BY cue.id;
+END $$

@@ -34,15 +34,31 @@
             </MenuButton>
          </children>
       </HBox>
-      <Pane fx:id="pane_medio" prefHeight="94.0" prefWidth="640.0">
+      <Pane fx:id="pane_medio" prefHeight="73.0" prefWidth="640.0">
          <children>
-            <Label fx:id="cuenta" layoutX="48.0" layoutY="32.0" text="# de Cuentas" />
+            <Label fx:id="cuenta" layoutX="48.0" layoutY="32.0" text="# de Cuenta" />
             <TextField fx:id="cuentaText" layoutX="144.0" layoutY="27.0" />
-            <Label fx:id="mesa" layoutX="55.0" layoutY="62.0" text="# de Mesa" />
-            <TextField fx:id="mesaText" layoutX="144.0" layoutY="57.0" />
          </children>
       </Pane>
-      <ListView fx:id="menu_Options" onMouseClicked="#seleccionMenu" prefHeight="200.0" prefWidth="200.0" />
-      <Button fx:id="buttonGoBack" contentDisplay="CENTER" mnemonicParsing="false" onMouseClicked="#handleGoBack" text="Finalizar Pedido" textAlignment="CENTER" />
+      <SplitPane dividerPositions="0.5031347962382445" prefHeight="186.0" prefWidth="637.0">
+        <items>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="158.0" prefWidth="224.0">
+               <children>
+                  <ListView fx:id="menu_Options" onMouseClicked="#seleccionMenu" prefHeight="186.0" prefWidth="499.0" AnchorPane.bottomAnchor="-2.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="-182.0" AnchorPane.topAnchor="0.0" />
+               </children>
+            </AnchorPane>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+               <children>
+                  <ListView fx:id="listaitems" prefHeight="158.0" prefWidth="315.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+               </children>
+            </AnchorPane>
+        </items>
+      </SplitPane>
+      <Pane prefHeight="96.0" prefWidth="640.0">
+         <children>
+            <Button fx:id="buttonGoBack" contentDisplay="CENTER" layoutX="438.0" layoutY="48.0" mnemonicParsing="false" onMouseClicked="#handleGoBack" text="Finalizar Pedido" textAlignment="CENTER" />
+            <Label fx:id="tiempoEstimado" layoutX="475.0" layoutY="4.0" prefHeight="21.0" prefWidth="152.0" text="Tiempo : " />
+         </children>
+      </Pane>
    </children>
 </VBox>

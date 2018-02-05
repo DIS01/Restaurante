@@ -1,6 +1,5 @@
 package sares.zDiagramaController;
 
-import sares.zDiagramaView.Ventas;
 import java.util.*;
 import sares.Model.*;
 /**
@@ -20,9 +19,6 @@ public class CtrlCajero {
 	 * @param venta 
 	 * @return
 	 */
-	public void saveVenta(Ventas venta){
-            
-        }
 
 	/**
 	 * @return

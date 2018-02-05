@@ -14,11 +14,13 @@ public class Bebida extends Item{
         super(id, valor, nombre, activo, categoria);
         this.marca = marca;
     }
-        
-    public Bebida(String marca, float valor, String nombre, boolean activo, Categoria categoria) {
-        super(valor, nombre, activo, categoria);
+
+    public Bebida(String marca, int id, float valor, String nombre, boolean activo, Categoria categoria, float Stock) {
+        super(id, valor, nombre, activo, categoria, Stock);
         this.marca = marca;
     }
+        
+    
     
     public String getMarca() {
         return marca;

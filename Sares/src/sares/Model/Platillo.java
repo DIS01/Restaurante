@@ -1,7 +1,5 @@
 package sares.Model;
 
-import java.sql.Time;
-
 /**
  * 
  */
@@ -10,23 +8,25 @@ public class Platillo extends Item{
     /**
      *  
     */
-    private Time tiempoEstimado;
-        
-    public Platillo(Time tiempoEstimado, float valor, String nombre, boolean activo, Categoria categoria) {
-        super(valor, nombre, activo, categoria);
+    private float tiempoEstimado;
+
+    public Platillo(float tiempoEstimado, int id, float valor, String nombre, boolean activo, Categoria categoria, float Stock) {
+        super(id, valor, nombre, activo, categoria, Stock);
         this.tiempoEstimado = tiempoEstimado;
     }
+        
+    
 
-    public Platillo(Time tiempoEstimado, int id, float valor, String nombre, boolean activo, Categoria categoria) {
+    public Platillo(float tiempoEstimado, int id, float valor, String nombre, boolean activo, Categoria categoria) {
         super(id, valor, nombre, activo, categoria);
         this.tiempoEstimado = tiempoEstimado;
     }
     
-    public Time getTiempoEstimado() {
+    public float getTiempoEstimado() {
         return tiempoEstimado;
     }
 
-    public void setTiempoEstimado(Time tiempoEstimado) {
+    public void setTiempoEstimado(float tiempoEstimado) {
         this.tiempoEstimado = tiempoEstimado;
     }
 

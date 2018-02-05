@@ -35,10 +35,14 @@
       <HBox prefHeight="42.0" prefWidth="600.0">
          <children>
             <Label fx:id="cuenta" prefHeight="40.0" prefWidth="224.0" text="Cuenta #:" />
-            <Label fx:id="mesa" prefHeight="39.0" prefWidth="328.0" text="Mesa #:" />
          </children>
       </HBox>
-      <ListView id="mesero3ListViewItems" fx:id="mesero3ListViewItems" prefHeight="298.0" prefWidth="600.0" />
-      <Button id="mesero3BtnGuardar" fx:id="BtnGuardar" mnemonicParsing="false" onMouseClicked="#handleGoBack" prefHeight="31.0" prefWidth="129.0" text="Guardar" textAlignment="RIGHT" />
+      <ListView id="mesero3ListViewItems" fx:id="mesero3ListViewItems" prefHeight="359.0" prefWidth="600.0" />
+      <Pane prefHeight="200.0" prefWidth="200.0">
+         <children>
+            <Button id="mesero3BtnGuardar" fx:id="BtnGuardar" layoutX="376.0" layoutY="39.0" mnemonicParsing="false" onMouseClicked="#handleGoBack" prefHeight="31.0" prefWidth="129.0" text="Guardar" textAlignment="RIGHT" />
+            <Button fx:id="regresar" layoutX="88.0" layoutY="39.0" mnemonicParsing="false" onMouseClicked="#regresarCategorias" prefHeight="31.0" prefWidth="152.0" text="Regresar" />
+         </children>
+      </Pane>
    </children>
 </VBox>

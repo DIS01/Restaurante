@@ -25,7 +25,7 @@ public class Pedido {
     /**
      * 
      */
-    public Time tiempoestimado;
+    public float tiempoestimado;
 
     /**
      * 
@@ -48,7 +48,7 @@ public class Pedido {
     public Pedido() {
     }
 
-    public Pedido(int id, Time horaingreso, Time tiempoestimado, String estado, Cuenta cuenta, Date fecha) {
+    public Pedido(int id, Time horaingreso, float tiempoestimado, String estado, Cuenta cuenta, Date fecha) {
         this.id = id;
         this.horaingreso = horaingreso;
         this.tiempoestimado = tiempoestimado;
@@ -83,21 +83,31 @@ public class Pedido {
     public static LinkedList<Pedido> getPedidos() throws SQLException, ParseException{
         LinkedList<Pedido> lista= new LinkedList();
         Pedido pedido;
-        ResultSet pedidoRS = Conexion.consultar("SELECT * FROM Pedido"); 
+        ResultSet pedidoRS = Conexion.consultar("SELECT * FROM Pedido order by id desc"); 
         while (pedidoRS.next()){
-            pedido= new Pedido(pedidoRS.getInt("id"),pedidoRS.getTime("horaingreso"),pedidoRS.getTime("tiempoestimado"),pedidoRS.getString("estado"),null,pedidoRS.getDate("fecha"));
+            pedido= new Pedido(pedidoRS.getInt("id"),pedidoRS.getTime("horaingreso"),pedidoRS.getFloat("tiempoestimado"),pedidoRS.getString("estado"),null,pedidoRS.getDate("fecha"));
            lista.add(pedido);
         }
         pedidoRS.close();
         return lista;
     }
     
-    public static LinkedList<Pedido> getPedidos(int idCuenta) throws SQLException, ParseException{
+    public static Pedido getPedido(int id) throws SQLException, ParseException{
+        Pedido pedido=null;
+        ResultSet pedidoRS = Conexion.consultar("SELECT * FROM Pedido where id="+id); 
+        while (pedidoRS.next()){
+            pedido= new Pedido(pedidoRS.getInt("id"),pedidoRS.getTime("horaingreso"),pedidoRS.getFloat("tiempoestimado"),pedidoRS.getString("estado"),null,pedidoRS.getDate("fecha"));
+        }
+        pedidoRS.close();
+        return pedido;
+    }
+    
+    public static LinkedList<Pedido> getPedidos(Cuenta cuenta) throws SQLException, ParseException{
         LinkedList<Pedido> lista= new LinkedList();
         Pedido pedido;
-        ResultSet pedidoRS = Conexion.consultar("SELECT * FROM Pedido where cuenta="+idCuenta); 
+        ResultSet pedidoRS = Conexion.consultar("SELECT * FROM Pedido where cuenta="+cuenta.getId()+ " order by id desc"); 
         while (pedidoRS.next()){
-            pedido= new Pedido(pedidoRS.getInt("id"),pedidoRS.getTime("horaingreso"),pedidoRS.getTime("tiempoestimado"),pedidoRS.getString("estado"),null,pedidoRS.getDate("fecha"));
+            pedido= new Pedido(pedidoRS.getInt("id"),pedidoRS.getTime("horaingreso"),pedidoRS.getFloat("tiempoestimado"),pedidoRS.getString("estado"),cuenta,pedidoRS.getDate("fecha"));
            lista.add(pedido);
         }
         pedidoRS.close();
@@ -106,7 +116,7 @@ public class Pedido {
     
     @Override
     public String toString() {
-        return this.id +", " + this.estado;
+        return this.id +", " + this.estado+", Cuenta #:"+this.cuenta;
     }   
     
     public static float getTotal(LinkedList<Pedido> pedidos) throws SQLException{
@@ -127,12 +137,61 @@ public class Pedido {
         return r.getInt(1);
     }
     
-    public static void actualizarPedidoCuenta(int cuentaID ,int pedidoID,Time tiempoEstimado1,float total1) throws SQLException{
+    public static void actualizarPedidoCuenta(int cuentaID ,int pedidoID,float tiempoEstimado1,float total1) throws SQLException{
         CallableStatement statement = Conexion.getConexion().prepareCall("{call actualizarPedidoCuenta(?,?,?,?)}");
         statement.setInt(1,cuentaID); 
         statement.setInt(2,pedidoID);
-        statement.setTime(3,tiempoEstimado1);
+        statement.setFloat(3,tiempoEstimado1);
         statement.setFloat(4,total1);
         statement.execute();
     }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public Time getHoraingreso() {
+        return horaingreso;
+    }
+
+    public void setHoraingreso(Time horaingreso) {
+        this.horaingreso = horaingreso;
+    }
+
+    public float getTiempoestimado() {
+        return tiempoestimado;
+    }
+
+    public void setTiempoestimado(float tiempoestimado) {
+        this.tiempoestimado = tiempoestimado;
+    }
+
+    public String getEstado() {
+        return estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
+    }
+
+    public Cuenta getCuenta() {
+        return cuenta;
+    }
+
+    public void setCuenta(Cuenta cuenta) {
+        this.cuenta = cuenta;
+    }
+
+    public Date getFecha() {
+        return fecha;
+    }
+
+    public void setFecha(Date fecha) {
+        this.fecha = fecha;
+    }
+    
 }

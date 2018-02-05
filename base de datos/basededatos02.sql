@@ -1,5 +1,4 @@
 ############################# P e d i d o s ##################################
-
 CREATE TABLE Categoria(
 	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	nombre VARCHAR(20)
@@ -16,7 +15,7 @@ CREATE TABLE Item(
 
 CREATE TABLE Platillo(
 	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-	tiempoEstimado TIME,
+	tiempoEstimado float,
 	item INT,
 	FOREIGN KEY (item) REFERENCES Item(id)
 );
@@ -30,7 +29,7 @@ CREATE TABLE Bebida(
 
 CREATE TABLE Combo(
 	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-	tiempoPreparacion TIME,
+	tiempoEstimado float,
 	item INT,
 	FOREIGN KEY (item) REFERENCES Item(id)
 );
@@ -47,8 +46,8 @@ CREATE TABLE ComboItem(
 CREATE TABLE Inventario(
 	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	stock FLOAT,
-	platillo INT,
-	FOREIGN KEY (platillo) REFERENCES Platillo(id)
+	item int,
+	FOREIGN KEY (item) REFERENCES Item(id)
 );
 
 ########################## A c t o r e s ###########################
@@ -117,6 +116,7 @@ CREATE TABLE Mesa(
 	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	id2 INT,
 	ambienteMesa INT,
+	disponible int,
 	FOREIGN KEY (ambienteMesa) REFERENCES AmbienteMesa(id)
 );
 
@@ -143,6 +143,7 @@ CREATE TABLE Cuenta(
 	cliente INT,
 	mesa INT,
 	mesero INT,
+	prioridad INT,
 	FOREIGN KEY (cliente) REFERENCES Cliente(id),
 	FOREIGN KEY (mesa) REFERENCES Mesa(id),
 	FOREIGN KEY (mesero) REFERENCES Empleado(id)
@@ -151,7 +152,7 @@ CREATE TABLE Cuenta(
 CREATE TABLE Pedido(
 	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	horaIngreso TIME,
-	tiempoEstimado TIME,
+	tiempoEstimado float,
 	estado VARCHAR(100),
 	cuenta INT,
 	fecha date,
@@ -204,8 +205,6 @@ CREATE TABLE PagoTarjeta(
 	pagoCuenta INT,
 	FOREIGN KEY (pagoCuenta) REFERENCES PagoCuenta(id)
 	);
-
-
 
 CREATE TABLE Reporte(
 	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,

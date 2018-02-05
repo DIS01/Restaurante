@@ -38,9 +38,9 @@ END $$;
 
 
 DELIMITER $$
-CREATE PROCEDURE insertarCuentaMesero(mesa INT,idMesero INT)   
+CREATE PROCEDURE insertarCuentaMesero(mesa INT,idMesero INT, prioridadv INT)   
 BEGIN  
-    INSERT INTO Cuenta(pagada,total,mesa,mesero) values (0,0.0,mesa,idMesero);
+    INSERT INTO Cuenta(pagada,total,mesa,mesero,prioridad) values (0,0.0,mesa,idMesero,prioridadv);
     select max(c.id) from Cuenta c;
 END $$;
 
@@ -48,20 +48,22 @@ DELIMITER $$
 CREATE PROCEDURE insertarPedidoMesero( estado VARCHAR(100), cuenta int)   
 BEGIN  
     INSERT INTO Pedido(horaIngreso,tiempoEstimado,estado,cuenta,fecha) 
-    values ( CURRENT_TIME(),"00:00:00",estado,cuenta, CURDATE() );
+    values ( CURRENT_TIME(),0.0,estado,cuenta, CURDATE() );
     Select max(p.id) from Pedido p;
 END $$;
 
 DELIMITER $$
-CREATE PROCEDURE insertarPedidoDetalleMesero(pedido int, item int, precio float, cantidad int, detalle VARCHAR(100))   
+CREATE PROCEDURE insertarPedidoDetalleMesero(pedido int, item1 int, precio float, cantidad int, detalle VARCHAR(100), stockactual int)   
 BEGIN  
     INSERT INTO PedidoDetalle(pedido, item,precio,cantidad,detalle) 
-    values (pedido, item,precio,cantidad,detalle);
+    values (pedido, item1,precio,cantidad,detalle);
+    UPDATE Inventario SET stock=stockactual where item=item1; 
 END $$;
 
 DELIMITER $$
-CREATE PROCEDURE actualizarPedidoCuenta(cuentaID INT,pedidoID INT ,tiempoEstimado1 TIME , total1 float)   
+CREATE PROCEDURE actualizarPedidoCuenta(cuentaID INT,pedidoID INT ,tiempoEstimado1 FLOAT , total1 float)   
 BEGIN  
     UPDATE Pedido SET tiempoEstimado=tiempoEstimado1 WHERE id=pedidoID;
     UPDATE Cuenta SET total=total1 where id=cuentaID;
 END $$;
+

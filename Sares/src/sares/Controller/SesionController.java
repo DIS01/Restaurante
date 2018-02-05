@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package sares.Controller;
 
 import java.io.IOException;
@@ -45,8 +40,7 @@ public class SesionController implements Initializable {
     final int MESERO = 2;
     final int CAJERO = 3;
     final int COCINERO = 4;
-    
-    //Conexion conexionConDB;
+
     Connection conexionConDB;
     
     ResultSet usuario;
@@ -57,6 +51,8 @@ public class SesionController implements Initializable {
 
     /**
      * Initializes the controller class.
+     * @param url
+     * @param rb
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -65,7 +61,6 @@ public class SesionController implements Initializable {
     }    
     
     private void pruebaIngresoCredenciales() throws SQLException{
-        //this.conexionConDB = new Conexion();
         this.conexionConDB = Conexion.getConexion();
         CallableStatement statement = conexionConDB.prepareCall("{call iniciarSesion(?,?)}");
         statement.setString(1,user.getText()); 
@@ -103,22 +98,18 @@ public class SesionController implements Initializable {
                 accederVistaUsuario(usuarioRol);
             }
             else{
-                System.out.println("Error en la contrasena");
                 this.wrongPassword.setVisible(true);
             }
     }
     
     @FXML
     private void onMouseClickedBtnIngresar(MouseEvent event) throws SQLException, IOException {
-        
         pruebaIngresoCredenciales();
         
         if(usuario.next()){   
-            System.out.println("Existe Usuario!!");
             verifyPassword();
         }
         else{
-            System.out.println("No existe Usuario!!");
             this.wrongUser.setVisible(true);
         }
     }
@@ -139,5 +130,4 @@ public class SesionController implements Initializable {
         this.password.setText("");
         hideWarning();
     }
-    
 }
