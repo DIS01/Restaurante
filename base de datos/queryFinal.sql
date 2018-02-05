@@ -62,7 +62,7 @@ BEGIN
 			sum(PedidoDetalle.cantidad) as cantidadDePlatos
 	FROM ((((Cuenta
 		 INNER JOIN Pedido ON Pedido.cuenta = Cuenta.id)
-		 INNER JOIN PedidoDetalle ON PedidoDetalle.pedido = Pedido.id
+		 INNER JOIN PedidoDetalle ON PedidoDetalle.pedido = Pedido.id)
 		 INNER JOIN Empleado ON  Cuenta.mesero = Empleado.id)
 		 INNER JOIN Persona ON Empleado.persona = Persona.dni);
 		 
