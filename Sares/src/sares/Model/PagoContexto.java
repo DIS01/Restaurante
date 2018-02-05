@@ -1,5 +1,6 @@
 package sares.Model;
 
+import java.sql.CallableStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.LinkedList;
@@ -56,5 +57,13 @@ public class PagoContexto {
         return metodos;
         }
     }    
-
+    
+    public static void registrarPagoCuenta(int tipoPagoID ,int  cuentaID ,float cantidad ) throws SQLException{
+        CallableStatement statement = Conexion.getConexion().prepareCall("{call registrarPagoCuenta(?,?,?)}");
+        statement.setInt(1,tipoPagoID); 
+        statement.setInt(2,cuentaID);
+        statement.setFloat(3,cantidad);
+        statement.execute();
+        ResultSet r = statement.getResultSet();
+    }
 }

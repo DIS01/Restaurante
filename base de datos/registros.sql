@@ -49,11 +49,11 @@ INSERT INTO Item(valor,nombre,categoria,activo) values (3.4,"Salpicón de salmó
 INSERT INTO Item(valor,nombre,categoria,activo) values (2.3,"Torre de Fiambre",1,1);
 INSERT INTO Item(valor,nombre,categoria,activo) values (2.34,"Huevos rellenos al curry",1,1);
 
-INSERT INTO Platillo(tiempoEstimado,item) values (3.0,1);
-INSERT INTO Platillo(tiempoEstimado,item) values (4.0,2);
-INSERT INTO Platillo(tiempoEstimado,item) values (5.0,3);
-INSERT INTO Platillo(tiempoEstimado,item) values (6.0,4);
-INSERT INTO Platillo(tiempoEstimado,item) values (7.0,5);
+INSERT INTO Platillo(tiempoEstimado,item) values (20.0,1);
+INSERT INTO Platillo(tiempoEstimado,item) values (18.0,2);
+INSERT INTO Platillo(tiempoEstimado,item) values (15.0,3);
+INSERT INTO Platillo(tiempoEstimado,item) values (15.0,4);
+INSERT INTO Platillo(tiempoEstimado,item) values (17.0,5);
 
 INSERT INTO Inventario(stock, item) values(5.0,1); 
 INSERT INTO Inventario(stock, item) values(10.0,2);
@@ -68,10 +68,10 @@ INSERT INTO Item(valor,nombre,categoria,activo) values (2.00,"Arroz con menestra
 INSERT INTO Item(valor,nombre,categoria,activo) values (3.00,"arroz marinero",2,1);
 INSERT INTO Item(valor,nombre,categoria,activo) values (2.00,"carne colorada",2,1);
 
-INSERT INTO Platillo(tiempoEstimado,item) values (5.0,6);
-INSERT INTO Platillo(tiempoEstimado,item) values (6.0,7);
-INSERT INTO Platillo(tiempoEstimado,item) values (7.0,8);
-INSERT INTO Platillo(tiempoEstimado,item) values (8.0,9);
+INSERT INTO Platillo(tiempoEstimado,item) values (15.0,6);
+INSERT INTO Platillo(tiempoEstimado,item) values (15.0,7);
+INSERT INTO Platillo(tiempoEstimado,item) values (15.0,8);
+INSERT INTO Platillo(tiempoEstimado,item) values (30.0,9);
 INSERT INTO Platillo(tiempoEstimado,item) values (9.0,10);
 
 INSERT INTO Inventario(stock, item) values(4.0,6); 

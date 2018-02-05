@@ -17,7 +17,6 @@ import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBar.ButtonData;
@@ -177,7 +176,7 @@ public class Cajero3Controller extends CajeroController {
     @FXML
     public void registrarCuenta(MouseEvent event) throws SQLException{
         Cuenta.cuentaCliente(Integer.parseInt(this.clientes.getText().split(",")[0]),Integer.parseInt(this.cuentas.getText().split(",")[0]), totalvalor);
-        
+        //PagoContexto.registrarPagoCuenta(0, 0, subtotal);
     }
     
     @FXML
