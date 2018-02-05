@@ -19,17 +19,9 @@ public class Cajero extends Empleado {
     }
 
     /**
-     * @param Cuenta 
-     * @return
+     * @param cuenta
      */
     public void cobrar(Cuenta cuenta) {
-            // TODO implement here
-    }
-
-    /**
-     * @return
-     */
-    public void generarFactura() {
             // TODO implement here
     }
         

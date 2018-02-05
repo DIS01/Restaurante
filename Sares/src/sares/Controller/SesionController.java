@@ -77,12 +77,12 @@ public class SesionController implements Initializable {
             case MESERO:
                 Mesero mesero= Mesero.getMesero(usuario.getInt("persona"));
                 MeseroController control = (MeseroController)Sares.setContent("sares/fxml/Mesero.fxml", btnIngresar);
-                control.meseroControllerCreate(mesero);
+                control.ControllerCreate(mesero);
                 break;
             case CAJERO:
                 Cajero c= Cajero.getInformacionCajero(usuario.getInt("persona"));
                 CajeroController controlc = (CajeroController)Sares.setContent("sares/fxml/Cajero.fxml", btnIngresar);
-                controlc.setnombre(c);
+                controlc.ControllerCreate(c);
                 break;
             case COCINERO:
                 System.out.println("cocinero");

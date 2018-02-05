@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Time;
 import java.text.ParseException;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -29,6 +28,7 @@ import sares.Model.Combo;
 import sares.Model.Conexion;
 import sares.Model.Cuenta;
 import sares.Model.Item;
+import sares.Model.Mesero;
 import sares.Model.Pedido;
 import sares.Model.PedidoDetalle;
 import sares.Model.Platillo;
@@ -39,7 +39,7 @@ import sares.Sares;
  *
  * @author steevenrodriguez
  */
-public class Mesero2Controller extends MeseroController {
+public class Mesero2Controller extends Ventana {
     
     private HashMap<Item,LinkedList<Object>> pedido=new  HashMap<>();
     
@@ -48,15 +48,13 @@ public class Mesero2Controller extends MeseroController {
     @FXML
     private Pane pane_medio;
     @FXML
-    private Label cuenta;
+    private Label cuenta,tiempoEstimado;
     @FXML
     private TextField cuentaText;
     @FXML
     private ListView<String> menu_Options;
     @FXML
     private ListView<String> listaitems;
-    @FXML
-    private Label tiempoEstimado;
     @FXML
     private Button buttonGoBack;
     
@@ -72,15 +70,11 @@ public class Mesero2Controller extends MeseroController {
         try {
             this.categoria= this.getCategorias();
             TextFields.bindAutoCompletion(cuentaText, Cuenta.getCuentas());
-        } catch (SQLException ex) {
-            Logger.getLogger(Mesero2Controller.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ParseException ex) {
+        } catch (SQLException | ParseException ex) {
             Logger.getLogger(Mesero2Controller.class.getName()).log(Level.SEVERE, null, ex);
         }
         ObservableList<String> items = FXCollections.observableArrayList();
-        this.categoria.forEach((temp) -> {
-            items.add(temp.getNombre());
-        });
+        this.categoria.forEach((Categoria temp) -> items.add(temp.getNombre()));
         this.menu_Options.setItems(items);
     }    
 
@@ -100,10 +94,9 @@ public class Mesero2Controller extends MeseroController {
             control = (Mesero3Controller)Sares.setContent("sares/fxml/Mesero3.fxml", (Node)event.getSource());
         }
         control.assignCategoria(Categoria.getCategoria(idcategoria));
-        control.meseroControllerCreate(this.getMesero());
+        control.ControllerCreate(this.getP());
         control.setCuentaMesa( cuentaText.getText(),pedido);
         control.setVentana();
-           
     }
     
     public void setList(LinkedList<Categoria> list){
@@ -117,9 +110,8 @@ public class Mesero2Controller extends MeseroController {
         ResultSet categoriasRS = Conexion.consultar("SELECT * FROM Categoria order by id"); 
         while (categoriasRS.next()){
             cate= new Categoria();
-            cate.setNombre(id+".-"+categoriasRS.getString("nombre"));
+            cate.setNombre((id++)+".-"+categoriasRS.getString("nombre"));
             lista.add(cate);
-            id++;
         }
         return lista;
     }
@@ -165,15 +157,13 @@ public class Mesero2Controller extends MeseroController {
         int cuentaID=Integer.parseInt(this.cuentaText.getText().split(",")[0]);
         int pedidoID=Pedido.insertarPedido("en cola", cuentaID);
         float total=0.0f;
-        int contador=0;
         for (HashMap.Entry<Item,LinkedList<Object>> entry : pedido.entrySet()) {
             total+=entry.getKey().getValor()*(Integer) entry.getValue().get(0);
-            contador++;
             PedidoDetalle.insertarPedidoDetalleMesero(pedidoID,entry.getKey().getId() ,total,(Integer) entry.getValue().get(0),(String)entry.getValue().get(1).toString(), (int) (entry.getKey().getStock()-(Integer) entry.getValue().get(0)));
         }
         Pedido.actualizarPedidoCuenta(cuentaID, pedidoID,Float.parseFloat(tiempoEstimado.getText().split(":")[1]), total);
         MeseroController control = (MeseroController)Sares.setContent("sares/fxml/Mesero.fxml", buttonGoBack);
-        control.meseroControllerCreate(this.getMesero());
+        control.ControllerCreate(this.getP());
         control.mensajeExitoso("Registro correcto del pedido");
     }
   

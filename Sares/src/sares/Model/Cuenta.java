@@ -10,16 +10,6 @@ import java.util.*;
  * 
  */
 public class Cuenta {
-
-    /**
-     * Default constructor
-     */
-    public Cuenta() {
-    }
-
-    public Cuenta(int id) {
-        this.id = id;
-    }
     
     /**
      * 
@@ -34,21 +24,42 @@ public class Cuenta {
      * 
      */
     private Float total;
+    
     /**
      * 
      */
     private Mesa mesa;
+    
     /**
     * 
     */
     private Cliente cliente;
-
+    
+    /**
+     * 
+     */
     private LinkedList<Pedido> pedidos;
     
+    /**
+     * 
+     */
     private boolean prioridad;
     
+    /**
+     * 
+     */
     private Mesero mesero;
+    
+    /**
+     * Default constructor
+     */
+    public Cuenta() {
+    }
 
+    public Cuenta(int id) {
+        this.id = id;
+    }
+    
     public Cuenta(int id, boolean pagada, Float total, Mesa mesa, boolean prioridad, Mesero mesero) {
         this.id = id;
         this.pagada = pagada;
@@ -65,7 +76,15 @@ public class Cuenta {
         this.mesa = mesa;
         this.prioridad=prioridad;
     }
+    
+    public LinkedList<Pedido> getPedidos() {
+        return pedidos;
+    }
 
+    public void setPedidos(LinkedList<Pedido> pedidos) {
+        this.pedidos = pedidos;
+    }
+    
     public boolean isPrioridad() {
         return prioridad;
     }
@@ -73,8 +92,6 @@ public class Cuenta {
     public void setPrioridad(boolean prioridad) {
         this.prioridad = prioridad;
     }
-    
-    
     
     /**
      */
@@ -90,14 +107,6 @@ public class Cuenta {
         this.id = id;
     }
     
-    
-    /**
-     * @return
-     */
-    public Float getTotal() {
-            // TODO implement here
-            return null;
-    }
     public static LinkedList<Cuenta> getCuentas() throws SQLException, ParseException{
         LinkedList<Cuenta> lista= new LinkedList();
         Cuenta cuenta;
@@ -137,12 +146,4 @@ public class Cuenta {
         ResultSet r = statement.getResultSet();
     }
 
-    public LinkedList<Pedido> getPedidos() {
-        return pedidos;
-    }
-
-    public void setPedidos(LinkedList<Pedido> pedidos) {
-        this.pedidos = pedidos;
-    }
-   
 }

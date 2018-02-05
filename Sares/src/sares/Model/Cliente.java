@@ -1,7 +1,6 @@
 package sares.Model;
 
 import java.sql.CallableStatement;
-import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Date;
 import java.sql.SQLException;
@@ -29,13 +28,12 @@ public class Cliente extends Persona {
         this.fechaIncorporacion = fechaIncorporacion;
     }
 
-    public static void ingresarCliente(String dni,String nombres,String apellidos,String domicilio) throws SQLException{
-        //Conexion co=new Conexion();
+    public static void ingresarCliente(Cliente c) throws SQLException{
         CallableStatement statement = Conexion.getConexion().prepareCall("{call crearCliente(?,?,?,?,?)}");
-        statement.setInt(1,Integer.parseInt(dni)); 
-        statement.setString(2,nombres); 
-        statement.setString(3,apellidos);
-        statement.setString(4,domicilio);
+        statement.setInt(1,Integer.parseInt(c.getDni())); 
+        statement.setString(2,c.getNombres()); 
+        statement.setString(3,c.getApellidos());
+        statement.setString(4,c.getDomicilio());
         statement.setDate(5,new java.sql.Date(Calendar.getInstance().getTimeInMillis()) );
         System.out.println(statement.execute());
     }

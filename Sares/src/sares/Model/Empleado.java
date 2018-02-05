@@ -1,7 +1,5 @@
 package sares.Model;
 
-import java.util.*;
-
 /**
  * 
  */
@@ -31,9 +29,5 @@ public class Empleado extends Persona {
     public int getId() {
         return id;
     }
-
-    
-	
-
 
 }

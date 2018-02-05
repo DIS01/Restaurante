@@ -6,7 +6,6 @@ import java.sql.SQLException;
 import java.util.*;
 import java.sql.Time;
 import java.text.ParseException;
-import javafx.collections.FXCollections;
 
 /**
  * 
@@ -42,14 +41,12 @@ public class Pedido {
      * 
      */
     public Date fecha;
+    
+    /**
+     * 
+     */
     public LinkedList<PedidoDetalle> pedidosDetalles;
      
-     /**
-     * Default constructor
-     */
-    public Pedido() {
-    }
-
     public Pedido(int id, Time horaingreso, float tiempoestimado, String estado, Cuenta cuenta, Date fecha) {
         this.id = id;
         this.horaingreso = horaingreso;
@@ -66,6 +63,62 @@ public class Pedido {
             // TODO implement here
     }
 
+        public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public Time getHoraingreso() {
+        return horaingreso;
+    }
+
+    public void setHoraingreso(Time horaingreso) {
+        this.horaingreso = horaingreso;
+    }
+
+    public float getTiempoestimado() {
+        return tiempoestimado;
+    }
+
+    public void setTiempoestimado(float tiempoestimado) {
+        this.tiempoestimado = tiempoestimado;
+    }
+
+    public String getEstado() {
+        return estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
+    }
+
+    public Cuenta getCuenta() {
+        return cuenta;
+    }
+
+    public void setCuenta(Cuenta cuenta) {
+        this.cuenta = cuenta;
+    }
+
+    public Date getFecha() {
+        return fecha;
+    }
+
+    public void setFecha(Date fecha) {
+        this.fecha = fecha;
+    }
+
+    public LinkedList<PedidoDetalle> getPedidosDetalles() {
+        return pedidosDetalles;
+    }
+
+    public void setPedidosDetalles(LinkedList<PedidoDetalle> pedidosDetalles) {
+        this.pedidosDetalles = pedidosDetalles;
+    }
+    
     /**
      * @return
      */
@@ -147,62 +200,6 @@ public class Pedido {
         statement.setFloat(4,total1);
         statement.execute();
     }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public Time getHoraingreso() {
-        return horaingreso;
-    }
-
-    public void setHoraingreso(Time horaingreso) {
-        this.horaingreso = horaingreso;
-    }
-
-    public float getTiempoestimado() {
-        return tiempoestimado;
-    }
-
-    public void setTiempoestimado(float tiempoestimado) {
-        this.tiempoestimado = tiempoestimado;
-    }
-
-    public String getEstado() {
-        return estado;
-    }
-
-    public void setEstado(String estado) {
-        this.estado = estado;
-    }
-
-    public Cuenta getCuenta() {
-        return cuenta;
-    }
-
-    public void setCuenta(Cuenta cuenta) {
-        this.cuenta = cuenta;
-    }
-
-    public Date getFecha() {
-        return fecha;
-    }
-
-    public void setFecha(Date fecha) {
-        this.fecha = fecha;
-    }
-
-    public LinkedList<PedidoDetalle> getPedidosDetalles() {
-        return pedidosDetalles;
-    }
-
-    public void setPedidosDetalles(LinkedList<PedidoDetalle> pedidosDetalles) {
-        this.pedidosDetalles = pedidosDetalles;
-    }
     
     public float actualizarTiempoEstimado(){
         float temax=0.0f;
@@ -210,15 +207,11 @@ public class Pedido {
         for (PedidoDetalle pd: this.pedidosDetalles){
             if(pd.getItem().getCategoria().getNombre().equals("Platillos de entrada") || pd.getItem().getCategoria().getNombre().equals("Platos Fuerte") || pd.getItem().getCategoria().getNombre().equals("Postres")){
                 Platillo c=(Platillo)pd.getItem();
-                if(temax<c.getTiempoEstimado()){
-                    temax=c.getTiempoEstimado();
-                }
+                if(temax<c.getTiempoEstimado()) temax=c.getTiempoEstimado();
                 contador+=(Integer)pd.getCantidad();
             }else if(pd.getItem().getCategoria().getNombre().equals("Combo") ){
                 Combo c=(Combo)pd.getItem();
-                if(temax<c.getTiempoEstimado()){
-                    temax=c.getTiempoEstimado();
-                }
+                if(temax<c.getTiempoEstimado()) temax=c.getTiempoEstimado();
                 contador+=(Integer)pd.getCantidad();
             }
         }

@@ -15,8 +15,6 @@ public class Platillo extends Item{
         this.tiempoEstimado = tiempoEstimado;
     }
         
-    
-
     public Platillo(float tiempoEstimado, int id, float valor, String nombre, boolean activo, Categoria categoria) {
         super(id, valor, nombre, activo, categoria);
         this.tiempoEstimado = tiempoEstimado;

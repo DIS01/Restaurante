@@ -28,6 +28,7 @@ public class AmbienteMesa {
      */
     private int asignadas;
 
+    
     public AmbienteMesa() {
     }
 

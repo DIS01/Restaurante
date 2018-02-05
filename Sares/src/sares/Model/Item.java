@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package sares.Model;
 
 /**
@@ -10,6 +5,7 @@ package sares.Model;
  * @author mdleiton
  */
 public class Item{
+    
     /**
     * 
     */
@@ -47,8 +43,6 @@ public class Item{
         this.categoria = categoria;
         this.Stock = Stock;
     }
-
-    
 
     public Item(int id, float valor, String nombre, boolean activo, Categoria categoria) {
         this.id = id;
@@ -110,8 +104,5 @@ public class Item{
     public String toString() {
         return  id + ", valor=" + valor + ", nombre=" + nombre  ;
     }
-    
-    
-        
-   
+
 }

@@ -30,7 +30,7 @@ public class Ambiente {
 
     public static Ambiente getAmbiente(int id) throws SQLException{
         Conexion c=new Conexion();
-        try (ResultSet ambienteRS = c.consultar("SELECT * FROM Ambiente where id="+id)) {
+        try (ResultSet ambienteRS = Conexion.consultar("SELECT * FROM Ambiente where id="+id)) {
             if(ambienteRS.next()){
                 return new Ambiente(ambienteRS.getString("nombre"),ambienteRS.getBoolean("activo"));
             }

@@ -14,7 +14,6 @@ import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import sares.Model.Cliente;
@@ -25,7 +24,7 @@ import sares.Sares;
  *
  * @author mdleiton
  */
-public class Cajero2Controller extends CajeroController {
+public class Cajero2Controller extends Ventana {
     @FXML
     private TextField dni;
     
@@ -53,7 +52,8 @@ public class Cajero2Controller extends CajeroController {
     @FXML
     public void registrarCliente(MouseEvent event) throws SQLException{
         if(validoRegistroCliente()){
-            Cliente.ingresarCliente(dni.getText(),nombres.getText(),apellidos.getText(),domicilio.getText());
+            Cliente c= new Cliente(dni.getText(),nombres.getText(),apellidos.getText(),domicilio.getText(),null);
+            Cliente.ingresarCliente(c);
             this.vaciarEntradas();    
             this.ventanaEmegente(AlertType.INFORMATION,"Registro cliente","Se registró con exito el cliente");
         }else{
@@ -64,7 +64,7 @@ public class Cajero2Controller extends CajeroController {
     @FXML
     public void cancelarRegistro(MouseEvent event) throws IOException{
         CajeroController controlc = (CajeroController)Sares.setContent("sares/fxml/Cajero.fxml", (Node)event.getSource());
-        controlc.setnombre(this.getCajero());
+        controlc.ControllerCreate(this.getP());  
     }
     
     public void vaciarEntradas(){

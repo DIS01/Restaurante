@@ -51,45 +51,33 @@ public class Cajero3Controller extends CajeroController {
     
     @FXML
     TextField cuentas;
-    
     @FXML
     TextField clientes;
-     
     @FXML
     Label descuentoValor;
-    
     @FXML
     Label propina;
-    
     @FXML
     Label total;
-    
     @FXML
     TextField descuentoPorcentaje;
-    
     @FXML
     CheckBox listaCliente;
-    
     @FXML
     CheckBox listaCuenta;
-    
     @FXML
     CheckBox descuentoCheck;
-    
     @FXML
     ListView<Pedido> listaPedidos;
-    
     @FXML 
     Label totalpedidos;
-    
     @FXML
     private ListView<String> formaPagos;
-    
-     @FXML
+    @FXML
     private ListView<String>listapagos;
-    
     @FXML
     private Button registrar;
+    
     /**
      * Initializes the controller class.
      */
@@ -104,8 +92,7 @@ public class Cajero3Controller extends CajeroController {
         try {
             TextFields.bindAutoCompletion(cuentas, Cuenta.getCuentas());
             TextFields.bindAutoCompletion(clientes, Cliente.getClientes());
-            ObservableList<String> opcionesO = FXCollections.observableArrayList(PagoContexto.getMetodoCuentas());
-            this.formaPagos.setItems(opcionesO);
+            this.formaPagos.setItems(FXCollections.observableArrayList(PagoContexto.getMetodoCuentas()));
         } catch (SQLException | ParseException ex) {
             Logger.getLogger(Cajero3Controller.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -114,7 +101,7 @@ public class Cajero3Controller extends CajeroController {
    @FXML
     public void cancelarRegistro(MouseEvent event) throws IOException{
         CajeroController controlc = (CajeroController)Sares.setContent("sares/fxml/Cajero.fxml", (Node)event.getSource());
-        controlc.setnombre(this.getCajero());
+        controlc.ControllerCreate(this.getP());  
     }
     
     @FXML 
@@ -161,6 +148,7 @@ public class Cajero3Controller extends CajeroController {
             this.descuentoPorcentaje.setEditable(true);
         }
     }
+    
     public void getPedidos() throws SQLException, ParseException{
         pedidos=Pedido.getPedidos(new Cuenta(Integer.parseInt(cuentas.getText().split(",")[0])));
         ObservableList<Pedido> opcionesO = FXCollections.observableArrayList(pedidos);
@@ -222,7 +210,6 @@ public class Cajero3Controller extends CajeroController {
         }else if ("Efectivo".equals(this.formaPagos.getSelectionModel().getSelectedItem())) {
             TextInputDialog dialog = new TextInputDialog(Float.toString(Float.parseFloat(this.total.getText())-getpagado()));
             dialog.setTitle("Forma de Pago: efectivo");
-            dialog.setHeaderText(null);
             dialog.setContentText("ingrese el monto");
             Optional<String> result = dialog.showAndWait();
             result.ifPresent(name -> this.listapagos.getItems().add(listapagos.getItems().size(), name));
@@ -245,30 +232,7 @@ public class Cajero3Controller extends CajeroController {
         return pagos;
     }
     
-    public Optional<Pair<String, String>> pago(String formaPago,String mensaje){
-        Dialog<Pair<String, String>> dialog = new Dialog<>();
-        dialog.setTitle("Forma de pago: "+formaPago);
-        dialog.setHeaderText(null);
-        ButtonType loginButtonType = new ButtonType("Agregar Pago", ButtonData.OK_DONE);
-        dialog.getDialogPane().getButtonTypes().addAll(loginButtonType, ButtonType.CANCEL);
-
-        GridPane grid = new GridPane();
-        grid.setHgap(10);
-        grid.setVgap(10);
-        grid.setPadding(new Insets(20, 150, 10, 10));
-
-        TextField numCuenta = new TextField();
-        numCuenta.setPromptText(mensaje);
-        TextField monto = new TextField();
-        monto.setText(Float.toString(this.totalvalor-getpagado()));
-
-        grid.add(new Label(mensaje), 0, 0);
-        grid.add(numCuenta, 1, 0);
-        grid.add(new Label("monto:"), 0, 1);
-        grid.add(monto, 1, 1);
-
-        Node loginButton = dialog.getDialogPane().lookupButton(loginButtonType);
-        loginButton.setDisable(true);
+    public void validarInput(TextField monto, Node loginButton,TextField numCuenta ){
         monto.textProperty().addListener((observable, oldValue, newValue) -> {
             try{
             monto.setStyle(" -fx-background-color: silver; -fx-border-width: 2px ;");
@@ -278,6 +242,26 @@ public class Cajero3Controller extends CajeroController {
                  loginButton.setDisable(true);
             }
         });
+    }
+    
+    public Optional<Pair<String, String>> pago(String formaPago,String mensaje){
+        Dialog<Pair<String, String>> dialog = new Dialog<>();
+        dialog.setTitle("Forma de pago: "+formaPago);
+        ButtonType loginButtonType = new ButtonType("Agregar Pago", ButtonData.OK_DONE);
+        dialog.getDialogPane().getButtonTypes().addAll(loginButtonType, ButtonType.CANCEL);
+        GridPane grid = new GridPane();
+        TextField numCuenta = new TextField();
+        numCuenta.setPromptText(mensaje);
+        TextField monto = new TextField();
+        monto.setText(Float.toString(this.totalvalor-getpagado()));
+
+        grid.add(new Label(mensaje), 0, 0);
+        grid.add(numCuenta, 1, 0);
+        grid.add(new Label("monto:"), 0, 1);
+        grid.add(monto, 1, 1);
+        Node loginButton = dialog.getDialogPane().lookupButton(loginButtonType);
+        loginButton.setDisable(true);
+        validarInput(monto,loginButton,numCuenta);
         dialog.getDialogPane().setContent(grid);
 
          dialog.setResultConverter(dialogButton -> {

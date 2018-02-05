@@ -6,13 +6,10 @@
 package sares.Controller;
 
 import java.io.IOException;
-import java.net.URL;
 import java.sql.SQLException;
 import java.sql.Time;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.ResourceBundle;
 import static junit.framework.Assert.assertEquals;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -21,7 +18,6 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import sares.Model.Categoria;
 import sares.Model.Cuenta;
-import sares.Model.Item;
 import sares.Model.Mesa;
 import sares.Model.Mesero;
 import sares.Model.Pedido;

@@ -18,8 +18,7 @@ public class Mesero extends Empleado {
     }
     
     /**
-     * @param list 
-     * @return
+     * @param list
      */
     public void calcularRuta(List<String> list) {
             // TODO implement here

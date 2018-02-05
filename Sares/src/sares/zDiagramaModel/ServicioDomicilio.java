@@ -1,6 +1,8 @@
 package sares.zDiagramaModel;
 
-import java.util.*;
+import java.sql.Time;
+import java.util.Date;
+import sares.Model.Cuenta;
 import sares.Model.Pedido;
 
 /**
@@ -8,11 +10,12 @@ import sares.Model.Pedido;
  */
 public class ServicioDomicilio extends Pedido {
 
-	/**
-	 * Default constructor
-	 */
-	public ServicioDomicilio() {
-	}
+    public ServicioDomicilio(String direccion, int id, Time horaingreso, float tiempoestimado, String estado, Cuenta cuenta, Date fecha) {
+        super(id, horaingreso, tiempoestimado, estado, cuenta, fecha);
+        this.direccion = direccion;
+    }
+
+	
 
 	/**
 	 * 

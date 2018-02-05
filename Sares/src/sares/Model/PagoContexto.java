@@ -49,7 +49,7 @@ public class PagoContexto {
     public static LinkedList<String> getMetodoCuentas() throws SQLException{
         LinkedList<String> metodos=new LinkedList<>();
         Conexion c=new Conexion();
-        try (ResultSet metodoPagoRS = c.consultar("SELECT * FROM TipoPago")) {
+        try (ResultSet metodoPagoRS = Conexion.consultar("SELECT * FROM TipoPago")) {
             while(metodoPagoRS.next()){
                 metodos.add(metodoPagoRS.getString("tipo"));
             }

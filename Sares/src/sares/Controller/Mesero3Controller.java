@@ -2,7 +2,6 @@ package sares.Controller;
 
 import java.io.IOException;
 import java.net.URL;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.HashMap;
@@ -23,33 +22,27 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import sares.Model.Categoria;
-import sares.Model.Conexion;
 import sares.Model.Item;
-import sares.Model.Platillo;
 import sares.Sares;
-import sares.Model.Bebida;
-import sares.Model.Combo;
 
 /**
  * FXML Controller class
  *
  * @author steevenrodriguez
  */
-public class Mesero3Controller extends MeseroController {
+public class Mesero3Controller extends Ventana {
 
     private Categoria categoria;    
     private LinkedList<Item> items;
     private ObservableList<HBox> items1;
     private HashMap<Item, LinkedList<Object>> pedido ;
+    
     @FXML
     private VBox root;
     @FXML
     private HBox hbox;
     @FXML
-    private Label mesero3LblNombre;
-    @FXML
-    private Label cuenta;
-
+    private Label mesero3LblNombre,cuenta;
     @FXML
     private ListView<HBox> mesero3ListViewItems;
     @FXML
@@ -68,7 +61,6 @@ public class Mesero3Controller extends MeseroController {
         try {
             this.items1.forEach((t) -> {
                 TextField tf = (TextField) t.getChildren().get(1);
-                
                 if (!"0".equals(tf.getText())) {
                     VBox vboxTemp;
                     vboxTemp = (VBox) t.getChildren().get(0);
@@ -87,7 +79,7 @@ public class Mesero3Controller extends MeseroController {
             });
             Mesero2Controller control = (Mesero2Controller) Sares.setContent("sares/fxml/Mesero2.fxml", hbox);
             control.setPedido(pedido);
-            control.meseroControllerCreate(this.getMesero());
+            control.ControllerCreate(this.getP());
             control.setCuentaMesa(cuenta.getText().split("#:")[1]);
         } catch (IOException ex) {
             Logger.getLogger(Mesero3Controller.class.getName()).log(Level.SEVERE, null, ex);
@@ -98,42 +90,10 @@ public class Mesero3Controller extends MeseroController {
         this.categoria = categoria;
     }
 
-    public LinkedList<Item> getItems(Categoria c) throws SQLException, ParseException {
-        LinkedList<Item> lista = new LinkedList();
-        if ("Bebidas".equals(c.getNombre())) {
-            ResultSet itemsRS = Conexion.consultar("SELECT * FROM Item,Bebida,Inventario  where Item.id=Bebida.item and Item.id=Inventario.item");
-            while (itemsRS.next()) {
-                lista.add(new Bebida(itemsRS.getString("marca"),itemsRS.getInt("id"), itemsRS.getFloat("valor"), itemsRS.getString("nombre"), itemsRS.getBoolean("activo"), Categoria.getCategoria(itemsRS.getInt("categoria")),itemsRS.getFloat("stock")));
-            }
-        } else if ("Combo".equals(c.getNombre())) {
-            ResultSet itemsRS = Conexion.consultar("SELECT * FROM Item,Combo,Inventario  where Item.id=Combo.item and Item.id=Inventario.item");
-            while (itemsRS.next()) {
-                lista.add(new Combo(null, itemsRS.getFloat("tiempoEstimado"),itemsRS.getInt("id"), itemsRS.getFloat("valor"), itemsRS.getString("nombre"), itemsRS.getBoolean("activo"), Categoria.getCategoria(itemsRS.getInt("categoria")),itemsRS.getFloat("stock")));
-            }
-        } else if ("Platillos de entrada".equals(c.getNombre())) {
-            ResultSet itemsRS = Conexion.consultar("SELECT * FROM Item,Categoria,Platillo,Inventario where Item.id=Inventario.item and Item.id=Platillo.item and Item.categoria=Categoria.id and Categoria.nombre=\""+c.getNombre()+"\" and stock>0");
-            while (itemsRS.next()) {
-                lista.add(new Platillo(itemsRS.getFloat("tiempoEstimado"),itemsRS.getInt("id"), itemsRS.getFloat("valor"), itemsRS.getString("nombre"), itemsRS.getBoolean("activo"), Categoria.getCategoria(itemsRS.getInt("categoria")),itemsRS.getFloat("stock")));
-            }
-        } else if ("Platos Fuerte".equals(c.getNombre())) {
-            ResultSet itemsRS = Conexion.consultar("SELECT * FROM Item,Categoria,Platillo,Inventario where Item.id=Inventario.item and Item.id=Platillo.item and Item.categoria=Categoria.id and Categoria.nombre=\""+c.getNombre()+"\" and stock>0 ");
-            while (itemsRS.next()) {
-                lista.add(new Platillo(itemsRS.getFloat("tiempoEstimado"),itemsRS.getInt("id"), itemsRS.getFloat("valor"), itemsRS.getString("nombre"), itemsRS.getBoolean("activo"), Categoria.getCategoria(itemsRS.getInt("categoria")),itemsRS.getFloat("stock")));
-            }
-        } else if ("Postres".equals(c.getNombre())) {
-            ResultSet itemsRS = Conexion.consultar("SELECT * FROM Item,Categoria,Platillo,Inventario where Item.id=Inventario.item and Item.id=Platillo.item and Item.categoria=Categoria.id and Categoria.nombre=\""+c.getNombre()+"\" and stock>0");
-            while (itemsRS.next()) {
-                lista.add(new Platillo(itemsRS.getFloat("tiempoEstimado"),itemsRS.getInt("id"), itemsRS.getFloat("valor"), itemsRS.getString("nombre"), itemsRS.getBoolean("activo"), Categoria.getCategoria(itemsRS.getInt("categoria")),itemsRS.getFloat("stock")));
-            }
-        }
-        return lista;
-    }
-    
     public void setVentana() throws SQLException, ParseException{
         this.items = new LinkedList<>();
-        this.items = this.getItems(this.categoria);
+        this.items = Categoria.getItems(this.categoria);
         items1 = FXCollections.observableArrayList();
-        
         this.items.forEach((Item temp) -> {
             HBox hbox1 = new HBox();
             VBox temp1 = new VBox();
@@ -184,7 +144,7 @@ public class Mesero3Controller extends MeseroController {
     public void regresarCategorias(MouseEvent e) throws IOException{
         Mesero2Controller control = (Mesero2Controller) Sares.setContent("sares/fxml/Mesero2.fxml", this.BtnGuardar);
         control.setPedido(pedido);
-        control.meseroControllerCreate(this.getMesero());
+        control.ControllerCreate(this.getP());
         control.setCuentaMesa(cuenta.getText().split("#:")[1]);
     }
 }
