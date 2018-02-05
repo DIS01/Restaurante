@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sares.Controller.MeseroController">
+<VBox fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="474.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sares.Controller.MeseroController">
    <children>
       <HBox fx:id="hbox" prefHeight="37.0" prefWidth="600.0">
          <children>
@@ -36,16 +36,30 @@
       <HBox prefHeight="31.0" prefWidth="600.0">
          <children>
             <Label prefHeight="31.0" prefWidth="232.0" text="Cuentas recientes" />
-            <Label prefHeight="31.0" prefWidth="200.0" text="Cuentas" />
-            <Label prefHeight="33.0" prefWidth="166.0" text="Pedidos" />
+            <Label prefHeight="21.0" prefWidth="205.0" text="Pedidos prioritarios" />
          </children>
       </HBox>
       <HBox prefHeight="100.0" prefWidth="200.0">
          <children>
             <ListView fx:id="cuentasRecientes" prefHeight="100.0" prefWidth="232.0" />
-            <ListView fx:id="cuentasCola" prefHeight="200.0" prefWidth="200.0" />
-            <ListView fx:id="listaPedidos" prefHeight="200.0" prefWidth="200.0" />
+            <ListView fx:id="listaPedidosPrioridades" prefHeight="88.0" prefWidth="406.0" />
          </children>
       </HBox>
+      <VBox prefHeight="200.0" prefWidth="100.0">
+         <children>
+            <HBox prefHeight="31.0" prefWidth="600.0">
+               <children>
+                  <Label prefHeight="31.0" prefWidth="233.0" text="Cuentas" />
+                  <Label prefHeight="34.0" prefWidth="208.0" text="Pedidos" />
+               </children>
+            </HBox>
+            <HBox prefHeight="155.0" prefWidth="600.0">
+               <children>
+                  <ListView fx:id="cuentasCola" prefHeight="155.0" prefWidth="235.0" />
+                  <ListView fx:id="listaPedidos" prefHeight="155.0" prefWidth="379.0" />
+               </children>
+            </HBox>
+         </children>
+      </VBox>
    </children>
 </VBox>

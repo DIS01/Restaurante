@@ -38,9 +38,9 @@ END $$;
 
 
 DELIMITER $$
-CREATE PROCEDURE insertarCuentaMesero(mesa INT,idMesero INT)   
+CREATE PROCEDURE insertarCuentaMesero(mesa INT,idMesero INT, prioridadv INT)   
 BEGIN  
-    INSERT INTO Cuenta(pagada,total,mesa,mesero) values (0,0.0,mesa,idMesero);
+    INSERT INTO Cuenta(pagada,total,mesa,mesero,prioridad) values (0,0.0,mesa,idMesero,prioridadv);
     select max(c.id) from Cuenta c;
 END $$;
 

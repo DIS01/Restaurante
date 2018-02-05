@@ -143,6 +143,7 @@ CREATE TABLE Cuenta(
 	cliente INT,
 	mesa INT,
 	mesero INT,
+	prioridad INT,
 	FOREIGN KEY (cliente) REFERENCES Cliente(id),
 	FOREIGN KEY (mesa) REFERENCES Mesa(id),
 	FOREIGN KEY (mesero) REFERENCES Empleado(id)

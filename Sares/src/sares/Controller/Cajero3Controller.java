@@ -162,7 +162,7 @@ public class Cajero3Controller extends CajeroController {
         }
     }
     public void getPedidos() throws SQLException, ParseException{
-        pedidos=Pedido.getPedidos(Integer.parseInt(cuentas.getText().split(",")[0]));
+        pedidos=Pedido.getPedidos(new Cuenta(Integer.parseInt(cuentas.getText().split(",")[0])));
         ObservableList<Pedido> opcionesO = FXCollections.observableArrayList(pedidos);
         this.listaPedidos.setItems(opcionesO);
         this.subtotal=Pedido.getTotal(pedidos);

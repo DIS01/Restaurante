@@ -16,6 +16,10 @@ public class Cuenta {
      */
     public Cuenta() {
     }
+
+    public Cuenta(int id) {
+        this.id = id;
+    }
     
     /**
      * 
@@ -41,19 +45,41 @@ public class Cuenta {
 
     private LinkedList<Pedido> pedidos;
     
-    public Cuenta(int id,boolean pagada, Float total, Mesa mesa) {
+    private boolean prioridad;
+    
+    public Cuenta(int id,boolean pagada, Float total, Mesa mesa, boolean prioridad) {
         this.id=id;
         this.pagada = pagada;
         this.total = total;
         this.mesa = mesa;
+        this.prioridad=prioridad;
     }
 
+    public boolean isPrioridad() {
+        return prioridad;
+    }
+
+    public void setPrioridad(boolean prioridad) {
+        this.prioridad = prioridad;
+    }
+    
+    
+    
     /**
      */
     public void calcularTotal() {
             // TODO implement here
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+    
+    
     /**
      * @return
      */
@@ -64,10 +90,11 @@ public class Cuenta {
     public static LinkedList<Cuenta> getCuentas() throws SQLException, ParseException{
         LinkedList<Cuenta> lista= new LinkedList();
         Cuenta cuenta;
-        try (ResultSet cuentaRS = Conexion.consultar("SELECT * FROM Cuenta order by id desc")) {
+        try (ResultSet cuentaRS = Conexion.consultar("SELECT * FROM Cuenta order by id asc ")) {
             while (cuentaRS.next()){
                 //cuenta= new Cuenta(cuentaRS.getInt("id"),cuentaRS.getBoolean("pagada"),cuentaRS.getFloat("total"),Mesa.getMesa(cuentaRS.getInt("mesa")));
-                cuenta= new Cuenta(cuentaRS.getInt("id"),cuentaRS.getBoolean("pagada"),cuentaRS.getFloat("total"),null); 
+                cuenta= new Cuenta(cuentaRS.getInt("id"),cuentaRS.getBoolean("pagada"),cuentaRS.getFloat("total"),null,cuentaRS.getBoolean("prioridad")); 
+                cuenta.setPedidos(Pedido.getPedidos(cuenta));
                 lista.add(cuenta);
             }
         }
@@ -76,13 +103,14 @@ public class Cuenta {
     
     @Override
     public String toString() {
-        return this.id +", " + this.pagada;
+        return this.id +", " + ((this.pagada)?"pagada":"sin pagar") +","+ ((this.prioridad)?"con prioridad":"sin prioridad");
     }   
     
-    public static int insertarCuenta(int mesa, int meseroID ) throws SQLException{
-        CallableStatement statement = Conexion.getConexion().prepareCall("{call insertarCuentaMesero(?,?)}");
+    public static int insertarCuenta(int mesa, int meseroID ,boolean prioridad ) throws SQLException{
+        CallableStatement statement = Conexion.getConexion().prepareCall("{call insertarCuentaMesero(?,?,?)}");
         statement.setInt(1,mesa); 
         statement.setInt(2,meseroID); 
+        statement.setBoolean(3,prioridad); 
         statement.execute();
         ResultSet r = statement.getResultSet();
         r.next();
@@ -97,4 +125,13 @@ public class Cuenta {
         statement.execute();
         ResultSet r = statement.getResultSet();
     }
+
+    public LinkedList<Pedido> getPedidos() {
+        return pedidos;
+    }
+
+    public void setPedidos(LinkedList<Pedido> pedidos) {
+        this.pedidos = pedidos;
+    }
+   
 }

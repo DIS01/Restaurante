@@ -83,7 +83,7 @@ public class Pedido {
     public static LinkedList<Pedido> getPedidos() throws SQLException, ParseException{
         LinkedList<Pedido> lista= new LinkedList();
         Pedido pedido;
-        ResultSet pedidoRS = Conexion.consultar("SELECT * FROM Pedido"); 
+        ResultSet pedidoRS = Conexion.consultar("SELECT * FROM Pedido order by id desc"); 
         while (pedidoRS.next()){
             pedido= new Pedido(pedidoRS.getInt("id"),pedidoRS.getTime("horaingreso"),pedidoRS.getFloat("tiempoestimado"),pedidoRS.getString("estado"),null,pedidoRS.getDate("fecha"));
            lista.add(pedido);
@@ -92,12 +92,22 @@ public class Pedido {
         return lista;
     }
     
-    public static LinkedList<Pedido> getPedidos(int idCuenta) throws SQLException, ParseException{
-        LinkedList<Pedido> lista= new LinkedList();
-        Pedido pedido;
-        ResultSet pedidoRS = Conexion.consultar("SELECT * FROM Pedido where cuenta="+idCuenta); 
+    public static Pedido getPedido(int id) throws SQLException, ParseException{
+        Pedido pedido=null;
+        ResultSet pedidoRS = Conexion.consultar("SELECT * FROM Pedido where id="+id); 
         while (pedidoRS.next()){
             pedido= new Pedido(pedidoRS.getInt("id"),pedidoRS.getTime("horaingreso"),pedidoRS.getFloat("tiempoestimado"),pedidoRS.getString("estado"),null,pedidoRS.getDate("fecha"));
+        }
+        pedidoRS.close();
+        return pedido;
+    }
+    
+    public static LinkedList<Pedido> getPedidos(Cuenta cuenta) throws SQLException, ParseException{
+        LinkedList<Pedido> lista= new LinkedList();
+        Pedido pedido;
+        ResultSet pedidoRS = Conexion.consultar("SELECT * FROM Pedido where cuenta="+cuenta.getId()+ " order by id desc"); 
+        while (pedidoRS.next()){
+            pedido= new Pedido(pedidoRS.getInt("id"),pedidoRS.getTime("horaingreso"),pedidoRS.getFloat("tiempoestimado"),pedidoRS.getString("estado"),cuenta,pedidoRS.getDate("fecha"));
            lista.add(pedido);
         }
         pedidoRS.close();
@@ -106,7 +116,7 @@ public class Pedido {
     
     @Override
     public String toString() {
-        return this.id +", " + this.estado;
+        return this.id +", " + this.estado+", Cuenta #:"+this.cuenta;
     }   
     
     public static float getTotal(LinkedList<Pedido> pedidos) throws SQLException{
@@ -135,4 +145,53 @@ public class Pedido {
         statement.setFloat(4,total1);
         statement.execute();
     }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public Time getHoraingreso() {
+        return horaingreso;
+    }
+
+    public void setHoraingreso(Time horaingreso) {
+        this.horaingreso = horaingreso;
+    }
+
+    public float getTiempoestimado() {
+        return tiempoestimado;
+    }
+
+    public void setTiempoestimado(float tiempoestimado) {
+        this.tiempoestimado = tiempoestimado;
+    }
+
+    public String getEstado() {
+        return estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
+    }
+
+    public Cuenta getCuenta() {
+        return cuenta;
+    }
+
+    public void setCuenta(Cuenta cuenta) {
+        this.cuenta = cuenta;
+    }
+
+    public Date getFecha() {
+        return fecha;
+    }
+
+    public void setFecha(Date fecha) {
+        this.fecha = fecha;
+    }
+    
 }
