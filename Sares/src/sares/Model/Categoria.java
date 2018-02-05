@@ -60,7 +60,7 @@ public class Categoria {
         LinkedList<Item> lista = new LinkedList();
         ResultSet itemsRS=null;
         if ("Bebidas".equals(c.getNombre())) {
-            itemsRS = Conexion.consultar("SELECT * FROM Item,Bebida,Inventario  where Item.id=Bebida.item and Item.id=Inventario.item");
+            itemsRS = Conexion.consultar("SELECT * FROM Item,Bebida,Inventario  where Item.id=Bebida.item and Item.id=Inventario.item ");
             while (itemsRS.next()) lista.add(new Bebida(itemsRS.getString("marca"),itemsRS.getInt("id"), itemsRS.getFloat("valor"), itemsRS.getString("nombre"), itemsRS.getBoolean("activo"), Categoria.getCategoria(itemsRS.getInt("categoria")),itemsRS.getFloat("stock")));
             return lista;
         } else if ("Combo".equals(c.getNombre())) {
@@ -68,11 +68,11 @@ public class Categoria {
             while (itemsRS.next()) lista.add(new Combo(null, itemsRS.getFloat("tiempoEstimado"),itemsRS.getInt("id"), itemsRS.getFloat("valor"), itemsRS.getString("nombre"), itemsRS.getBoolean("activo"), Categoria.getCategoria(itemsRS.getInt("categoria")),itemsRS.getFloat("stock")));
             return lista;
         } else if ("Platillos de entrada".equals(c.getNombre())) {
-            itemsRS = Conexion.consultar("SELECT * FROM Item,Categoria,Platillo,Inventario where Item.id=Inventario.item and Item.id=Platillo.item and Item.categoria=Categoria.id and Categoria.nombre=\""+c.getNombre()+"\" and stock>0");
+            itemsRS = Conexion.consultar("SELECT * FROM Item,Categoria,Platillo,Inventario where Item.id=Inventario.item and Item.id=Platillo.item and Item.categoria=Categoria.id and Categoria.nombre=\""+c.getNombre()+"\" and stock>0 order by Platillo.id asc");
         } else if ("Platos Fuerte".equals(c.getNombre())) {
-            itemsRS = Conexion.consultar("SELECT * FROM Item,Categoria,Platillo,Inventario where Item.id=Inventario.item and Item.id=Platillo.item and Item.categoria=Categoria.id and Categoria.nombre=\""+c.getNombre()+"\" and stock>0 ");
+            itemsRS = Conexion.consultar("SELECT * FROM Item,Categoria,Platillo,Inventario where Item.id=Inventario.item and Item.id=Platillo.item and Item.categoria=Categoria.id and Categoria.nombre=\""+c.getNombre()+"\" and stock>0  order by Platillo.id asc");
         } else if ("Postres".equals(c.getNombre())) {
-            itemsRS = Conexion.consultar("SELECT * FROM Item,Categoria,Platillo,Inventario where Item.id=Inventario.item and Item.id=Platillo.item and Item.categoria=Categoria.id and Categoria.nombre=\""+c.getNombre()+"\" and stock>0");
+            itemsRS = Conexion.consultar("SELECT * FROM Item,Categoria,Platillo,Inventario where Item.id=Inventario.item and Item.id=Platillo.item and Item.categoria=Categoria.id and Categoria.nombre=\""+c.getNombre()+"\" and stock>0  order by Platillo.id asc");
         }    
         while (itemsRS.next()) lista.add(new Platillo(itemsRS.getFloat("tiempoEstimado"),itemsRS.getInt("id"), itemsRS.getFloat("valor"), itemsRS.getString("nombre"), itemsRS.getBoolean("activo"), Categoria.getCategoria(itemsRS.getInt("categoria")),itemsRS.getFloat("stock")));
         return lista;
