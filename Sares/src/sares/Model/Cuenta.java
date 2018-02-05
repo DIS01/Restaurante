@@ -47,6 +47,17 @@ public class Cuenta {
     
     private boolean prioridad;
     
+    private Mesero mesero;
+
+    public Cuenta(int id, boolean pagada, Float total, Mesa mesa, boolean prioridad, Mesero mesero) {
+        this.id = id;
+        this.pagada = pagada;
+        this.total = total;
+        this.mesa = mesa;
+        this.prioridad = prioridad;
+        this.mesero = mesero;
+    }
+    
     public Cuenta(int id,boolean pagada, Float total, Mesa mesa, boolean prioridad) {
         this.id=id;
         this.pagada = pagada;

@@ -20,6 +20,10 @@ public class Mesa {
         this.ambienteMesa = ambienteMesa;
     }
 
+    public Mesa(int id2) {
+        this.id2 = id2;
+    }
+
     /**
      * 
      */

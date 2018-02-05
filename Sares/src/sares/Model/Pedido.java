@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.util.*;
 import java.sql.Time;
 import java.text.ParseException;
+import javafx.collections.FXCollections;
 
 /**
  * 
@@ -41,7 +42,8 @@ public class Pedido {
      * 
      */
     public Date fecha;
-    
+    public LinkedList<PedidoDetalle> pedidosDetalles;
+     
      /**
      * Default constructor
      */
@@ -193,5 +195,36 @@ public class Pedido {
     public void setFecha(Date fecha) {
         this.fecha = fecha;
     }
+
+    public LinkedList<PedidoDetalle> getPedidosDetalles() {
+        return pedidosDetalles;
+    }
+
+    public void setPedidosDetalles(LinkedList<PedidoDetalle> pedidosDetalles) {
+        this.pedidosDetalles = pedidosDetalles;
+    }
     
+    public float actualizarTiempoEstimado(){
+        float temax=0.0f;
+        int contador=0;
+        for (PedidoDetalle pd: this.pedidosDetalles){
+            if(pd.getItem().getCategoria().getNombre().equals("Platillos de entrada") || pd.getItem().getCategoria().getNombre().equals("Platos Fuerte") || pd.getItem().getCategoria().getNombre().equals("Postres")){
+                Platillo c=(Platillo)pd.getItem();
+                if(temax<c.getTiempoEstimado()){
+                    temax=c.getTiempoEstimado();
+                }
+                contador+=(Integer)pd.getCantidad();
+            }else if(pd.getItem().getCategoria().getNombre().equals("Combo") ){
+                Combo c=(Combo)pd.getItem();
+                if(temax<c.getTiempoEstimado()){
+                    temax=c.getTiempoEstimado();
+                }
+                contador+=(Integer)pd.getCantidad();
+            }
+        }
+        temax=temax+3*(contador-1);
+        if(contador==0) temax=0.0f;
+        this.tiempoestimado=temax;
+        return temax;
+        }
 }
